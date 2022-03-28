@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXPasswordField?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #2e3264;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
+   <children>
+      <Label layoutX="197.0" layoutY="46.0" text="WarnMarket" textAlignment="CENTER" textFill="#fc447a">
+         <font>
+            <Font name="SansSerif Bold" size="36.0" />
+         </font>
+      </Label>
+      <Label layoutX="237.0" layoutY="88.0" text="Welcome Back!" textAlignment="CENTER" textFill="#fd93b2">
+         <font>
+            <Font name="SansSerif Regular" size="18.0" />
+         </font>
+      </Label>
+      <MFXTextField fx:id="textFieldLoginUsername" layoutX="170.0" layoutY="166.0" minHeight="-Infinity" prefHeight="30.0" prefWidth="260.0" promptText="Username">
+         <font>
+            <Font name="SansSerif Regular" size="12.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="TEXT" />
+         </cursor>
+      </MFXTextField>
+      <MFXPasswordField fx:id="textFieldLoginPassword" layoutX="170.0" layoutY="208.0" minHeight="-Infinity" prefHeight="30.0" prefWidth="260.0" promptText="Password">
+         <font>
+            <Font name="SansSerif Regular" size="12.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="TEXT" />
+         </cursor>
+      </MFXPasswordField>
+      <FontAwesomeIconView fill="#fd93b2" glyphName="USER" layoutX="136.0" layoutY="189.0" size="20" text="" />
+      <FontAwesomeIconView fill="#fd93b2" glyphName="LOCK" layoutX="137.0" layoutY="230.0" size="20" text="" />
+      <FontAwesomeIconView fx:id="iconLoginExit" fill="#fd93b2" glyphName="CLOSE" layoutX="556.0" layoutY="33.0" onMouseClicked="#onClickLoginExit" size="20">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></FontAwesomeIconView>
+      <Text fx:id="textFieldLoginError" fill="#fc447a" layoutX="170.0" layoutY="270.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="260.0">
+         <font>
+            <Font name="SansSerif Regular" size="14.0" />
+         </font>
+      </Text>
+      <MFXButton fx:id="buttonLogin" buttonType="RAISED" depthLevel="LEVEL5" layoutX="170.0" layoutY="293.0" onAction="#onActionLogin" prefHeight="26.0" prefWidth="260.0" rippleColor="#252850" style="-fx-background-color: #fd93b2;" text="Login" textFill="#252850">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></MFXButton>
+      <Label fx:id="textFieldLoginRegister" layoutX="244.0" layoutY="345.0" onMouseClicked="#onClickLoginRegister" text="Create an account" textFill="#fd93b2">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Label>
+   </children>
+</AnchorPane>

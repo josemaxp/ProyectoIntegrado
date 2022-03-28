@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXPasswordField?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #2e3264;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegisterController">
+   <children>
+      <MFXPasswordField fx:id="textFieldPassword" alignment="TOP_LEFT" allowCopy="true" allowCut="true" allowPaste="true" layoutX="170.0" layoutY="185.0" minHeight="-Infinity" prefHeight="30.0" prefWidth="260.0" promptText="Password">
+         <textFill>
+            <Color red="0.9882352948188782" green="0.2666666805744171" blue="0.47843137383461" opacity="0.8700000047683716" />
+         </textFill>
+         <cursor>
+            <Cursor fx:constant="TEXT" />
+         </cursor></MFXPasswordField>
+      <Text fill="#fc447a" layoutX="196.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WarnMarket">
+         <font>
+            <Font name="SansSerif Bold" size="36.0" />
+         </font>
+      </Text>
+      <Text fill="#fd93b2" layoutX="249.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome To">
+         <font>
+            <Font name="SansSerif Regular" size="18.0" />
+         </font>
+      </Text>
+      <MFXButton fx:id="buttonRegister" buttonType="RAISED" depthLevel="LEVEL5" layoutX="171.0" layoutY="319.0" onAction="#onActionRegister" prefHeight="26.0" prefWidth="260.0" rippleColor="#252850" style="-fx-background-color: #fd93b2;" text="Register" textFill="#252850">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></MFXButton>
+      <MFXTextField fx:id="textFieldUsername" layoutX="170.0" layoutY="141.0" minHeight="-Infinity" prefHeight="30.0" prefWidth="260.0" promptText="Username">
+         <textFill>
+            <Color red="1.0" green="1.0" blue="1.0" opacity="0.8700000047683716" />
+         </textFill>
+         <font>
+            <Font name="SansSerif Regular" size="12.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="TEXT" />
+         </cursor>
+      </MFXTextField>
+      <FontAwesomeIconView fill="#fd93b2" glyphName="LOCK" layoutX="133.0" layoutY="210.0" size="28" text="" />
+      <FontAwesomeIconView fill="#fd93b2" glyphName="USER" layoutX="132.0" layoutY="166.0" size="28" text="" />
+      <FontAwesomeIconView fx:id="iconExit" fill="#fd93b2" glyphName="CLOSE" layoutX="553.0" layoutY="38.0" onMouseClicked="#onClickExit" size="20" text="">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </FontAwesomeIconView>
+      <Text fx:id="textFieldError" fill="#fc447a" layoutX="170.0" layoutY="297.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="260.0">
+         <font>
+            <Font name="SansSerif Regular" size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+      </Text>
+      <MFXPasswordField fx:id="texxtFieldRepeatPassword" alignment="TOP_LEFT" allowCopy="true" allowCut="true" allowPaste="true" layoutX="171.0" layoutY="229.0" minHeight="-Infinity" prefHeight="30.0" prefWidth="260.0" promptText="Repeat password">
+         <textFill>
+            <Color red="0.9882352948188782" green="0.2666666805744171" blue="0.47843137383461" opacity="0.8700000047683716" />
+         </textFill>
+         <cursor>
+            <Cursor fx:constant="TEXT" />
+         </cursor>
+      </MFXPasswordField>
+      <FontAwesomeIconView fill="#fd93b2" glyphName="LOCK" layoutX="133.0" layoutY="254.0" size="28" text="" />
+      <FontAwesomeIconView fx:id="iconBack" fill="#fd93b2" glyphName="ARROW_LEFT" layoutX="519.0" layoutY="39.0" onMouseClicked="#onClickBack" size="20" text="">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </FontAwesomeIconView>
+   </children>
+</AnchorPane>
