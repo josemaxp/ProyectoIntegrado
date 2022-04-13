@@ -16,6 +16,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
     Button loginButton;
@@ -23,20 +24,21 @@ public class MainActivity extends AppCompatActivity {
     EditText username;
     EditText password;
     TextView error;
-    MyTask mt;
-    static PrintWriter out = null;
-    static BufferedReader in = null;
+    connectServer Con;
+    login login;
+    register register;
+    PrintWriter out = null;
+    BufferedReader in = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (mt == null) {
-            mt = new MyTask();
-            mt.execute();
+        if (Con == null) {
+            Con = new connectServer();
+            Con.execute();
         }
-
 
         username = findViewById(R.id.LoginUsernameText);
         password = findViewById(R.id.LoginPasswordText);
@@ -45,40 +47,23 @@ public class MainActivity extends AppCompatActivity {
         error = findViewById(R.id.textError);
 
         loginButton.setOnClickListener(view -> {
+            login =  new login();
             try {
-                if (username.getText().toString().equals("") || password.getText().toString().equals("")) {
-                    error.setText(R.string.errorEmptyFields);
-                } else {
-                    out.println("CL:" + "login:" + username.getText().toString() + ":" + password.getText().toString());
-
-                    System.out.println(username.getText().toString() + "; " + password.getText().toString());
-
-                    String fromServer = in.readLine();
-
-                    if (fromServer.split(":")[2].equals("true")) {
-                        error.setText("");
-                        Intent intent = new Intent(MainActivity.this, WarnMarketActivity.class);
-                        startActivity(intent);
-                    } else {
-                        error.setText(R.string.errorUserPass);
-                    }
-                }
-            } catch (IOException e) {
+                error.setText(login.execute(username.getText().toString(),password.getText().toString()).get());
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         });
 
         registerButton.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, WarnMarketActivity.class);
-            startActivity(intent);
+            register = new register();
+            register.execute();
         });
-
-
-        StrictMode.ThreadPolicy gfgPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(gfgPolicy);
     }
 
-    static class MyTask extends AsyncTask<Void, Void, Void> {
+    class connectServer extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -87,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params) {
             Socket kkSocket;
-
             try {
                 kkSocket = new Socket("192.168.0.124", 4444);
                 out = new PrintWriter(kkSocket.getOutputStream(), true);
@@ -100,7 +84,61 @@ public class MainActivity extends AppCompatActivity {
                 System.err.println("Couldn't get I/O for the connection to: .");
                 System.exit(1);
             }
+            return null;
+        }
 
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+        }
+    }
+
+    class login extends AsyncTask<String, String, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String result = "";
+            try {
+                if (params[0].equals("") || params[1].equals("")) {
+                    result = "Fields can't be empty.";
+                } else {
+                    out.println("CL:" + "login:" + username.getText().toString() + ":" + password.getText().toString());
+                    System.out.println(params[0] + "; " + params[1]);
+                    String fromServer = in.readLine();
+
+                    if (fromServer.split(":")[2].equals("true")) {
+                        Intent intent = new Intent(MainActivity.this, WarnMarketActivity.class);
+                        startActivity(intent);
+                    } else {
+                        result = "Error. Check your username or your password";
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+        }
+    }
+
+    class register extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            Intent intent = new Intent(MainActivity.this, WarnMarketActivity.class);
+            startActivity(intent);
             return null;
         }
 

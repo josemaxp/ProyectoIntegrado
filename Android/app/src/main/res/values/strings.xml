@@ -2,4 +2,17 @@
     <string name="app_name">finalProject</string>
     <string name="errorEmptyFields">Fields can\'t be empty.</string>
     <string name="errorUserPass">Error. Check your username or your password.</string>
+    <string name="imageview_contentdescription">Fotografía de la oferta</string>
+    <string name="title_add_offer">Detalles de la oferta</string>
+    <string name="title_add_image">Agregar imagen:</string>
+    <string name="title_add_tags">Agregar etiquetas:</string>
+    <string name="price">Precio:</string>
+    <string name="price_unity">Precio por unidad:</string>
+    <string name="example_tags">Ejemplo: Leche, Puleva, Semidesnatada</string>
+    <string-array name="unidades">
+        <item>-</item>
+        <item>Kg</item>
+        <item>L</item>
+        <item>ml</item>
+    </string-array>
 </resources>

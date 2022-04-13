@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalProject">
         <activity
+            android:name=".AddOffer"
+            android:exported="false" />
+        <activity
             android:name=".WarnMarketActivity"
             android:exported="false" />
         <activity
