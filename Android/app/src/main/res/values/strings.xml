@@ -5,14 +5,24 @@
     <string name="imageview_contentdescription">Fotografía de la oferta</string>
     <string name="title_add_offer">Detalles de la oferta</string>
     <string name="title_add_image">Agregar imagen:</string>
-    <string name="title_add_tags">Agregar etiquetas:</string>
+    <string name="title_add_tags">Agrega algunas etiquetas:</string>
     <string name="price">Precio:</string>
     <string name="price_unity">Precio por unidad:</string>
     <string name="example_tags">Ejemplo: Leche, Puleva, Semidesnatada</string>
+    <string name="error_minimun_tags">Please, add at least 3 tags</string>
+    <string name="error_empty_price">Please, price can\'t be empty</string>
+    <string name="error_empty_unity">Please, unity can\'t be empty.</string>
+    <string name="error_empty_image">You have to take a picture.</string>
+    <string name="error_empty_location">Location can\'t be empty</string>
     <string-array name="unidades">
         <item>-</item>
         <item>Kg</item>
         <item>L</item>
         <item>ml</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add">+</string>
+    <string name="repeated_tags">Error. You can\'t add repeated tags</string>
+    <string name="error_empty_market">Market can\'t be empty</string>
 </resources>

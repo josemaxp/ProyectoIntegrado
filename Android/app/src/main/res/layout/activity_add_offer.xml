@@ -13,22 +13,6 @@
         android:background="#292A33"
         tools:context=".AddOffer">
 
-        <ImageView
-            android:id="@+id/imageViewAddImage"
-            android:layout_width="0dp"
-            android:layout_height="200dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="32dp"
-            android:background="@drawable/imageview_style"
-            android:contentDescription="@string/imageview_contentdescription"
-            android:src="@drawable/ic_add_image"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewAddImage"
-            tools:srcCompat="@drawable/ic_add_image" />
-
         <TextView
             android:id="@+id/textViewTitleAddOffer"
             android:layout_width="0dp"
@@ -46,157 +30,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textViewAddImage"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="32dp"
-            android:text="@string/title_add_image"
-            android:textColor="#ACB0CC"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextPriceUnity" />
-
-        <TextView
-            android:id="@+id/textViewAddMarket"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="32dp"
-            android:text="Agregar supermercado:"
-            android:textColor="#ACB0CC"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageViewAddImage" />
-
-        <TextView
-            android:id="@+id/textViewLocation"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="32dp"
-            android:text="Ubicación:"
-            android:textColor="#ACB0CC"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinnerMarket" />
-
-        <TextView
-            android:id="@+id/textViewTags"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="32dp"
-            android:text="@string/title_add_tags"
-            android:textColor="#ACB0CC"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewTitleAddOffer" />
-
-        <TextView
-            android:id="@+id/textViewPrice"
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="32dp"
-            android:text="@string/price"
-            android:textColor="#ACB0CC"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewTagsExample" />
-
-        <TextView
-            android:id="@+id/textViewPriceUnity"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="32dp"
-            android:text="@string/price_unity"
-            android:textColor="#ACB0CC"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textViewPrice"
-            app:layout_constraintTop_toBottomOf="@+id/textViewTagsExample" />
-
-        <TextView
-            android:id="@+id/textViewTagsExample"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="32dp"
-            android:text="@string/example_tags"
-            android:textColor="#ACB0CC"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTags" />
-
-        <EditText
-            android:id="@+id/editTextTags"
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="32dp"
-            android:background="@drawable/et_style"
-            android:ems="10"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewTags" />
-
-        <EditText
-            android:id="@+id/editTextPrice"
-            android:layout_width="100dp"
-            android:layout_height="27dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/et_style"
-            android:ems="10"
-            android:inputType="numberDecimal|numberSigned"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewPrice" />
-
-        <EditText
-            android:id="@+id/editTextPriceUnity"
-            android:layout_width="100dp"
-            android:layout_height="27dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/et_style"
-            android:ems="10"
-            android:inputType="numberDecimal|numberSigned"
-            app:layout_constraintBottom_toBottomOf="@+id/editTextPrice"
-            app:layout_constraintStart_toEndOf="@+id/editTextPrice"
-            app:layout_constraintTop_toBottomOf="@+id/textViewPriceUnity" />
-
-        <Spinner
-            android:id="@+id/spinnerUnity"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="32dp"
-            android:background="@drawable/et_style"
-            app:layout_constraintBottom_toBottomOf="@+id/editTextPriceUnity"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/editTextPriceUnity"
-            app:layout_constraintTop_toBottomOf="@+id/textViewPriceUnity" />
-
-        <TextView
             android:id="@+id/textViewAddError"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -208,7 +41,7 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextLocation" />
+            app:layout_constraintTop_toBottomOf="@+id/pager" />
 
         <Button
             android:id="@+id/buttonAddOffer"
@@ -228,31 +61,48 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewAddError" />
 
-        <Spinner
-            android:id="@+id/spinnerMarket"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
             android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="32dp"
-            android:background="@drawable/et_style"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:background="#292A33"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewAddMarket" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewTitleAddOffer"
+            app:tabIndicatorColor="#FD93B2"
+            app:tabSelectedTextColor="#FD93B2"
+            app:tabTextColor="#ACB0CC">
 
-        <EditText
-            android:id="@+id/editTextLocation"
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tags" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Price" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Image" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Location" />
+        </com.google.android.material.tabs.TabLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/pager"
             android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="32dp"
-            android:background="@drawable/et_style"
-            android:ems="10"
-            android:inputType="textPersonName"
+            android:layout_height="500dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewLocation" />
+            app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

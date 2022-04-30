@@ -27,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
     connectServer Con;
     login login;
     register register;
-    PrintWriter out = null;
-    BufferedReader in = null;
+    public static PrintWriter out = null;
+    public static BufferedReader in = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         protected Void doInBackground(Void... params) {
             Socket kkSocket;
             try {
-                kkSocket = new Socket("192.168.0.124", 4444);
+                kkSocket = new Socket("10.1.2.168", 4444);
                 out = new PrintWriter(kkSocket.getOutputStream(), true);
                 in = new BufferedReader(new InputStreamReader(kkSocket.getInputStream()));
             } catch (UnknownHostException e) {
@@ -107,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
                     result = "Fields can't be empty.";
                 } else {
                     out.println("CL:" + "login:" + username.getText().toString() + ":" + password.getText().toString());
-                    System.out.println(params[0] + "; " + params[1]);
                     String fromServer = in.readLine();
 
                     if (fromServer.split(":")[2].equals("true")) {

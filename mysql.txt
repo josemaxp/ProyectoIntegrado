@@ -1,0 +1,62 @@
+CREATE TABLE oferta(
+	id int NOT NULL AUTO_INCREMENT,
+    precio float,
+    precio_unidad varchar(200),
+    imagen varchar(200),
+    id_usuario int,
+    CONSTRAINT oferta_id_usuario_fk FOREIGN KEY (id_usuario) REFERENCES usuario (id),
+    CONSTRAINT oferta_pk PRIMARY KEY (id)    
+);
+
+CREATE TABLE usuario (
+	id int NOT NULL AUTO_INCREMENT,
+    correo varchar(200) UNIQUE,
+    username varchar(200) UNIQUE,
+    password varchar(512),
+    puntos int,
+    CONSTRAINT usuario_pk PRIMARY KEY (id)    
+);
+
+CREATE TABLE publicar(
+	id int NOT NULL AUTO_INCREMENT,
+    id_usuario int,
+    id_oferta int,
+    CONSTRAINT publicar_pk PRIMARY KEY (id),
+    CONSTRAINT publicar_id_usuario_fk FOREIGN KEY (id_usuario) REFERENCES usuario (id),
+	CONSTRAINT publicar_id_oferta_fk FOREIGN KEY (id_oferta) REFERENCES oferta (id)
+);
+
+CREATE TABLE etiqueta(
+	id int NOT NULL AUTO_INCREMENT,
+    nombre varchar(200) UNIQUE,
+	int contador,
+    CONSTRAINT etiqueta_pk PRIMARY KEY (id)
+);
+
+CREATE TABLE tener(
+	id int NOT NULL AUTO_INCREMENT,
+	id_etiqueta int,
+    id_oferta int,
+    especial boolean,
+    CONSTRAINT tener_pk PRIMARY KEY (id),
+    CONSTRAINT tener_id_etiqueta_fk FOREIGN KEY (id_etiqueta) REFERENCES etiqueta (id),
+	CONSTRAINT tener_id_oferta_fk FOREIGN KEY (id_oferta) REFERENCES oferta (id)
+);
+
+CREATE TABLE supermercado(
+	id int NOT NULL AUTO_INCREMENT,
+    nombre varchar(200),
+    longitud float,
+    latitud float,
+    direccion varchar(1000),
+    CONSTRAINT supermercado_pk PRIMARY KEY (id)
+);
+
+CREATE TABLE estar(
+	id int NOT NULL AUTO_INCREMENT,
+	id_supermercado int,
+    id_oferta int,
+    CONSTRAINT tener_pk PRIMARY KEY (id),
+    CONSTRAINT estar_id_supermercado_fk FOREIGN KEY (id_supermercado) REFERENCES supermercado (id),
+	CONSTRAINT estar_id_oferta_fk FOREIGN KEY (id_oferta) REFERENCES oferta (id)
+);
