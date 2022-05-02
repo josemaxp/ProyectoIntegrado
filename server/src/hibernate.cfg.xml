@@ -53,6 +53,7 @@ Contributor(s):
     <mapping resource="entity/Tener.hbm.xml"/>
     <mapping resource="entity/Publicar.hbm.xml"/>
     <mapping resource="entity/Estar.hbm.xml"/>
+    <mapping resource="entity/Relacionetiqueta.hbm.xml"/>
     <mapping resource="entity/Oferta.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

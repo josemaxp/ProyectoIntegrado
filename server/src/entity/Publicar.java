@@ -1,5 +1,5 @@
 package entity;
-// Generated 24-abr-2022 19:21:23 by Hibernate Tools 4.3.1
+// Generated 30-abr-2022 18:28:06 by Hibernate Tools 4.3.1
 
 
 
@@ -9,38 +9,21 @@ package entity;
 public class Publicar  implements java.io.Serializable {
 
 
-     private Integer id;
-     private Integer idUsuario;
-     private Integer idOferta;
+     private PublicarId id;
 
     public Publicar() {
     }
 
-    public Publicar(Integer idUsuario, Integer idOferta) {
-       this.idUsuario = idUsuario;
-       this.idOferta = idOferta;
+    public Publicar(PublicarId id) {
+       this.id = id;
     }
    
-    public Integer getId() {
+    public PublicarId getId() {
         return this.id;
     }
     
-    public void setId(Integer id) {
+    public void setId(PublicarId id) {
         this.id = id;
-    }
-    public Integer getIdUsuario() {
-        return this.idUsuario;
-    }
-    
-    public void setIdUsuario(Integer idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-    public Integer getIdOferta() {
-        return this.idOferta;
-    }
-    
-    public void setIdOferta(Integer idOferta) {
-        this.idOferta = idOferta;
     }
 
 

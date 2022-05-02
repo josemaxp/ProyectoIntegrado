@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.StrictMode;
 import android.widget.Button;
 import android.widget.EditText;
 import android.os.Bundle;
@@ -44,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         password = findViewById(R.id.LoginPasswordText);
         loginButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButton);
-        error = findViewById(R.id.textError);
+        error = findViewById(R.id.textViewMainError);
 
         loginButton.setOnClickListener(view -> {
             login =  new login();
@@ -73,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         protected Void doInBackground(Void... params) {
             Socket kkSocket;
             try {
-                kkSocket = new Socket("10.1.2.168", 4444);
+                kkSocket = new Socket("192.168.1.139", 4444);
                 out = new PrintWriter(kkSocket.getOutputStream(), true);
                 in = new BufferedReader(new InputStreamReader(kkSocket.getInputStream()));
             } catch (UnknownHostException e) {

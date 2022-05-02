@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,9 +26,9 @@ public class PriceFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_price, container, false);
 
-        editTextPrice2 = view.findViewById(R.id.editTextPrice2);
-        editTextPrice3 = view.findViewById(R.id.editTextPrice3);
-        unity = view.findViewById(R.id.spinner);
+        editTextPrice2 = view.findViewById(R.id.editTextPrice);
+        editTextPrice3 = view.findViewById(R.id.editTextPriceUnity);
+        unity = view.findViewById(R.id.spinnerUnity);
 
         //Get unities on spinner
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getContext(),R.array.unidades, R.layout.color_spinner_layout);

@@ -5,8 +5,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -22,7 +23,7 @@ import josemanuel.marin.finalproject.MainActivity;
 import josemanuel.marin.finalproject.R;
 
 public class TagsFragment extends Fragment {
-    EditText newTag;
+    AutoCompleteTextView newTag;
     TextView errorText;
     Button addTag, buttonTag1, buttonTag2, buttonTag3, buttonTag4, buttonTag5, buttonTag6, buttonTag7, buttonTag8, buttonTag9, buttonTag10, buttonPopularTag1, buttonPopularTag2, buttonPopularTag3;
     static List<String> tagsList = new ArrayList<>();
@@ -31,7 +32,7 @@ public class TagsFragment extends Fragment {
     PrintWriter out = null;
     BufferedReader in = null;
     getPopularTags getPopularTags;
-
+    getRelationTags getRelationTags;
 
     public TagsFragment() {
     }
@@ -76,24 +77,25 @@ public class TagsFragment extends Fragment {
         //Instantiate asynctask
         if (getPopularTags == null) {
             getPopularTags = new getPopularTags();
-        }
 
-        //Get popularTags on buttons
-        try {
-            String[] popularTagsListServer = getPopularTags.execute().get().split(":");
 
-            buttonPopularTag1.setText(popularTagsListServer[2] + "    +");
-            buttonPopularTag2.setText(popularTagsListServer[3] + "    +");
-            buttonPopularTag3.setText(popularTagsListServer[4] + "    +");
+            //Get popularTags on buttons
+            try {
+                String[] popularTagsListServer = getPopularTags.execute().get().split(":");
 
-            for (int i = 0; i < popularButtonsList.size(); i++) {
-                popularButtonsList.get(i).setVisibility(View.VISIBLE);
+                buttonPopularTag1.setText(popularTagsListServer[2] + "    +");
+                buttonPopularTag2.setText(popularTagsListServer[3] + "    +");
+                buttonPopularTag3.setText(popularTagsListServer[4] + "    +");
+
+                for (int i = 0; i < popularButtonsList.size(); i++) {
+                    popularButtonsList.get(i).setVisibility(View.VISIBLE);
+                }
+
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
 
         for (int i = 0; i < 10; i++) {
@@ -107,9 +109,31 @@ public class TagsFragment extends Fragment {
                 }
 
                 if (!newTag.getText().toString().equals("") && tagsList.get(i).equals("-")) {
-                    if (!tagsList.contains(newTag.getText().toString().toLowerCase())) {
+                    if (!tagsList.contains(newTag.getText().toString().toLowerCase().trim())) {
+                        try {
+                            if (newTag.getText() != null) {
+                                getRelationTags = new getRelationTags();
+                                String[] relationTags = getRelationTags.execute(newTag.getText().toString().toLowerCase().trim()).get().split(":");
+                                if (relationTags.length > 2) {
+                                    ArrayList<String> listRelationTags = new ArrayList<>();
+                                    for (int j = 2; j < relationTags.length; j++) {
+                                        listRelationTags.add(relationTags[j]);
+                                    }
+
+                                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, listRelationTags);
+                                    newTag.setAdapter(adapter);
+                                } else {
+                                    newTag.setAdapter(null);
+                                }
+                            }
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
                         errorText.setText("");
-                        tagsList.set(i, newTag.getText().toString().toLowerCase());
+                        tagsList.set(i, newTag.getText().toString().toLowerCase().trim());
                         buttonsList.get(i).setVisibility(View.VISIBLE);
                         buttonsList.get(i).setText(tagsList.get(i) + "  X");
                         newTag.setText("");
@@ -128,7 +152,7 @@ public class TagsFragment extends Fragment {
             }
 
             if (contador == tagsList.size()) {
-                errorText.setText("Error. Too much tags.");
+                errorText.setText(R.string.error_too_many_tags);
             } else {
                 errorText.setText("");
             }
@@ -150,7 +174,7 @@ public class TagsFragment extends Fragment {
                 }
 
                 if (contador == tagsList.size()) {
-                    errorText.setText("Error. Too much tags.");
+                    errorText.setText(R.string.error_too_many_tags);
                 } else {
                     errorText.setText("");
                 }
@@ -166,21 +190,30 @@ public class TagsFragment extends Fragment {
                     if (tagsList.get(j).equals("-")) {
                         String popularTagName = addPopularTag.getText().toString().toLowerCase().trim();
 
-                        tagsList.set(j, popularTagName.substring(0,popularTagName.length()-1));
-                        buttonsList.get(j).setVisibility(View.VISIBLE);
-                        buttonsList.get(j).setText(tagsList.get(j) + "  X");
+                        if (!tagsList.contains(popularTagName.substring(0, popularTagName.length() - 1).trim())) {
+                            tagsList.set(j, popularTagName.substring(0, popularTagName.length() - 1).trim());
+                            buttonsList.get(j).setVisibility(View.VISIBLE);
+                            buttonsList.get(j).setText(tagsList.get(j) + "  X");
+                            //addPopularTag.setVisibility(View.GONE);
+                        }
                         break;
                     }
                 }
-                addPopularTag.setVisibility(View.GONE);
+
             });
         }
-
         return view;
     }
 
     public static List<String> getTagsList() {
         return tagsList;
+    }
+
+    public static void restartTagsList() {
+        tagsList.clear();
+        for (int i = 0; i < 10; i++) {
+            tagsList.add("-");
+        }
     }
 
     class getPopularTags extends AsyncTask<Void, Void, String> {
@@ -204,6 +237,35 @@ public class TagsFragment extends Fragment {
             }
 
             return markets;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+        }
+    }
+
+    class getRelationTags extends AsyncTask<String, String, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            out = MainActivity.out;
+            in = MainActivity.in;
+
+            out.println("CL:" + "relationTags:" + params[0]);
+            String relationTags = "";
+            try {
+                relationTags = in.readLine();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return relationTags;
         }
 
         @Override

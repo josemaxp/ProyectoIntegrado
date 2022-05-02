@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.content.Intent;
@@ -28,6 +30,8 @@ import java.util.Locale;
 
 public class WarnMarketActivity extends AppCompatActivity{
     Button addButton;
+    RecyclerView recyclerView;
+    RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +39,12 @@ public class WarnMarketActivity extends AppCompatActivity{
         setContentView(R.layout.activity_warn_market);
 
         addButton = findViewById(R.id.addButton);
+        recyclerView = findViewById(R.id.recyclerView);
+
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        //recyclerView.setAdapter(mAdapter);
 
         addButton.setOnClickListener(view -> {
             Intent intent = new Intent(WarnMarketActivity.this, AddOffer.class);

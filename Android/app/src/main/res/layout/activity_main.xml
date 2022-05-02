@@ -103,7 +103,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textError"
+        android:id="@+id/textViewMainError"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#FC447A"

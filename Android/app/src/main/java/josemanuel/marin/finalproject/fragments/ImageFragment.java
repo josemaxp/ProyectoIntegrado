@@ -32,7 +32,7 @@ public class ImageFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_image, container, false);
 
-        mImageView = view.findViewById(R.id.imageView2);
+        mImageView = view.findViewById(R.id.imageViewAddImage);
 
         //Take picture
         mImageView.setOnClickListener(v -> {

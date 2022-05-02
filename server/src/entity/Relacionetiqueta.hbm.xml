@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 30-abr-2022 18:28:07 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entity.Relacionetiqueta" table="relacionetiqueta" catalog="proyectofinal" optimistic-lock="version">
+        <composite-id name="id" class="entity.RelacionetiquetaId">
+            <key-property name="idEtq1" type="int">
+                <column name="id_etq1" />
+            </key-property>
+            <key-property name="idEtq2" type="int">
+                <column name="id_etq2" />
+            </key-property>
+        </composite-id>
+        <property name="contador" type="java.lang.Integer">
+            <column name="contador" />
+        </property>
+    </class>
+</hibernate-mapping>

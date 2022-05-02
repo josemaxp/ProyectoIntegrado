@@ -18,10 +18,9 @@ CREATE TABLE usuario (
 );
 
 CREATE TABLE publicar(
-	id int NOT NULL AUTO_INCREMENT,
     id_usuario int,
     id_oferta int,
-    CONSTRAINT publicar_pk PRIMARY KEY (id),
+    CONSTRAINT publicar_pk PRIMARY KEY (id_usuario,id_oferta),
     CONSTRAINT publicar_id_usuario_fk FOREIGN KEY (id_usuario) REFERENCES usuario (id),
 	CONSTRAINT publicar_id_oferta_fk FOREIGN KEY (id_oferta) REFERENCES oferta (id)
 );
@@ -29,16 +28,32 @@ CREATE TABLE publicar(
 CREATE TABLE etiqueta(
 	id int NOT NULL AUTO_INCREMENT,
     nombre varchar(200) UNIQUE,
-	int contador,
+	contador int,
     CONSTRAINT etiqueta_pk PRIMARY KEY (id)
 );
 
+CREATE TABLE relacionEtiqueta(
+    	id_etq1 int,
+	id_etq2 int,
+	contador int,
+    	CONSTRAINT etiqueta_pk PRIMARY KEY (id_etq1,id_etq2),
+	CONSTRAINT relacionEtiqueta_id_etq1_fk FOREIGN KEY (id_etq1) REFERENCES etiqueta (id),
+	CONSTRAINT relacionEtiqueta_id_etq2_fk FOREIGN KEY (id_etq2) REFERENCES etiqueta (id)
+);
+
+INSERT INTO etiqueta(nombre,contador) VALUES ('leche','5');
+INSERT INTO etiqueta(nombre,contador) VALUES ('puleva','2');
+INSERT INTO etiqueta(nombre,contador) VALUES ('semidesnatada','3');
+
+INSERT INTO relacionEtiqueta(id_etq1,id_etq2,contador) VALUES (1,2,1);
+INSERT INTO relacionEtiqueta(id_etq1,id_etq2,contador) VALUES (1,3,1);
+INSERT INTO relacionEtiqueta(id_etq1,id_etq2,contador) VALUES (2,3,1);
+
 CREATE TABLE tener(
-	id int NOT NULL AUTO_INCREMENT,
 	id_etiqueta int,
     id_oferta int,
     especial boolean,
-    CONSTRAINT tener_pk PRIMARY KEY (id),
+    CONSTRAINT tener_pk PRIMARY KEY (id_etiqueta,id_oferta),
     CONSTRAINT tener_id_etiqueta_fk FOREIGN KEY (id_etiqueta) REFERENCES etiqueta (id),
 	CONSTRAINT tener_id_oferta_fk FOREIGN KEY (id_oferta) REFERENCES oferta (id)
 );
@@ -53,10 +68,10 @@ CREATE TABLE supermercado(
 );
 
 CREATE TABLE estar(
-	id int NOT NULL AUTO_INCREMENT,
 	id_supermercado int,
     id_oferta int,
-    CONSTRAINT tener_pk PRIMARY KEY (id),
+    CONSTRAINT tener_pk PRIMARY KEY (id_supermercado,id_oferta),
     CONSTRAINT estar_id_supermercado_fk FOREIGN KEY (id_supermercado) REFERENCES supermercado (id),
 	CONSTRAINT estar_id_oferta_fk FOREIGN KEY (id_oferta) REFERENCES oferta (id)
 );
+
