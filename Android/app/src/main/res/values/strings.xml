@@ -25,9 +25,10 @@
         <item>docena</item>
         <item>cm^3</item>
     </string-array>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add">+</string>
-    <string name="repeated_tags">Error. You can\'t add repeated tags</string>
-    <string name="error_empty_market">Market can\'t be empty</string>
-    <string name="error_too_many_tags">Error, solo puede añadir hasta un máximo de 10 etiquetas.</string>
+    <string name="repeated_tags">Error. No puedes añadir etiquetas repetidas.</string>
+    <string name="error_empty_market">El supermercado no puede estar vacío.</string>
+    <string name="error_too_many_tags">Error, solo puedes añadir hasta un máximo de 10 etiquetas.</string>
+    <string name="back_button"><![CDATA[<]]></string>
+    <string name="next_button"><![CDATA[>]]></string>
 </resources>

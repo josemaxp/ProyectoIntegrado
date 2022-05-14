@@ -39,6 +39,8 @@ public class RegisterController implements Initializable {
     private MFXPasswordField texxtFieldRepeatPassword;
     @FXML
     private FontAwesomeIconView iconBack;
+    @FXML
+    private MFXTextField textFieldemail;
 
     /**
      * Initializes the controller class.
@@ -50,21 +52,25 @@ public class RegisterController implements Initializable {
 
     @FXML
     private void onActionRegister(ActionEvent event) {
-        if (texxtFieldRepeatPassword.getText().equals(textFieldPassword.getText())) {
-            Main.out.println("CL:" + "register:" + textFieldUsername.getText() + ":" + textFieldPassword.getText());
-            String fromServer;
-            try {
-                fromServer = Main.in.readLine();
-                if (fromServer.split(":")[2].equals("true")) {
-                    textFieldError.setText("User created.");
-                } else {
-                    textFieldError.setText("Error creating user.");
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(RegisterController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        if (textFieldUsername.getText().equals("") || textFieldPassword.getText().equals("") || textFieldemail.getText().equals("")) {
+            textFieldError.setText("Los campos no pueden estar vacíos.");
         } else {
-            textFieldError.setText("Passwords do not match.");
+            if (texxtFieldRepeatPassword.getText().equals(textFieldPassword.getText())) {
+                Main.out.println("CL:" + "register:" + textFieldUsername.getText() + ":" + textFieldPassword.getText() + ":" + textFieldemail.getText());
+                String fromServer;
+                try {
+                    fromServer = Main.in.readLine();
+                    if (fromServer.split(":")[2].equals("true")) {
+                        textFieldError.setText("Usuario creado.");
+                    } else {
+                        textFieldError.setText("Error al crear el ususario.");
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(RegisterController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                textFieldError.setText("Las contraseñas no coinciden.");
+            }
         }
     }
 

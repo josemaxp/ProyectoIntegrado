@@ -20,11 +20,16 @@ public class PagerAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         switch (position) {
-            case 0: return new TagsFragment();
-            case 1: return new PriceFragment();
-            case 2: return new ImageFragment();
-            case 3: return new LocationFragment();
-            default: return null;
+            case 0:
+                return new TagsFragment();
+            case 1:
+                return new PriceFragment();
+            case 2:
+                return new ImageFragment();
+            case 3:
+                return new LocationFragment();
+            default:
+                return null;
         }
     }
 

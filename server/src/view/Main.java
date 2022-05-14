@@ -5,6 +5,10 @@
  */
 package view;
 
+import dao.EtiquetaDAO;
+import dao.OfertaDAO;
+import dao.SupermercadoDAO;
+import dao.UsuarioDAO;
 import entity.Estar;
 import entity.EstarId;
 import entity.Etiqueta;
@@ -96,228 +100,102 @@ public class Main {
             } catch (IOException ex) {
                 System.out.println("Error en los flujos.");
             }
+
+            UsuarioDAO userDAO = new UsuarioDAO();
+            SupermercadoDAO marketDAO = new SupermercadoDAO();
+            EtiquetaDAO tagDAO = new EtiquetaDAO();
+            OfertaDAO ofertaDAO = new OfertaDAO();
             String inputLine;
             String username = null;
+
             try {
                 while ((inputLine = in.readLine()) != null) {
                     if (inputLine.split(":")[1].equals("login")) {
-                        boolean check = checkUser(inputLine.split(":")[2], inputLine.split(":")[3], session);
-                        if (check) {
-                            username = inputLine.split(":")[2];
-                            out.println("S:Login:true");
+                        String loginUsername = inputLine.split(":")[2];
+                        String loginPassword = inputLine.split(":")[3];
 
+                        boolean check = userDAO.checkUser(loginUsername, loginPassword, session);
+
+                        if (check) {
+                            username = loginUsername;
+                            out.println("S:login:true");
                         } else {
-                            out.println("S:Login:false");
+                            out.println("S:login:false");
                         }
                     }
 
                     if (inputLine.split(":")[1].equals("register")) {
-                        String passwordHashed = hashPassword(inputLine.split(":")[3]);
+                        String registerUsername = inputLine.split(":")[2];
+                        String registerPassword = inputLine.split(":")[3];
+                        String registerEmail = inputLine.split(":")[4];
 
-                        Transaction tx = null;
                         Integer userID = null;
-
-                        try {
-                            tx = session.beginTransaction();
-                            Usuario user = new Usuario("admin", inputLine.split(":")[2], passwordHashed, 0);
-                            userID = (Integer) session.save(user);
-                            tx.commit();
-                        } catch (HibernateException e) {
-                            if (tx != null) {
-                                tx.rollback();
-                            }
-                            e.printStackTrace();
-                        }
+                        userID = userDAO.registerUser(session, registerUsername, registerPassword, registerEmail);
 
                         if (userID == 0) {
-                            out.println("S:Register:false");
+                            out.println("S:register:false");
                         } else {
-                            out.println("S:Register:true");
+                            out.println("S:register:true");
                         }
                     }
 
                     if (inputLine.split(":")[1].equals("Markets")) {
-                        out.println("S:Markets:" + getMarkets(session));
+                        String markets = marketDAO.getAllMarkets(session);
+                        out.println("S:Markets:" + markets);
                     }
 
                     if (inputLine.split(":")[1].equals("popularTags")) {
-                        System.out.println(getPopularTags(session));
-                        out.println("S:PopularTags:" + getPopularTags(session));
+                        int contador = 0;
+                        String popularTags = "";
+                        List<String> listPopularTags = tagDAO.getTagsName(session);;
+                        for (String aPTags : listPopularTags) {
+                            if (contador < 3) {
+                                popularTags += aPTags + ":";
+                                contador++;
+                            }
+                        }
+
+                        out.println("S:PopularTags:" + popularTags);
+                    }
+
+                    if (inputLine.split(":")[1].equals("tagsName")) {
+                        String tags = "";
+                        List<String> listPopularTags = tagDAO.getTagsName(session);;
+                        for (String aTags : listPopularTags) {
+                            tags += aTags + ":";
+
+                        }
+                        out.println("S:tagsName:" + tags);
                     }
 
                     if (inputLine.split(":")[1].equals("relationTags")) {
-                        out.println("S:relationTags:" + getRelationTags(session, inputLine.split(":")[2]));
+                        String userTag = inputLine.split(":")[2];
+                        String relationTags = tagDAO.getRelationTags(session, userTag);
+                        
+                        out.println("S:relationTags:" + relationTags);
+                    }
+
+                    if (inputLine.split(":")[1].equals("showOffer")) {
+                        Double latitud = Double.parseDouble(inputLine.split(":")[2]);
+                        Double longitud = Double.parseDouble(inputLine.split(":")[3]);
+                        
+                        String offers = ofertaDAO.showOffer(session,latitud,longitud);
+
+                        out.println("S:showOffer:" + offers);
                     }
 
                     if (inputLine.split(":")[1].equals("AddOffer")) {
-                        /**
-                         * Add offer.
-                         */
+                        String[] tagsList = inputLine.split(":")[2].split(",");
+                        Float precio = Float.parseFloat(inputLine.split(":")[3]);
+                        String precioUnidad = inputLine.split(":")[4];
+                        String unidad = inputLine.split(":")[5];
+                        String imagen = inputLine.split(":")[6];
+                        String nombreSupermercado = inputLine.split(":")[7];
+                        String direccion = inputLine.split(":")[8];
+                        Float latitud = Float.parseFloat(inputLine.split(":")[9]);
+                        Float longitud = Float.parseFloat(inputLine.split(":")[10]);
 
-                        Transaction tx = null;
-                        Integer ofertaID = null;
-                        Integer etiquetaID = null;
-                        Integer supermercadoID = null;
-                        Integer userID = null;
-                        List<Integer> tagsID = new ArrayList();
-
-                        String hql = "from Usuario where username like :keyword";
-                        Query query = session.createQuery(hql);
-                        query.setParameter("keyword", username);
-
-                        List<Usuario> listUser = query.list();
-                        for (Usuario aUser : listUser) {
-                            userID = aUser.getId();
-                        }
-
-                        try {
-                            tx = session.beginTransaction();
-                            Oferta oferta = new Oferta(Float.parseFloat(inputLine.split(":")[3]), inputLine.split(":")[4] + " " + inputLine.split(":")[5], inputLine.split(":")[6], userID);
-                            ofertaID = (Integer) session.save(oferta);
-
-                            String nombreSupermercado = inputLine.split(":")[7];
-                            Float longitud = Float.parseFloat(inputLine.split(":")[10]);
-                            Float latitud = Float.parseFloat(inputLine.split(":")[9]);
-
-                            hql = "from Supermercado";
-                            query = session.createQuery(hql);
-
-                            List<Supermercado> listMarkets = query.list();
-                            int marketID = -1;
-                            for (Supermercado aMarket : listMarkets) {
-                                double distancia = Math.sqrt((longitud - aMarket.getLongitud()) * (longitud - aMarket.getLongitud()) + (latitud - aMarket.getLatitud()) * (latitud - aMarket.getLatitud()));
-
-                                if (distancia < 40 && aMarket.getNombre().equals(nombreSupermercado)) {
-                                    marketID = aMarket.getId();
-                                }
-                            }
-
-                            if (marketID == -1) {
-                                Supermercado supermercado = new Supermercado(nombreSupermercado, longitud, latitud, inputLine.split(":")[8]);
-                                supermercadoID = (Integer) session.save(supermercado);
-
-                                EstarId estarId = new EstarId(supermercadoID,ofertaID);
-                                Estar estar = new Estar(estarId);
-                                session.save(estar);
-                            } else {
-                                EstarId estarId = new EstarId(marketID,ofertaID);
-                                Estar estar = new Estar(estarId);
-                                session.save(estar);
-                            }
-
-                            PublicarId publicarId = new PublicarId(userID, ofertaID);
-                            Publicar publicar = new Publicar(publicarId);
-                            session.save(publicar);
-
-                            String[] tagsList = inputLine.split(":")[2].split(",");
-
-                            hql = "select nombre from Etiqueta";
-                            query = session.createQuery(hql);
-
-                            List<String> allTags = query.list();
-
-                            for (int i = 0; i < tagsList.length; i++) {
-                                if (!tagsList[i].equals("-")) {
-                                    if (!allTags.contains(tagsList[i].trim())) {
-                                        Etiqueta etiqueta = new Etiqueta(tagsList[i].trim().toLowerCase(), 0);
-                                        etiquetaID = (Integer) session.save(etiqueta);
-
-                                        //añado los id de las etiquetas puestas por el usuario a una lista
-                                        tagsID.add(etiquetaID);
-
-                                        Tener tener = null;
-                                        TenerId tenerId = null;
-                                        if (i == 0) {
-                                            tenerId = new TenerId(etiquetaID, ofertaID);
-                                            tener = new Tener(tenerId, true);
-                                        } else {
-                                            tenerId = new TenerId(etiquetaID, ofertaID);
-                                            tener = new Tener(tenerId, false);
-                                        }
-                                        session.save(tener);
-                                    } else {
-
-                                        hql = "update Etiqueta set contador = contador+1 where nombre like :name";
-                                        query = session.createQuery(hql);
-                                        query.setParameter("name", tagsList[i].trim());
-
-                                        query.executeUpdate();
-
-                                        hql = "select id from Etiqueta where nombre like :keyword";
-                                        query = session.createQuery(hql);
-                                        query.setParameter("keyword", tagsList[i].trim());
-
-                                        List<Integer> listID = query.list();
-                                        for (Integer etiqID : listID) {
-                                            tagsID.add(etiqID);
-                                            Tener tener = null;
-                                            TenerId tenerId = null;
-                                            if (i == 0) {
-                                                tenerId = new TenerId(etiqID, ofertaID);
-                                                tener = new Tener(tenerId, true);
-                                            } else {
-                                                tenerId = new TenerId(etiqID, ofertaID);
-                                                tener = new Tener(tenerId, false);
-                                            }
-                                            session.save(tener);
-                                        }
-                                    }
-                                }
-                            }
-
-                            Collections.sort(tagsID);
-
-                            boolean comprobarSiExisteRelacion = false;
-                            for (int i = 0; i < tagsID.size() - 1; i++) {
-                                for (int j = i + 1; j < tagsID.size(); j++) {
-
-                                    hql = "from Relacionetiqueta";
-                                    query = session.createQuery(hql);
-
-                                    List<Relacionetiqueta> relationsTags = query.list();
-
-                                    for (Relacionetiqueta relation : relationsTags) {
-                                        if (relation.getId().getIdEtq1() == tagsID.get(i) && relation.getId().getIdEtq2() == tagsID.get(j)) {
-
-                                            RelacionetiquetaId RelacionetiquetaId = new RelacionetiquetaId(tagsID.get(i), tagsID.get(j));
-
-                                            hql = "update Relacionetiqueta set contador = contador+1 where id = :id";
-                                            query = session.createQuery(hql);
-                                            query.setParameter("id", RelacionetiquetaId);
-
-                                            int update = query.executeUpdate();
-                                            comprobarSiExisteRelacion = true;
-                                            break;
-                                        } else if (relation.getId().getIdEtq1() == tagsID.get(j) && relation.getId().getIdEtq2() == tagsID.get(i)) {
-                                            RelacionetiquetaId RelacionetiquetaId = new RelacionetiquetaId(tagsID.get(j), tagsID.get(i));
-
-                                            hql = "update Relacionetiqueta set contador = contador+1 where id = :id";
-                                            query = session.createQuery(hql);
-                                            query.setParameter("id", RelacionetiquetaId);
-
-                                            query.executeUpdate();
-                                            comprobarSiExisteRelacion = true;
-                                            break;
-                                        } else {
-                                            comprobarSiExisteRelacion = false;
-                                        }
-                                    }
-
-                                    if (!comprobarSiExisteRelacion) {
-                                        RelacionetiquetaId relacionEtiquetaId = new RelacionetiquetaId(tagsID.get(i), tagsID.get(j));
-                                        Relacionetiqueta relacionEtiqueta = new Relacionetiqueta(relacionEtiquetaId, 1);
-                                        session.save(relacionEtiqueta);
-                                    }
-                                }
-                            }
-                            tagsID.clear();
-                            tx.commit();
-                        } catch (HibernateException e) {
-                            if (tx != null) {
-                                tx.rollback();
-                            }
-                            e.printStackTrace();
-                        }
+                        ofertaDAO.addOffer(session, username, tagsList, precio, precioUnidad, unidad, imagen, nombreSupermercado, direccion, longitud, latitud);
                     }
                 }
             } catch (IOException ex) {
@@ -332,105 +210,5 @@ public class Main {
                 System.out.println(ex.getMessage());
             }
         }
-    }
-
-    /**
-     * Check if password provided (hashed) is equal to password on database.
-     */
-    private static boolean checkUser(String clientUsername, String clientPassword, Session session) {
-        String passwordHashed = SHA.generate512(clientPassword);
-
-        String hql = "from Usuario where username like :keyword";
-        Query query = session.createQuery(hql);
-        query.setParameter("keyword", clientUsername);
-
-        String passwordDB = "";
-
-        List<Usuario> listUser = query.list();
-        for (Usuario aUser : listUser) {
-            passwordDB = aUser.getPassword();
-        }
-
-        return passwordDB.equals(passwordHashed);
-    }
-
-    private static String hashPassword(String passwordToHash) {
-        return SHA.generate512(passwordToHash);
-    }
-
-    /**
-     * Get all markets.
-     */
-    private static String getMarkets(Session session) {
-        String hql = "select distinct nombre from Supermercado";
-        Query query = session.createQuery(hql);
-
-        String markets = "";
-
-        List<String> listMarkets = query.list();
-        for (String aMarkets : listMarkets) {
-            markets += aMarkets + ":";
-        }
-        return markets;
-    }
-
-    /**
-     * Get top 3 popular tags.
-     */
-    private static String getPopularTags(Session session) {
-        String hql = "select nombre from Etiqueta order by contador desc";
-        Query query = session.createQuery(hql);
-
-        String popularTags = "";
-        int contador = 0;
-
-        List<String> listPopularTags = query.list();
-        for (String aPTags : listPopularTags) {
-            if (contador < 3) {
-                popularTags += aPTags + ":";
-                contador++;
-            }
-        }
-        return popularTags;
-    }
-
-    /**
-     * Get top 3 relation tags.
-     */
-    private static String getRelationTags(Session session, String etiqueta) {
-        String hql = "select id from Etiqueta where nombre like :nombre";
-        Query query = session.createQuery(hql);
-        query.setParameter("nombre", etiqueta);
-
-        List<Integer> tag = query.list();
-        String relaionTags = "";
-        if (tag.size() > 0) {
-
-            hql = "from Relacionetiqueta order by contador desc";
-            query = session.createQuery(hql);
-
-            List<Relacionetiqueta> relationTags = query.list();
-
-            List<Integer> relationTagIDs = new ArrayList();
-            for (Relacionetiqueta relation : relationTags) {
-                if (relation.getId().getIdEtq1() == tag.get(0)) {
-                    relationTagIDs.add(relation.getId().getIdEtq2());
-                } else if (relation.getId().getIdEtq2() == tag.get(0)) {
-                    relationTagIDs.add(relation.getId().getIdEtq1());
-                }
-            }
-
-            for (int i = 0; i < relationTagIDs.size(); i++) {
-                hql = "select nombre from Etiqueta where id = :id";
-                query = session.createQuery(hql);
-                query.setParameter("id", relationTagIDs.get(i));
-
-                List<String> tagName = query.list();
-
-                relaionTags += tagName.get(0) + ":";
-            }
-        }
-
-        return relaionTags;
     }
 }

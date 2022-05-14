@@ -1,21 +1,20 @@
 package josemanuel.marin.finalproject;
 
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-
 import josemanuel.marin.finalproject.controller.PagerAdapter;
 
 public class AddOffer extends AppCompatActivity {
     TabLayout tabLayout;
-    PrintWriter out = null;
-    BufferedReader in = null;
+    Button buttonNext,buttonBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,10 +22,16 @@ public class AddOffer extends AppCompatActivity {
         setContentView(R.layout.activity_add_offer);
 
         tabLayout = findViewById(R.id.tabLayout);
+        buttonNext = findViewById(R.id.buttonNext);
+        buttonBack = findViewById(R.id.buttonBack);
+
+        buttonBack.setVisibility(View.GONE);
 
         ViewPager2 viewPager = findViewById(R.id.pager);
-        PagerAdapter adapter3 = new PagerAdapter(this);
-        viewPager.setAdapter(adapter3);
+        PagerAdapter adapter = new PagerAdapter(this);
+        viewPager.setAdapter(adapter);
+
+        viewPager.setUserInputEnabled(false);
 
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
@@ -51,5 +56,33 @@ public class AddOffer extends AppCompatActivity {
 
             }
         });
+
+        buttonNext.setOnClickListener(v -> {
+            tabLayout.selectTab(tabLayout.getTabAt(tabLayout.getSelectedTabPosition()+1));
+            if (tabLayout.getSelectedTabPosition() >= 1){
+                buttonBack.setVisibility(View.VISIBLE);
+            }else{
+                buttonBack.setVisibility(View.GONE);
+            }
+
+            if(tabLayout.getSelectedTabPosition() == tabLayout.getTabCount()-1){
+                buttonNext.setVisibility(View.GONE);
+            }
+        });
+
+        buttonBack.setOnClickListener(v -> {
+            tabLayout.selectTab(tabLayout.getTabAt(tabLayout.getSelectedTabPosition()-1));
+
+            if (tabLayout.getSelectedTabPosition() < tabLayout.getTabCount()-1){
+                buttonNext.setVisibility(View.VISIBLE);
+            }else{
+                buttonNext.setVisibility(View.GONE);
+            }
+
+            if(tabLayout.getSelectedTabPosition() == 0){
+                buttonBack.setVisibility(View.GONE);
+            }
+        });
+
     }
 }

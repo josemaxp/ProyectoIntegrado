@@ -5,15 +5,14 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import josemanuel.marin.finalproject.R;
 
@@ -57,7 +56,7 @@ public class ImageFragment extends Fragment {
         }
     }
 
-    static public Bitmap getBitmap(){
+    static public Bitmap getBitmap() {
         return imageBitmap;
     }
 

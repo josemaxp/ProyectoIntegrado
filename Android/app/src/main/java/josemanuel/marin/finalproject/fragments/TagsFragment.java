@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.tabs.TabLayout;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -32,6 +34,7 @@ public class TagsFragment extends Fragment {
     PrintWriter out = null;
     BufferedReader in = null;
     getPopularTags getPopularTags;
+    getTagsName getTagsName;
     getRelationTags getRelationTags;
 
     public TagsFragment() {
@@ -74,6 +77,12 @@ public class TagsFragment extends Fragment {
         popularButtonsList.add(buttonPopularTag2);
         popularButtonsList.add(buttonPopularTag3);
 
+        if (getTagsName == null) {
+            getTagsName = new getTagsName();
+        }
+
+        setNewTagAdapter();
+
         //Instantiate asynctask
         if (getPopularTags == null) {
             getPopularTags = new getPopularTags();
@@ -91,9 +100,7 @@ public class TagsFragment extends Fragment {
                     popularButtonsList.get(i).setVisibility(View.VISIBLE);
                 }
 
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+            } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
         }
@@ -111,24 +118,24 @@ public class TagsFragment extends Fragment {
                 if (!newTag.getText().toString().equals("") && tagsList.get(i).equals("-")) {
                     if (!tagsList.contains(newTag.getText().toString().toLowerCase().trim())) {
                         try {
-                            if (newTag.getText() != null) {
-                                getRelationTags = new getRelationTags();
-                                String[] relationTags = getRelationTags.execute(newTag.getText().toString().toLowerCase().trim()).get().split(":");
-                                if (relationTags.length > 2) {
-                                    ArrayList<String> listRelationTags = new ArrayList<>();
-                                    for (int j = 2; j < relationTags.length; j++) {
-                                        listRelationTags.add(relationTags[j]);
-                                    }
+                            getRelationTags = new getRelationTags();
+                            String[] relationTags = getRelationTags.execute(newTag.getText().toString().toLowerCase().trim()).get().split(":");
+                            if (relationTags.length > 2) {
+                                ArrayList<String> listRelationTags = new ArrayList<>();
+                                for (int j = 2; j < relationTags.length; j++) {
+                                    listRelationTags.add(relationTags[j]);
+                                }
 
-                                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, listRelationTags);
-                                    newTag.setAdapter(adapter);
-                                } else {
-                                    newTag.setAdapter(null);
+                                for (int j = 0; j < popularButtonsList.size(); j++) {
+                                    if (j <= listRelationTags.size() - 1) {
+                                        popularButtonsList.get(j).setVisibility(View.VISIBLE);
+                                        popularButtonsList.get(j).setText(listRelationTags.get(j) + "    +");
+                                    } else {
+                                        popularButtonsList.get(j).setVisibility(View.GONE);
+                                    }
                                 }
                             }
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                        } catch (InterruptedException e) {
+                        } catch (ExecutionException | InterruptedException e) {
                             e.printStackTrace();
                         }
 
@@ -182,7 +189,6 @@ public class TagsFragment extends Fragment {
         }
 
         for (int i = 0; i < popularButtonsList.size(); i++) {
-
             Button addPopularTag = popularButtonsList.get(i);
 
             addPopularTag.setOnClickListener(v -> {
@@ -194,7 +200,28 @@ public class TagsFragment extends Fragment {
                             tagsList.set(j, popularTagName.substring(0, popularTagName.length() - 1).trim());
                             buttonsList.get(j).setVisibility(View.VISIBLE);
                             buttonsList.get(j).setText(tagsList.get(j) + "  X");
-                            //addPopularTag.setVisibility(View.GONE);
+
+                            try {
+                                getRelationTags = new getRelationTags();
+                                String[] relationTags = getRelationTags.execute(tagsList.get(j).toLowerCase().trim()).get().split(":");
+                                if (relationTags.length > 2) {
+                                    ArrayList<String> listRelationTags = new ArrayList<>();
+                                    for (int k = 2; k < relationTags.length; k++) {
+                                        listRelationTags.add(relationTags[k]);
+                                    }
+
+                                    for (int k = 0; k < popularButtonsList.size(); k++) {
+                                        if (k <= listRelationTags.size() - 1) {
+                                            popularButtonsList.get(k).setVisibility(View.VISIBLE);
+                                            popularButtonsList.get(k).setText(listRelationTags.get(k) + "    +");
+                                        } else {
+                                            popularButtonsList.get(k).setVisibility(View.GONE);
+                                        }
+                                    }
+                                }
+                            } catch (ExecutionException | InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
                         break;
                     }
@@ -228,20 +255,66 @@ public class TagsFragment extends Fragment {
             in = MainActivity.in;
 
             out.println("CL:" + "popularTags");
-            String markets = "";
+            String popularTags = "";
             try {
-                markets = in.readLine();
+                popularTags = in.readLine();
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            return markets;
+            return popularTags;
         }
 
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+        }
+    }
+
+    class getTagsName extends AsyncTask<Void, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            out = MainActivity.out;
+            in = MainActivity.in;
+
+            out.println("CL:" + "tagsName");
+            String tagsName = "";
+            try {
+                tagsName = in.readLine();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println(tagsName);
+            return tagsName;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+        }
+    }
+
+    private void setNewTagAdapter() {
+        try {
+            String[] tagsNameFromServer = getTagsName.execute().get().split(":");
+            List<String> tagsName = new ArrayList<>();
+
+            for (int i = 2; i < tagsNameFromServer.length; i++) {
+                System.out.println(tagsNameFromServer[i]);
+                tagsName.add(tagsNameFromServer[i]);
+            }
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, tagsName);
+            newTag.setAdapter(adapter);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

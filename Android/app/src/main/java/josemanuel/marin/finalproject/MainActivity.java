@@ -1,13 +1,25 @@
 package josemanuel.marin.finalproject;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
-import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,9 +27,11 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LocationListener {
     Button loginButton;
     Button registerButton;
     EditText username;
@@ -26,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     connectServer Con;
     login login;
     register register;
+    static Double latitud, longitud;
+    LocationManager locationManager;
     public static PrintWriter out = null;
     public static BufferedReader in = null;
 
@@ -39,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
             Con.execute();
         }
 
+        //Get location
+        getLocationManager();
+
         username = findViewById(R.id.LoginUsernameText);
         password = findViewById(R.id.LoginPasswordText);
         loginButton = findViewById(R.id.loginButton);
@@ -46,12 +65,10 @@ public class MainActivity extends AppCompatActivity {
         error = findViewById(R.id.textViewMainError);
 
         loginButton.setOnClickListener(view -> {
-            login =  new login();
+            login = new login();
             try {
-                error.setText(login.execute(username.getText().toString(),password.getText().toString()).get());
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+                error.setText(login.execute(username.getText().toString(), password.getText().toString()).get());
+            } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
@@ -60,7 +77,40 @@ public class MainActivity extends AppCompatActivity {
             register = new register();
             register.execute();
         });
+
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                ActivityCompat.requestPermissions(MainActivity.this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            } else {
+                ActivityCompat.requestPermissions(MainActivity.this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            }
+        }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (ContextCompat.checkSelfPermission(MainActivity.this,
+                            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+                    this.finishAffinity();
+                }
+                return;
+            }
+        }
+    }
+
 
     class connectServer extends AsyncTask<Void, Void, Void> {
         @Override
@@ -143,6 +193,31 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void getLocationManager() {
+        try {
+            locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull Location loc) {
+        try {
+            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+            List<Address> addresses = geocoder.getFromLocation(loc.getLatitude(), loc.getLongitude(), 1);
+
+            latitud = addresses.get(0).getLatitude();
+            longitud = addresses.get(0).getLongitude();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

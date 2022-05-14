@@ -40,6 +40,7 @@ public class LocationFragment extends Fragment implements LocationListener {
     EditText location;
     AutoCompleteTextView market;
     String locationData = "";
+    double latitud, longitud;
     Button buttonAddOffer2;
     TextView textViewAddError2;
     LocationManager locationManager;
@@ -122,9 +123,7 @@ public class LocationFragment extends Fragment implements LocationListener {
 
             ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, marketList);
             market.setAdapter(adapter);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
 
@@ -172,6 +171,8 @@ public class LocationFragment extends Fragment implements LocationListener {
             location.setText(address);
 
             locationData = addresses.get(0).getAddressLine(0) + ":" + addresses.get(0).getLatitude() + ":" + addresses.get(0).getLongitude();
+            latitud = addresses.get(0).getLatitude();
+            longitud = addresses.get(0).getLongitude();
         } catch (Exception e) {
             e.printStackTrace();
         }
