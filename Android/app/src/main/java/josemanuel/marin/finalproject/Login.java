@@ -26,29 +26,27 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
-public class MainActivity extends AppCompatActivity implements LocationListener {
-    Button loginButton;
-    Button registerButton;
-    EditText username;
-    EditText password;
+import josemanuel.marin.finalproject.controller.Connection;
+
+public class Login extends AppCompatActivity implements LocationListener {
+    Button loginButton, registerButton, guestButton;
+    EditText username, password;
     TextView error;
+    static Double latitud, longitud;
     connectServer Con;
     login login;
-    register register;
-    static Double latitud, longitud;
     LocationManager locationManager;
-    public static PrintWriter out = null;
-    public static BufferedReader in = null;
+    PrintWriter out;
+    BufferedReader in;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.login);
 
         if (Con == null) {
             Con = new connectServer();
@@ -61,8 +59,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         username = findViewById(R.id.LoginUsernameText);
         password = findViewById(R.id.LoginPasswordText);
         loginButton = findViewById(R.id.loginButton);
-        registerButton = findViewById(R.id.registerButton);
-        error = findViewById(R.id.textViewMainError);
+        registerButton = findViewById(R.id.registerButtonLogin);
+        guestButton = findViewById(R.id.guestButton);
+        error = findViewById(R.id.textViewRegisterError);
 
         loginButton.setOnClickListener(view -> {
             login = new login();
@@ -73,19 +72,19 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             }
         });
 
-        registerButton.setOnClickListener(view -> {
-            register = new register();
-            register.execute();
+        guestButton.setOnClickListener(view -> {
+            Intent intent = new Intent(Login.this, WarnMarketActivity.class);
+            startActivity(intent);
         });
 
-        if (ContextCompat.checkSelfPermission(MainActivity.this,
+        if (ContextCompat.checkSelfPermission(Login.this,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
+            if (ActivityCompat.shouldShowRequestPermissionRationale(Login.this,
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
-                ActivityCompat.requestPermissions(MainActivity.this,
+                ActivityCompat.requestPermissions(Login.this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             } else {
-                ActivityCompat.requestPermissions(MainActivity.this,
+                ActivityCompat.requestPermissions(Login.this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             }
         }
@@ -98,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         switch (requestCode) {
             case 1: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (ContextCompat.checkSelfPermission(MainActivity.this,
+                    if (ContextCompat.checkSelfPermission(Login.this,
                             Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                         Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
                     }
@@ -120,19 +119,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         @Override
         protected Void doInBackground(Void... params) {
-            Socket kkSocket;
-            try {
-                kkSocket = new Socket("192.168.1.139", 4444);
-                out = new PrintWriter(kkSocket.getOutputStream(), true);
-                in = new BufferedReader(new InputStreamReader(kkSocket.getInputStream()));
-            } catch (UnknownHostException e) {
-                System.err.println("Don't know about host: .");
-                System.exit(1);
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-                System.err.println("Couldn't get I/O for the connection to: .");
-                System.exit(1);
-            }
+            new Connection();
             return null;
         }
 
@@ -143,26 +130,32 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     }
 
     class login extends AsyncTask<String, String, String> {
+        Socket s;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            s = Connection.getSocket();
         }
 
         @Override
         protected String doInBackground(String... params) {
             String result = "";
             try {
+                out = new PrintWriter(s.getOutputStream(), true);
+                in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+
                 if (params[0].equals("") || params[1].equals("")) {
-                    result = "Fields can't be empty.";
+                    result = "Error, los campos no pueden estar vacíos.";
                 } else {
                     out.println("CL:" + "login:" + username.getText().toString() + ":" + password.getText().toString());
                     String fromServer = in.readLine();
 
                     if (fromServer.split(":")[2].equals("true")) {
-                        Intent intent = new Intent(MainActivity.this, WarnMarketActivity.class);
+                        Intent intent = new Intent(Login.this, WarnMarketActivity.class);
                         startActivity(intent);
                     } else {
-                        result = "Error. Check your username or your password";
+                        result = "Error, comprueba tu usuario o contraseña.";
                     }
                 }
             } catch (IOException e) {
@@ -173,25 +166,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         @Override
         protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-        }
-    }
-
-    class register extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            Intent intent = new Intent(MainActivity.this, WarnMarketActivity.class);
-            startActivity(intent);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
             super.onPostExecute(result);
         }
     }
@@ -215,7 +189,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
             latitud = addresses.get(0).getLatitude();
             longitud = addresses.get(0).getLongitude();
-
         } catch (Exception e) {
             e.printStackTrace();
         }

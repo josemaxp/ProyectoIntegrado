@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#292A33"
-    tools:context=".MainActivity">
+    tools:context=".Login">
 
     <EditText
         android:id="@+id/LoginPasswordText"
@@ -19,6 +19,7 @@
         android:hint="Password"
         android:inputType="textPassword"
         android:minHeight="48dp"
+        android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/LoginUsernameText"
@@ -29,25 +30,25 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="64dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="64dp"
-        android:layout_marginBottom="32dp"
         android:background="@drawable/et_style"
         android:ems="10"
         android:hint="E-mail"
         android:inputType="textPersonName"
+        android:padding="10dp"
         android:textAlignment="textStart"
-        app:layout_constraintBottom_toTopOf="@+id/loginButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcomeBack" />
+        app:layout_constraintTop_toBottomOf="@+id/AppTitle" />
 
     <TextView
         android:id="@+id/AppTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:background="#00000000"
         android:text="WarnMarket"
@@ -56,58 +57,69 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/welcomeTitle" />
 
     <TextView
-        android:id="@+id/welcomeBack"
+        android:id="@+id/welcomeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="64dp"
-        android:text="Welcome Back!"
+        android:text="Bienvenido a"
         android:textColor="#FD93B2"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/AppTitle" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/loginButton"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="64dp"
-        android:layout_marginBottom="32dp"
         android:backgroundTint="#FD93B2"
-        android:text="Login"
+        android:text="Iniciar sesión
+"
         android:textColor="#252850"
         app:cornerRadius="25dp"
-        app:layout_constraintBottom_toTopOf="@+id/registerButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRegisterError" />
 
     <Button
-        android:id="@+id/registerButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginBottom="64dp"
-        android:background="@android:color/transparent"
-        android:text="Register an account"
-        android:textColor="#FD93B2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textViewMainError"
+        android:id="@+id/registerButtonLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="@android:color/transparent"
+        android:text="Registrarse"
+        android:textColor="#FD93B2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginButton" />
+
+    <Button
+        android:id="@+id/guestButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/transparent"
+        android:text="Iniciar sesión como invitado"
+        android:textColor="#FD93B2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registerButtonLogin" />
+
+    <TextView
+        android:id="@+id/textViewRegisterError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:textColor="#FC447A"
-        app:layout_constraintBottom_toTopOf="@+id/loginButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/LoginPasswordText" />

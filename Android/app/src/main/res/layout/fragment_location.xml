@@ -72,14 +72,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="8dp"
         android:textAlignment="center"
         android:textColor="#FC447A"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonAddOffer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextAddLocation" />
 
     <Button
         android:id="@+id/buttonAddOffer"
@@ -88,13 +88,12 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
         android:backgroundTint="#FD93B2"
         android:text="Publicar oferta"
         android:textColor="#252850"
         app:cornerRadius="25dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAddError" />
 </androidx.constraintlayout.widget.ConstraintLayout>

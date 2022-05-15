@@ -76,23 +76,21 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="16dp"
         android:background="@drawable/button_style"
         android:text="@string/next_button"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pager" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonBack"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="32dp"
-        android:layout_marginBottom="16dp"
         android:background="@drawable/button_style"
         android:text="@string/back_button"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pager" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

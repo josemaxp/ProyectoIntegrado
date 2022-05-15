@@ -83,14 +83,16 @@ public class OfertaDAO {
                 }
             }
 
-            hql = "from Supermercado where id = :id";
-            query = session.createQuery(hql);
-            query.setParameter("id", marketId);
+            if (marketId != -1) {
+                hql = "from Supermercado where id = :id";
+                query = session.createQuery(hql);
+                query.setParameter("id", marketId);
 
-            List<Supermercado> listMarket = query.list();
-            double distancia = distanciaCoord(latitud, longitud, listMarket.get(0).getLatitud(), listMarket.get(0).getLongitud());
+                List<Supermercado> listMarket = query.list();
+                double distancia = distanciaCoord(latitud, longitud, listMarket.get(0).getLatitud(), listMarket.get(0).getLongitud());
 
-            offers += offerUsername.get(0) + "_" + aOffer.getPrecio() + "_" + aOffer.getPrecioUnidad() + "_" + listMarket.get(0).getNombre() + "_" + listMarket.get(0).getLatitud() + "_" + listMarket.get(0).getLongitud() + "_" + distancia + "_" + tagName + ":";
+                offers += offerUsername.get(0) + "_" + aOffer.getPrecio() + "_" + aOffer.getPrecioUnidad() + "_" + listMarket.get(0).getNombre() + "_" + distancia + "_" + tagName + ":";
+            }
         }
 
         return offers;
@@ -248,7 +250,33 @@ public class OfertaDAO {
                     }
                 }
             }
+
             tagsID.clear();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
+    public void imageInformation(Session session, String path) {
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+            String hql = "select id from Oferta order by id desc";
+            Query query = session.createQuery(hql);
+            List<Integer> idOffer = query.list();
+            
+            hql = "update Oferta set imagen = :path where id = :id";
+            query = session.createQuery(hql);
+            query.setParameter("path", path);
+            query.setParameter("id", idOffer.get(0));
+
+            query.executeUpdate();
+
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {

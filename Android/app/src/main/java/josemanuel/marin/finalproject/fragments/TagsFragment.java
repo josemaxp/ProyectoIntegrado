@@ -12,17 +12,17 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.tabs.TabLayout;
-
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import josemanuel.marin.finalproject.MainActivity;
 import josemanuel.marin.finalproject.R;
+import josemanuel.marin.finalproject.controller.Connection;
 
 public class TagsFragment extends Fragment {
     AutoCompleteTextView newTag;
@@ -244,15 +244,22 @@ public class TagsFragment extends Fragment {
     }
 
     class getPopularTags extends AsyncTask<Void, Void, String> {
+        Socket s;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            s = Connection.getSocket();
         }
 
         @Override
         protected String doInBackground(Void... params) {
-            out = MainActivity.out;
-            in = MainActivity.in;
+            try {
+                out = new PrintWriter(s.getOutputStream(), true);
+                in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             out.println("CL:" + "popularTags");
             String popularTags = "";
@@ -273,15 +280,22 @@ public class TagsFragment extends Fragment {
     }
 
     class getTagsName extends AsyncTask<Void, Void, String> {
+        Socket s;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            s = Connection.getSocket();
         }
 
         @Override
         protected String doInBackground(Void... params) {
-            out = MainActivity.out;
-            in = MainActivity.in;
+            try {
+                out = new PrintWriter(s.getOutputStream(), true);
+                in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             out.println("CL:" + "tagsName");
             String tagsName = "";
@@ -319,15 +333,22 @@ public class TagsFragment extends Fragment {
     }
 
     class getRelationTags extends AsyncTask<String, String, String> {
+        Socket s;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            s = Connection.getSocket();
         }
 
         @Override
         protected String doInBackground(String... params) {
-            out = MainActivity.out;
-            in = MainActivity.in;
+            try {
+                out = new PrintWriter(s.getOutputStream(), true);
+                in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             out.println("CL:" + "relationTags:" + params[0]);
             String relationTags = "";

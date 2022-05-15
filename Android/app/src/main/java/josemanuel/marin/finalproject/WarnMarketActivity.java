@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,11 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import josemanuel.marin.finalproject.controller.Connection;
 import josemanuel.marin.finalproject.recyclerview.ListOfferItem;
 import josemanuel.marin.finalproject.recyclerview.ShowOffer;
 
@@ -27,6 +31,7 @@ public class WarnMarketActivity extends AppCompatActivity implements SearchView.
     PrintWriter out = null;
     BufferedReader in = null;
     getOffers getOffers;
+    getUser getUser;
     ShowOffer adapter;
 
     @Override
@@ -37,11 +42,25 @@ public class WarnMarketActivity extends AppCompatActivity implements SearchView.
         addButton = findViewById(R.id.addButton);
         searchView = findViewById(R.id.searchView);
 
+        getUser = new getUser();
+        String[] username = null;
+        try {
+            username = getUser.execute().get().split(":");
+
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
         init();
 
+        String[] finalUsername = username;
         addButton.setOnClickListener(view -> {
-            Intent intent = new Intent(WarnMarketActivity.this, AddOffer.class);
-            startActivity(intent);
+            if (finalUsername.length == 2) {
+                Toast.makeText(this, "Error, debes iniciar sesión para poder crear una oferta.", Toast.LENGTH_LONG).show();
+            } else {
+                Intent intent = new Intent(WarnMarketActivity.this, AddOffer.class);
+                startActivity(intent);
+            }
         });
     }
 
@@ -63,29 +82,30 @@ public class WarnMarketActivity extends AppCompatActivity implements SearchView.
                 List<String> tags = new ArrayList<>();
 
                 //Ahora calculo la distancia de la persona al supermercado
-                double distancia = distanciaCoord(MainActivity.latitud, MainActivity.longitud, Double.parseDouble(offer[4]), Double.parseDouble(offer[5]), 'K');
-                distancia = Math.round(distancia);
+                double distancia = Double.parseDouble(offer[4]);
 
                 if (distancia < 1) {
-                    distancia = distanciaCoord(MainActivity.latitud, MainActivity.longitud, Double.parseDouble(offer[4]), Double.parseDouble(offer[5]), 'M');
-                    distancia = Math.round(distancia);
+                    distancia *= 1000;
                     comprobarMetros = true;
+                } else {
+                    distancia = Math.round(distancia);
+                    comprobarMetros = false;
                 }
 
                 int distanciaParsed = (int) distancia;
 
                 //Obtengo las etiquetas, que están desde la posición 6 hasta el final
-                for (int j = 6; j < offer.length; j++) {
+                for (int j = 5; j < offer.length; j++) {
                     tags.add(offer[j].toLowerCase());
                 }
 
                 //Añado la oferta a la lista de ofertas para que se visualicen en el recyclerview
                 if (comprobarMetros) {
-                    offerItems.add(new ListOfferItem(offer[3], tags, "A menos de " + distanciaParsed + " m.", offer[1] + "€", offer[2], offer[0]));
+                    offerItems.add(new ListOfferItem(offer[3], tags, "A " + distanciaParsed + " m. de distancia", offer[1] + "€", offer[2], offer[0]));
                 } else {
-                    offerItems.add(new ListOfferItem(offer[3], tags, "A menos de " + distanciaParsed + " km.", offer[1] + "€", offer[2], offer[0]));
+                    offerItems.add(new ListOfferItem(offer[3], tags, "A " + distanciaParsed + " km. de distancia", offer[1] + "€", offer[2], offer[0]));
                 }
-               //tags = "";
+                //tags = "";
             }
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
@@ -114,17 +134,24 @@ public class WarnMarketActivity extends AppCompatActivity implements SearchView.
     }
 
     class getOffers extends AsyncTask<Void, Void, String> {
+        Socket s;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            s = Connection.getSocket();
         }
 
         @Override
         protected String doInBackground(Void... params) {
-            out = MainActivity.out;
-            in = MainActivity.in;
+            try {
+                out = new PrintWriter(s.getOutputStream(), true);
+                in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-            out.println("CL:" + "showOffer:"+MainActivity.latitud+":"+MainActivity.longitud);
+            out.println("CL:showOffer:" + Login.latitud + ":" + Login.longitud);
             String offers = "";
             try {
                 offers = in.readLine();
@@ -142,22 +169,39 @@ public class WarnMarketActivity extends AppCompatActivity implements SearchView.
         }
     }
 
-    //Calcular distnacia entre dos puntos geográficos
-    public static double distanciaCoord(double lat1, double lng1, double lat2, double lng2, Character unidad) {
-        double radioTierra;
-        if (unidad == 'M') {
-            radioTierra = 6371000;//en metros
-        } else {
-            radioTierra = 6371;//en kilómetros
-        }
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLng = Math.toRadians(lng2 - lng1);
-        double sindLat = Math.sin(dLat / 2);
-        double sindLng = Math.sin(dLng / 2);
-        double va1 = Math.pow(sindLat, 2) + Math.pow(sindLng, 2)
-                * Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2));
-        double va2 = 2 * Math.atan2(Math.sqrt(va1), Math.sqrt(1 - va1));
+    class getUser extends AsyncTask<Void, Void, String> {
+        Socket s;
 
-        return radioTierra * va2;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            s = Connection.getSocket();
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            try {
+                out = new PrintWriter(s.getOutputStream(), true);
+                in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            String user = "";
+            out.println("CL:getUser");
+            try {
+                user = in.readLine();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return user;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+        }
     }
 }

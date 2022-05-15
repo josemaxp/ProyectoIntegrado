@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.io.File;
+
 import josemanuel.marin.finalproject.R;
 
 

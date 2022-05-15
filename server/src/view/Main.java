@@ -21,8 +21,13 @@ import entity.Supermercado;
 import entity.Tener;
 import entity.TenerId;
 import entity.Usuario;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -33,6 +38,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -106,10 +113,11 @@ public class Main {
             EtiquetaDAO tagDAO = new EtiquetaDAO();
             OfertaDAO ofertaDAO = new OfertaDAO();
             String inputLine;
-            String username = null;
+            String username = "";
 
             try {
                 while ((inputLine = in.readLine()) != null) {
+                    System.out.println("Recibido arriba: " + inputLine);
                     if (inputLine.split(":")[1].equals("login")) {
                         String loginUsername = inputLine.split(":")[2];
                         String loginPassword = inputLine.split(":")[3];
@@ -171,17 +179,50 @@ public class Main {
                     if (inputLine.split(":")[1].equals("relationTags")) {
                         String userTag = inputLine.split(":")[2];
                         String relationTags = tagDAO.getRelationTags(session, userTag);
-                        
+
                         out.println("S:relationTags:" + relationTags);
                     }
 
                     if (inputLine.split(":")[1].equals("showOffer")) {
                         Double latitud = Double.parseDouble(inputLine.split(":")[2]);
                         Double longitud = Double.parseDouble(inputLine.split(":")[3]);
-                        
-                        String offers = ofertaDAO.showOffer(session,latitud,longitud);
+
+                        String offers = ofertaDAO.showOffer(session, latitud, longitud);
 
                         out.println("S:showOffer:" + offers);
+                    }
+
+                    if (inputLine.split(":")[1].equals("img")) {
+                        String fileName = inputLine.split(":")[2];
+                        byte[] filebyte = new byte[Integer.valueOf(inputLine.split(":")[3])];
+
+                        File userImages = new File("images/" + username);
+                        if (!userImages.exists()) {
+                            System.out.println("Creando carpeta de imágenes para el usuario " + username);
+                            userImages.mkdirs();
+                        }
+
+                        String path = "images\\" + username + "\\" + fileName + ".png";
+                        FileOutputStream fos = new FileOutputStream(path);
+                        ofertaDAO.imageInformation(session, path);
+
+                        InputStream is = clientSocket.getInputStream();
+
+                        BufferedOutputStream bos = new BufferedOutputStream(fos);
+                        int fileToWrite; 
+
+                        while ((fileToWrite = is.read(filebyte, 0, filebyte.length)) != -1) {
+                            System.out.println(fileToWrite);
+                            bos.write(filebyte, 0, fileToWrite);
+                        }
+                        
+                        bos.close();
+
+                        System.out.println("recibido abajo: " + in.readLine());
+                    }
+
+                    if (inputLine.split(":")[1].equals("getUser")) {
+                        out.println("S:getUser:" + username);
                     }
 
                     if (inputLine.split(":")[1].equals("AddOffer")) {
