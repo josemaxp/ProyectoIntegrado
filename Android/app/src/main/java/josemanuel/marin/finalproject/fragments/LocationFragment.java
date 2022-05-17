@@ -1,15 +1,7 @@
 package josemanuel.marin.finalproject.fragments;
 
-import static android.content.Context.LOCATION_SERVICE;
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,7 +14,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import java.io.BufferedInputStream;
@@ -40,21 +31,19 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
+import josemanuel.marin.finalproject.Login;
 import josemanuel.marin.finalproject.R;
 import josemanuel.marin.finalproject.WarnMarketActivity;
 import josemanuel.marin.finalproject.controller.Connection;
 
-public class LocationFragment extends Fragment implements LocationListener {
+public class LocationFragment extends Fragment {
     EditText location;
     AutoCompleteTextView market;
-    String locationData = "";
-    double latitud, longitud;
-    Button buttonAddOffer2;
-    TextView textViewAddError2;
-    LocationManager locationManager;
+    String locationData;
+    Button buttonAddOffer;
+    TextView textViewAddError;
     addOffer addOffer;
     getMarkets getMarkets;
     getUser getUser;
@@ -72,14 +61,13 @@ public class LocationFragment extends Fragment implements LocationListener {
 
         location = view.findViewById(R.id.editTextAddLocation);
         market = view.findViewById(R.id.editTextAddMarket);
-        buttonAddOffer2 = view.findViewById(R.id.buttonAddOffer);
-        textViewAddError2 = view.findViewById(R.id.textViewAddError);
+        buttonAddOffer = view.findViewById(R.id.buttonAddOffer);
+        textViewAddError = view.findViewById(R.id.textViewAddError);
 
-        //Get location
-        getLocationManager();
+        location.setText(Login.direccion);
 
-        //Add offer button
-        buttonAddOffer2.setOnClickListener(v -> {
+        //Add offer
+        buttonAddOffer.setOnClickListener(v -> {
             List<String> tagsList = TagsFragment.getTagsList();
             String tags = "";
 
@@ -92,17 +80,17 @@ public class LocationFragment extends Fragment implements LocationListener {
             }
 
             if (contadorTags < 3) {
-                textViewAddError2.setText(R.string.error_minimun_tags);
+                textViewAddError.setText(R.string.error_minimun_tags);
             } else if (PriceFragment.getPrice().equals("") || PriceFragment.getPriceUnity().equals("")) {
-                textViewAddError2.setText(R.string.error_empty_price);
+                textViewAddError.setText(R.string.error_empty_price);
             } else if (PriceFragment.getUnity().equals("-")) {
-                textViewAddError2.setText(R.string.error_empty_unity);
+                textViewAddError.setText(R.string.error_empty_unity);
             } else if (ImageFragment.getBitmap() == null) {
-                textViewAddError2.setText(R.string.error_empty_image);
+                textViewAddError.setText(R.string.error_empty_image);
             } else if (getLocation().equals("")) {
-                textViewAddError2.setText(R.string.error_empty_location);
+                textViewAddError.setText(R.string.error_empty_location);
             } else if (getMarket().equals("")) {
-                textViewAddError2.setText(R.string.error_empty_market);
+                textViewAddError.setText(R.string.error_empty_market);
             } else {
 
                 for (int i = 0; i < tagsList.size(); i++) {
@@ -110,16 +98,14 @@ public class LocationFragment extends Fragment implements LocationListener {
                 }
                 TagsFragment.restartTagsList();
 
-                textViewAddError2.setText("");
+                textViewAddError.setText("");
                 addOffer = new addOffer();
                 addOffer.execute(tags, PriceFragment.getPrice(), PriceFragment.getPriceUnity(),
                         PriceFragment.getUnity(), ImageFragment.getBitmap().toString(), getMarket(), getLocationData());
 
                 transformImage();
 
-                Intent intent = new Intent(getContext(), WarnMarketActivity.class);
-                startActivity(intent);
-                Toast.makeText(getContext(), "Offer added", Toast.LENGTH_LONG).show();
+
             }
         });
 
@@ -146,17 +132,6 @@ public class LocationFragment extends Fragment implements LocationListener {
         return view;
     }
 
-    @SuppressLint("MissingPermission")
-    private void getLocationManager() {
-        try {
-            locationManager = (LocationManager) getContext().getSystemService(LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public String getLocation() {
         if (location != null) {
             return location.getText().toString();
@@ -174,6 +149,7 @@ public class LocationFragment extends Fragment implements LocationListener {
     }
 
     public String getLocationData() {
+        locationData = Login.direccion + ":" + Login.latitud + ":" + Login.longitud;
         return locationData;
     }
 
@@ -182,7 +158,8 @@ public class LocationFragment extends Fragment implements LocationListener {
         String[] username;
         try {
             username = getUser.execute().get().split(":");
-            File f = new File(getContext().getCacheDir(), LocalDate.now() + "_" + username[2]);
+            //LocalDateTime
+            File f = new File(getContext().getCacheDir(), "D"+LocalDate.now()+"_H"+LocalDateTime.now().getHour()+"_M"+LocalDateTime.now().getMinute()+"_S"+LocalDateTime.now().getSecond() + "_" + username[2]);
             try {
                 f.createNewFile();
 
@@ -190,9 +167,7 @@ public class LocationFragment extends Fragment implements LocationListener {
                 ImageFragment.getBitmap().compress(Bitmap.CompressFormat.PNG, 0, bos);
                 byte[] bitmapdata = bos.toByteArray();
 
-                FileOutputStream fos = null;
-
-                fos = new FileOutputStream(f);
+                FileOutputStream fos = new FileOutputStream(f);
                 fos.write(bitmapdata);
                 fos.flush();
                 fos.close();
@@ -203,25 +178,6 @@ public class LocationFragment extends Fragment implements LocationListener {
                 e.printStackTrace();
             }
         } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-    @Override
-    public void onLocationChanged(@NonNull Location loc) {
-        try {
-            Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-            List<Address> addresses = geocoder.getFromLocation(loc.getLatitude(), loc.getLongitude(), 1);
-            String address = addresses.get(0).getAddressLine(0);
-
-            location.setText(address);
-
-            locationData = addresses.get(0).getAddressLine(0) + ":" + addresses.get(0).getLatitude() + ":" + addresses.get(0).getLongitude();
-            latitud = addresses.get(0).getLatitude();
-            longitud = addresses.get(0).getLongitude();
-        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -266,24 +222,38 @@ public class LocationFragment extends Fragment implements LocationListener {
         @Override
         protected File doInBackground(File... params) {
             out.println("CL:img:" + params[0].getName() + ":" + params[0].length());
+            OutputStream os = null;
             try {
 
                 byte[] filebyte = new byte[(int) params[0].length()];
                 BufferedInputStream bis = new BufferedInputStream(new FileInputStream(params[0]));
-                OutputStream os = s.getOutputStream();
-                bis.read(filebyte, 0, filebyte.length);
-                os.write(filebyte, 0, filebyte.length);
-                System.out.println(in.readLine());
+                os = s.getOutputStream();
+                int numeroBytesLeidos = 0;
+                while (numeroBytesLeidos != filebyte.length) {
+                    numeroBytesLeidos += bis.read(filebyte, 0, filebyte.length);
+                    os.write(filebyte, 0, filebyte.length);
+                }
                 os.flush();
+                System.out.println(in.readLine());
+                //
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }/* finally {
+                try {
+                    if (os != null)
+                        os.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }*/
             return null;
         }
 
         @Override
         protected void onPostExecute(File result) {
-            super.onPostExecute(result);
+            Intent intent = new Intent(getContext(), WarnMarketActivity.class);
+            startActivity(intent);
+            Toast.makeText(getContext(), "Offer added", Toast.LENGTH_LONG).show();
         }
     }
 

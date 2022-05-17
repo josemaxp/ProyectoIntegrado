@@ -43,7 +43,6 @@ public class ImageFragment extends Fragment {
             }
         });
 
-
         return view;
     }
 
@@ -61,5 +60,4 @@ public class ImageFragment extends Fragment {
     static public Bitmap getBitmap() {
         return imageBitmap;
     }
-
 }

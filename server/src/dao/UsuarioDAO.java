@@ -27,7 +27,23 @@ public class UsuarioDAO {
         try {
             tx = session.beginTransaction();
             Usuario user = new Usuario(mail, username, passwordHashed, 0);
-            userID = (Integer) session.save(user);
+
+            String hql = "from Usuario where username like :keyword";
+            Query query = session.createQuery(hql);
+            query.setParameter("keyword", username);
+
+            List<Usuario> listUsername = query.list();
+            
+            hql = "from Usuario where correo like :keyword";
+            query = session.createQuery(hql);
+            query.setParameter("keyword", mail);
+
+            List<Usuario> listMail = query.list();
+
+            if (listUsername.size() == 0 && listMail.size() == 0) {
+                userID = (Integer) session.save(user);
+            }
+            
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {
@@ -35,10 +51,10 @@ public class UsuarioDAO {
             }
             e.printStackTrace();
         }
-        
+
         return userID;
     }
-    
+
     public boolean checkUser(String username, String password, Session session) {
         String passwordHashed = SHA.generate512(password);
 

@@ -2,7 +2,7 @@ package josemanuel.marin.finalproject.recyclerview;
 
 import java.util.List;
 
-public class ListOfferItem {
+public class ListOfferItem implements Comparable<ListOfferItem> {
     String market;
     List<String> tags;
     String distance;
@@ -32,6 +32,10 @@ public class ListOfferItem {
         return distance;
     }
 
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+
     public String getPrice() {
         return price;
     }
@@ -42,5 +46,10 @@ public class ListOfferItem {
 
     public String getUsername() {
         return username;
+    }
+
+    @Override
+    public int compareTo(ListOfferItem o) {
+        return distance.compareTo(o.distance);
     }
 }

@@ -36,7 +36,8 @@ public class Login extends AppCompatActivity implements LocationListener {
     Button loginButton, registerButton, guestButton;
     EditText username, password;
     TextView error;
-    static Double latitud, longitud;
+    public static Double latitud, longitud;
+    public static String direccion;
     connectServer Con;
     login login;
     LocationManager locationManager;
@@ -54,6 +55,7 @@ public class Login extends AppCompatActivity implements LocationListener {
         }
 
         //Get location
+        checkLocationPermissions();
         getLocationManager();
 
         username = findViewById(R.id.LoginUsernameText);
@@ -61,9 +63,10 @@ public class Login extends AppCompatActivity implements LocationListener {
         loginButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButtonLogin);
         guestButton = findViewById(R.id.guestButton);
-        error = findViewById(R.id.textViewRegisterError);
+        error = findViewById(R.id.textViewError);
 
         loginButton.setOnClickListener(view -> {
+            System.out.println(username.getText().toString());
             login = new login();
             try {
                 error.setText(login.execute(username.getText().toString(), password.getText().toString()).get());
@@ -77,39 +80,11 @@ public class Login extends AppCompatActivity implements LocationListener {
             startActivity(intent);
         });
 
-        if (ContextCompat.checkSelfPermission(Login.this,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(Login.this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-                ActivityCompat.requestPermissions(Login.this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            } else {
-                ActivityCompat.requestPermissions(Login.this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            }
-        }
+        registerButton.setOnClickListener(view -> {
+            Intent intent = new Intent(Login.this, Register.class);
+            startActivity(intent);
+        });
     }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                           int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case 1: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (ContextCompat.checkSelfPermission(Login.this,
-                            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                        Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
-                    this.finishAffinity();
-                }
-                return;
-            }
-        }
-    }
-
 
     class connectServer extends AsyncTask<Void, Void, Void> {
         @Override
@@ -187,10 +162,45 @@ public class Login extends AppCompatActivity implements LocationListener {
             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
             List<Address> addresses = geocoder.getFromLocation(loc.getLatitude(), loc.getLongitude(), 1);
 
+            direccion = addresses.get(0).getAddressLine(0);
             latitud = addresses.get(0).getLatitude();
             longitud = addresses.get(0).getLongitude();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void checkLocationPermissions() {
+        if (ContextCompat.checkSelfPermission(Login.this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(Login.this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                ActivityCompat.requestPermissions(Login.this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            } else {
+                ActivityCompat.requestPermissions(Login.this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (ContextCompat.checkSelfPermission(Login.this,
+                            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+                    this.finishAffinity();
+                }
+                return;
+            }
         }
     }
 }

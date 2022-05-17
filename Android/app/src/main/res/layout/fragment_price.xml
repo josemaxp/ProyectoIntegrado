@@ -39,24 +39,26 @@
     <EditText
         android:id="@+id/editTextPrice"
         android:layout_width="175dp"
-        android:layout_height="32dp"
+        android:layout_height="48dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/et_style"
         android:ems="10"
         android:inputType="numberDecimal|numberSigned"
+        android:padding="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewPriceTitle" />
 
     <EditText
         android:id="@+id/editTextPriceUnity"
         android:layout_width="175dp"
-        android:layout_height="32dp"
+        android:layout_height="48dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/et_style"
         android:ems="10"
         android:inputType="numberDecimal|numberSigned"
+        android:padding="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewPriceUnityTitle" />
 
@@ -68,7 +70,7 @@
         android:layout_marginTop="16dp"
         android:text="€"
         android:textColor="#ACB0CC"
-        android:textSize="24sp"
+        android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="@+id/editTextPrice"
         app:layout_constraintStart_toEndOf="@+id/editTextPrice"
         app:layout_constraintTop_toBottomOf="@+id/textViewPriceTitle" />
@@ -80,7 +82,7 @@
         android:layout_marginStart="8dp"
         android:text="€  /"
         android:textColor="#ACB0CC"
-        android:textSize="24sp"
+        android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="@+id/editTextPriceUnity"
         app:layout_constraintStart_toEndOf="@+id/editTextPriceUnity"
         app:layout_constraintTop_toBottomOf="@+id/textViewPriceUnityTitle"
@@ -88,15 +90,13 @@
 
     <Spinner
         android:id="@+id/spinnerUnity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:entries="@array/unidades"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextPriceUnity"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewEuroUnity"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textViewEuroUnity"
-        app:layout_constraintTop_toTopOf="@+id/editTextPriceUnity"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="@+id/textViewEuroUnity"
+        app:layout_constraintVertical_bias="0.571" />
 </androidx.constraintlayout.widget.ConstraintLayout>

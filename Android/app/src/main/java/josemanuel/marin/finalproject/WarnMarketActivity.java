@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -46,12 +47,11 @@ public class WarnMarketActivity extends AppCompatActivity implements SearchView.
         String[] username = null;
         try {
             username = getUser.execute().get().split(":");
-
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
 
-        init();
+        showOffers();
 
         String[] finalUsername = username;
         addButton.setOnClickListener(view -> {
@@ -64,19 +64,54 @@ public class WarnMarketActivity extends AppCompatActivity implements SearchView.
         });
     }
 
-    public void init() {
+    public void showOffers() {
         offerItems = new ArrayList<>();
-
         getOffers = new getOffers();
-
+        List<ListOfferItem> totalOfertas = new ArrayList<>();
         try {
             String fromServer = getOffers.execute().get();
             //Separo la información usando ':'. Así se quedaría dividido en todas las ofertas existentes.
             String[] allOffers = fromServer.split(":");
 
-            boolean comprobarMetros = false;
+            boolean comprobarMetros;
 
-            //Ahora divido cada una de las ofertas. Las ofertas empiezan en la posición 2.
+            //Divido cada una de las ofertas. Las ofertas empiezan en la posición 2.
+            for (int i = 2; i < allOffers.length; i++) {
+                String[] ofertaFromServer = allOffers[i].split("_");
+                List<String> tags = new ArrayList<>();
+                //Obtengo las etiquetas, que están desde la posición 5 hasta el final
+                for (int j = 5; j < ofertaFromServer.length; j++) {
+                    tags.add(ofertaFromServer[j].toLowerCase());
+                }
+
+                ListOfferItem oferta = new ListOfferItem(ofertaFromServer[3],tags,ofertaFromServer[4],ofertaFromServer[1],ofertaFromServer[2],ofertaFromServer[0]);
+                totalOfertas.add(oferta);
+            }
+
+            Collections.sort(totalOfertas);
+
+            for (int i = 0; i < totalOfertas.size(); i++) {
+                //Calculo la distancia de la persona al supermercado
+                double distancia = Double.parseDouble(totalOfertas.get(i).getDistance());
+
+                if (distancia < 1) {
+                    distancia *= 1000;
+                    comprobarMetros = true;
+                } else {
+                    distancia = Math.round(distancia);
+                    comprobarMetros = false;
+                }
+
+                int distanciaParsed = (int) distancia;
+
+                if (comprobarMetros) {
+                    totalOfertas.get(i).setDistance("A " + distanciaParsed + " m. de distancia");
+                } else {
+                    totalOfertas.get(i).setDistance("A " + distanciaParsed + " km. de distancia");
+                }
+            }
+
+            /*//Ahora divido cada una de las ofertas. Las ofertas empiezan en la posición 2.
             for (int i = 2; i < allOffers.length; i++) {
                 String[] offer = allOffers[i].split("_");
                 List<String> tags = new ArrayList<>();
@@ -105,32 +140,20 @@ public class WarnMarketActivity extends AppCompatActivity implements SearchView.
                 } else {
                     offerItems.add(new ListOfferItem(offer[3], tags, "A " + distanciaParsed + " km. de distancia", offer[1] + "€", offer[2], offer[0]));
                 }
-                //tags = "";
-            }
+            }*/
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
 
         //Arrays.sort(offerItems, (a, b) -> a..compareTo(b.name));
 
-        adapter = new ShowOffer(offerItems, this);
+        adapter = new ShowOffer(totalOfertas, this);
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
         searchView.setOnQueryTextListener(this);
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        adapter.filtrarDatos(newText);
-        return false;
     }
 
     class getOffers extends AsyncTask<Void, Void, String> {
@@ -159,7 +182,6 @@ public class WarnMarketActivity extends AppCompatActivity implements SearchView.
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             return offers;
         }
 
@@ -203,5 +225,16 @@ public class WarnMarketActivity extends AppCompatActivity implements SearchView.
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
         }
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        adapter.filtrarDatos(newText);
+        return false;
     }
 }

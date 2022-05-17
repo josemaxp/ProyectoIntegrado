@@ -32,20 +32,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.Date;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import util.HibernateUtil;
-import util.SHA;
 
 /**
  *
@@ -117,7 +106,6 @@ public class Main {
 
             try {
                 while ((inputLine = in.readLine()) != null) {
-                    System.out.println("Recibido arriba: " + inputLine);
                     if (inputLine.split(":")[1].equals("login")) {
                         String loginUsername = inputLine.split(":")[2];
                         String loginPassword = inputLine.split(":")[3];
@@ -209,16 +197,17 @@ public class Main {
                         InputStream is = clientSocket.getInputStream();
 
                         BufferedOutputStream bos = new BufferedOutputStream(fos);
-                        int fileToWrite; 
+                        int numeroBytesLeidos = 0;
 
-                        while ((fileToWrite = is.read(filebyte, 0, filebyte.length)) != -1) {
-                            System.out.println(fileToWrite);
-                            bos.write(filebyte, 0, fileToWrite);
+                        while (numeroBytesLeidos != filebyte.length) {
+                            numeroBytesLeidos += is.read(filebyte, 0, filebyte.length);
+                            bos.write(filebyte, 0, numeroBytesLeidos);
                         }
-                        
-                        bos.close();
 
-                        System.out.println("recibido abajo: " + in.readLine());
+                        bos.close();
+                        fos.close();
+
+                        out.println("");
                     }
 
                     if (inputLine.split(":")[1].equals("getUser")) {
