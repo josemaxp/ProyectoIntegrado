@@ -6,6 +6,7 @@
 package dao;
 
 import entity.Usuario;
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -33,7 +34,7 @@ public class UsuarioDAO {
             query.setParameter("keyword", username);
 
             List<Usuario> listUsername = query.list();
-            
+
             hql = "from Usuario where correo like :keyword";
             query = session.createQuery(hql);
             query.setParameter("keyword", mail);
@@ -43,7 +44,7 @@ public class UsuarioDAO {
             if (listUsername.size() == 0 && listMail.size() == 0) {
                 userID = (Integer) session.save(user);
             }
-            
+
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {
@@ -53,6 +54,50 @@ public class UsuarioDAO {
         }
 
         return userID;
+    }
+
+    public String updateUser(Session session, String username, String newUsername, String password, String mail) {
+        Transaction tx = null;
+        String resultado = "";
+        List<Usuario> currentUserInfo = userInfo(username, session);
+        String passwordHashed = "";
+        int contador = 0;
+        passwordHashed = SHA.generate512(password);
+
+        try {
+            tx = session.beginTransaction();
+            Usuario usuario = (Usuario) session.get(Usuario.class, currentUserInfo.get(0).getId());
+
+            if (!currentUserInfo.get(0).getUsername().equals(newUsername)) {
+                usuario.setUsername(newUsername);
+                contador++;
+            }
+
+            if (!currentUserInfo.get(0).getCorreo().equals(mail)) {
+                usuario.setCorreo(mail);
+                contador++;
+            }
+
+            if (!passwordHashed.equals(currentUserInfo.get(0).getPassword())) {
+                usuario.setPassword(passwordHashed);
+                contador++;
+            }
+
+            if (contador > 0) {
+                session.update(usuario);
+                resultado = "true";
+            } else {
+                resultado = "false";
+            }
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }
+
+        return resultado;
     }
 
     public boolean checkUser(String username, String password, Session session) {
@@ -70,5 +115,16 @@ public class UsuarioDAO {
         }
 
         return passwordDB.equals(passwordHashed);
+    }
+
+    public List<Usuario> userInfo(String username, Session session) {
+
+        String hql = "from Usuario where username like :keyword";
+        Query query = session.createQuery(hql);
+        query.setParameter("keyword", username);
+
+        List<Usuario> listUser = query.list();
+
+        return listUser;
     }
 }

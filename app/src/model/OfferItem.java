@@ -1,8 +1,16 @@
-package josemanuel.marin.finalproject.recyclerview;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package model;
 
 import java.util.List;
 
-public class ListOfferItem implements Comparable<ListOfferItem> {
+/**
+ *
+ * @author josem
+ */
+public class OfferItem {
     String market;
     List<String> tags;
     String distance;
@@ -11,7 +19,7 @@ public class ListOfferItem implements Comparable<ListOfferItem> {
     String username;
     //String image;
 
-    public ListOfferItem(String market, List<String> tags, String distance, String price, String priceUnity, String username) {
+    public OfferItem(String market, List<String> tags, String distance, String price, String priceUnity, String username) {
         this.market = market;
         this.tags = tags;
         this.distance = distance;
@@ -48,8 +56,7 @@ public class ListOfferItem implements Comparable<ListOfferItem> {
         return username;
     }
 
-    @Override
-    public int compareTo(ListOfferItem o) {
+    public int compareTo(OfferItem o) {
         return distance.compareTo(o.distance);
     }
 }

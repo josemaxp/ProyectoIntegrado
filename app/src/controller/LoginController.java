@@ -38,6 +38,8 @@ public class LoginController implements Initializable {
     private MFXButton buttonLogin;
     @FXML
     private Label textFieldLoginRegister;
+    @FXML
+    private Label textFieldGuest;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -53,21 +55,26 @@ public class LoginController implements Initializable {
     @FXML
     private void onActionLogin(ActionEvent event) {
         try {
-            Main.out.println("CL:" + "login:" + textFieldLoginUsername.getText() + ":" + textFieldLoginPassword.getText());
+            if (textFieldLoginUsername.getText().equals("") || textFieldLoginPassword.getText().equals("")) {
+                textFieldLoginError.setText("Los campos no pueden estar vacíos.");
 
-            String fromServer = Main.in.readLine();
+            } else {
+                Main.out.println("CL:" + "login:" + textFieldLoginUsername.getText() + ":" + textFieldLoginPassword.getText());
 
-            if (fromServer.split(":")[2].equals("true")) {
-                textFieldLoginError.setText("Correct login.");
+                String fromServer = Main.in.readLine();
 
-                /*try {
+                if (fromServer.split(":")[2].equals("true")) {
+                    textFieldLoginError.setText("Correct login.");
+
+                    /*try {
                 Parent root = FXMLLoader.load(getClass().getResource("/view/Main.fxml"));
                 RefugioApp.changeScene(root, "Main");
                 } catch (IOException e) {
                 System.out.println(e.getMessage());
                 }*/
-            } else {
-                textFieldLoginError.setText("Error. Check your user or your password.");
+                } else {
+                    textFieldLoginError.setText("Error, comprueba tu usuario o contraseña.");
+                }
             }
         } catch (IOException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
@@ -85,6 +92,10 @@ public class LoginController implements Initializable {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    @FXML
+    private void onClickGuest(MouseEvent event) {
     }
 
 }

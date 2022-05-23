@@ -30,6 +30,13 @@
                 android:value=".Login" />
         </activity>
         <activity
+            android:name=".MyAccount"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".WarnMarketActivity" />
+        </activity>
+        <activity
             android:name=".WarnMarketActivity"
             android:exported="false">
             <meta-data

@@ -91,7 +91,7 @@ public class OfertaDAO {
                 List<Supermercado> listMarket = query.list();
                 double distancia = distanciaCoord(latitud, longitud, listMarket.get(0).getLatitud(), listMarket.get(0).getLongitud());
 
-                offers += offerUsername.get(0) + "_" + aOffer.getPrecio() + "_" + aOffer.getPrecioUnidad() + "_" + listMarket.get(0).getNombre() + "_" + distancia + "_" + tagName + ":";
+                offers += offerUsername.get(0) + "_" + aOffer.getPrecio() + "_" + aOffer.getPrecioUnidad() + "_" + listMarket.get(0).getNombre() + "_" + distancia +"_"+aOffer.getImagen()+ "_" + tagName + ":";
             }
         }
 

@@ -2,18 +2,24 @@ package josemanuel.marin.finalproject.recyclerview;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import josemanuel.marin.finalproject.R;
+import josemanuel.marin.finalproject.model.ListOfferItem;
 
 public class ShowOffer extends RecyclerView.Adapter<ShowOffer.OfferViewHolder> {
     List<ListOfferItem> mData;
@@ -48,7 +54,7 @@ public class ShowOffer extends RecyclerView.Adapter<ShowOffer.OfferViewHolder> {
 
     public class OfferViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final TextView textViewOfferMarket, textViewOfferTags, textViewOfferDistance, textViewOfferPrice, textViewOfferPriceUnity, textViewOfferUsername;
-        //public final ImageView imageViewOffer;
+        public final ImageView imageViewOffer;
         final ShowOffer mAdapter;
 
         OfferViewHolder(@NonNull View itemView, ShowOffer adapter) {
@@ -59,6 +65,7 @@ public class ShowOffer extends RecyclerView.Adapter<ShowOffer.OfferViewHolder> {
             textViewOfferPrice = itemView.findViewById(R.id.textViewOfferPrice);
             textViewOfferPriceUnity = itemView.findViewById(R.id.textViewOfferPriceUnity);
             textViewOfferUsername = itemView.findViewById(R.id.textViewOfferUsername);
+            imageViewOffer = itemView.findViewById(R.id.imageViewOffer);
             this.mAdapter = adapter;
             itemView.setOnClickListener((View.OnClickListener) this);
         }
@@ -80,6 +87,12 @@ public class ShowOffer extends RecyclerView.Adapter<ShowOffer.OfferViewHolder> {
             textViewOfferPrice.setText(item.getPrice());
             textViewOfferPriceUnity.setText("(" + item.getPriceUnity() + ")");
             textViewOfferUsername.setText(item.getUsername());
+
+            File file = new File(item.getImage());
+
+            System.out.println(file.exists());
+            Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
+            imageViewOffer.setImageBitmap(bitmap);
         }
 
         public void onClick(View view) {

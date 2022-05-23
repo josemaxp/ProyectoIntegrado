@@ -159,7 +159,7 @@ public class LocationFragment extends Fragment {
         try {
             username = getUser.execute().get().split(":");
             //LocalDateTime
-            File f = new File(getContext().getCacheDir(), "D"+LocalDate.now()+"_H"+LocalDateTime.now().getHour()+"_M"+LocalDateTime.now().getMinute()+"_S"+LocalDateTime.now().getSecond() + "_" + username[2]);
+            File f = new File(getContext().getCacheDir(), "D"+LocalDate.now()+"%H"+LocalDateTime.now().getHour()+"%M"+LocalDateTime.now().getMinute()+"%S"+LocalDateTime.now().getSecond() + "%" + username[2]);
             try {
                 f.createNewFile();
 

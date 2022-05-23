@@ -5,13 +5,20 @@
 <?import io.github.palexdev.materialfx.controls.MFXPasswordField?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #2e3264;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegisterController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #292A33;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegisterController">
    <children>
+      <ImageView fitHeight="400.0" fitWidth="663.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/wave-haikei.jpg" />
+         </image>
+      </ImageView>
       <MFXPasswordField fx:id="textFieldPassword" alignment="TOP_LEFT" allowCopy="true" allowCut="true" allowPaste="true" layoutX="170.0" layoutY="214.0" minHeight="-Infinity" prefHeight="30.0" prefWidth="260.0" promptText="Contraseña">
          <textFill>
             <Color red="0.9882352948188782" green="0.2666666805744171" blue="0.47843137383461" opacity="0.8700000047683716" />
@@ -24,12 +31,12 @@
             <Font name="SansSerif Bold" size="36.0" />
          </font>
       </Text>
-      <Text fill="#fd93b2" layoutX="236.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BIENVENIDO A">
+      <Text fill="#fd93b2" layoutX="248.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bienvenido a">
          <font>
             <Font name="SansSerif Regular" size="18.0" />
          </font>
       </Text>
-      <MFXButton fx:id="buttonRegister" buttonType="RAISED" depthLevel="LEVEL5" layoutX="171.0" layoutY="339.0" onAction="#onActionRegister" prefHeight="26.0" prefWidth="260.0" rippleColor="#252850" style="-fx-background-color: #fd93b2;" text="Register" textFill="#252850">
+      <MFXButton fx:id="buttonRegister" buttonType="RAISED" depthLevel="LEVEL5" layoutX="171.0" layoutY="306.0" onAction="#onActionRegister" prefHeight="26.0" prefWidth="260.0" rippleColor="#252850" style="-fx-background-color: #fd93b2;" text="Registrarse" textFill="#252850">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></MFXButton>
@@ -51,7 +58,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </FontAwesomeIconView>
-      <Text fx:id="textFieldError" fill="#fc447a" layoutX="170.0" layoutY="318.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="260.0">
+      <Text fx:id="textFieldError" fill="#fc447a" layoutX="171.0" layoutY="368.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="260.0">
          <font>
             <Font name="SansSerif Regular" size="14.0" />
          </font>
@@ -59,7 +66,7 @@
             <Cursor fx:constant="DEFAULT" />
          </cursor>
       </Text>
-      <MFXPasswordField fx:id="texxtFieldRepeatPassword" alignment="TOP_LEFT" allowCopy="true" allowCut="true" allowPaste="true" layoutX="171.0" layoutY="258.0" minHeight="-Infinity" prefHeight="30.0" prefWidth="260.0" promptText="Repetir contraseña">
+      <MFXPasswordField fx:id="texxtFieldRepeatPassword" alignment="TOP_LEFT" allowCopy="true" allowCut="true" allowPaste="true" layoutX="171.0" layoutY="258.0" minHeight="-Infinity" prefHeight="30.0" prefWidth="260.0" promptText="Repite la contraseña">
          <textFill>
             <Color red="0.9882352948188782" green="0.2666666805744171" blue="0.47843137383461" opacity="0.8700000047683716" />
          </textFill>
@@ -84,6 +91,6 @@
             <Cursor fx:constant="TEXT" />
          </cursor>
       </MFXTextField>
-      <FontAwesomeIconView fill="#fd93b2" glyphName="SEND" layoutX="128.0" layoutY="194.0" size="28" />
+      <FontAwesomeIconView fill="#fd93b2" glyphName="ENVELOPE" layoutX="128.0" layoutY="194.0" size="28" />
    </children>
 </AnchorPane>

@@ -6,10 +6,11 @@ import java.net.UnknownHostException;
 
 public class Connection {
     static Socket kkSocket;
+    public static String IP = "192.168.1.139";
 
     public Connection() {
         try {
-            kkSocket = new Socket("192.168.1.139", 4444);
+            kkSocket = new Socket(IP, 4444);
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host: .");
             System.exit(1);

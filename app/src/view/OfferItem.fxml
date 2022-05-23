@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" prefHeight="150.0" prefWidth="500.0" style="-fx-background-color: #3F414E; -fx-background-radius: 25;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.OfferItemController">
+   <children>
+      <ImageView fx:id="image" fitHeight="100.0" fitWidth="100.0" layoutX="14.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true" />
+      <Text fx:id="market" fill="#fd93b2" layoutX="135.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Supermercado" textAlignment="CENTER" wrappingWidth="344.53673553466797">
+         <font>
+            <Font name="SansSerif Bold" size="12.0" />
+         </font></Text>
+      <Text fx:id="Tags" fill="WHITE" layoutX="135.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-" wrappingWidth="344.53673553466797" />
+      <Text fx:id="distance" fill="WHITE" layoutX="135.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="distancia" wrappingWidth="82.13671875" />
+      <Text fx:id="Price" fill="#fc447a" layoutX="135.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0.6" wrappingWidth="34.13671875">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Text>
+      <Text fx:id="PriceUnity" fill="WHITE" layoutX="176.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0.6€/L" wrappingWidth="82.13671875">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="user" fill="#fd93b2" layoutX="14.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Usuario" wrappingWidth="438.93675994873047">
+         <font>
+            <Font name="SansSerif Bold" size="12.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>

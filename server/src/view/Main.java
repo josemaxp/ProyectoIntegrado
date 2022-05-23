@@ -9,21 +9,9 @@ import dao.EtiquetaDAO;
 import dao.OfertaDAO;
 import dao.SupermercadoDAO;
 import dao.UsuarioDAO;
-import entity.Estar;
-import entity.EstarId;
-import entity.Etiqueta;
-import entity.Oferta;
-import entity.Publicar;
-import entity.PublicarId;
-import entity.Relacionetiqueta;
-import entity.RelacionetiquetaId;
-import entity.Supermercado;
-import entity.Tener;
-import entity.TenerId;
 import entity.Usuario;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -135,6 +123,16 @@ public class Main {
                         }
                     }
 
+                    if (inputLine.split(":")[1].equals("updateUser")) {
+                        String updateUsername = inputLine.split(":")[2];
+                        String updatePassword = inputLine.split(":")[3];
+                        String updateEmail = inputLine.split(":")[4];
+
+                        String result = userDAO.updateUser(session, username, updateUsername, updatePassword, updateEmail);
+                        
+                        out.println("S:updateUser:" + result);
+                    }
+
                     if (inputLine.split(":")[1].equals("Markets")) {
                         String markets = marketDAO.getAllMarkets(session);
                         out.println("S:Markets:" + markets);
@@ -212,6 +210,12 @@ public class Main {
 
                     if (inputLine.split(":")[1].equals("getUser")) {
                         out.println("S:getUser:" + username);
+                    }
+
+                    if (inputLine.split(":")[1].equals("userInfo")) {
+                        List<Usuario> user = userDAO.userInfo(username, session);
+
+                        out.println("S:userInfo:" + user.get(0).getUsername() + ":" + user.get(0).getCorreo()+":"+user.get(0).getPuntos());
                     }
 
                     if (inputLine.split(":")[1].equals("AddOffer")) {

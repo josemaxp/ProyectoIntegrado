@@ -22,11 +22,11 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import josemanuel.marin.finalproject.controller.Connection;
-import josemanuel.marin.finalproject.recyclerview.ListOfferItem;
+import josemanuel.marin.finalproject.model.ListOfferItem;
 import josemanuel.marin.finalproject.recyclerview.ShowOffer;
 
 public class WarnMarketActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
-    Button addButton;
+    Button addButton, profileButton;
     SearchView searchView;
     List<ListOfferItem> offerItems;
     PrintWriter out = null;
@@ -42,6 +42,7 @@ public class WarnMarketActivity extends AppCompatActivity implements SearchView.
 
         addButton = findViewById(R.id.addButton);
         searchView = findViewById(R.id.searchView);
+        profileButton = findViewById(R.id.profileButton);
 
         getUser = new getUser();
         String[] username = null;
@@ -62,6 +63,15 @@ public class WarnMarketActivity extends AppCompatActivity implements SearchView.
                 startActivity(intent);
             }
         });
+
+        profileButton.setOnClickListener(view -> {
+            if (finalUsername.length == 2) {
+                Toast.makeText(this, "Error, debes iniciar sesión para poder acceder a los ajustes de usuario.", Toast.LENGTH_LONG).show();
+            } else {
+                Intent intent = new Intent(WarnMarketActivity.this, MyAccount.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void showOffers() {
@@ -79,12 +89,11 @@ public class WarnMarketActivity extends AppCompatActivity implements SearchView.
             for (int i = 2; i < allOffers.length; i++) {
                 String[] ofertaFromServer = allOffers[i].split("_");
                 List<String> tags = new ArrayList<>();
-                //Obtengo las etiquetas, que están desde la posición 5 hasta el final
-                for (int j = 5; j < ofertaFromServer.length; j++) {
+                //Obtengo las etiquetas, que están desde la posición 6 hasta el final
+                for (int j = 6; j < ofertaFromServer.length; j++) {
                     tags.add(ofertaFromServer[j].toLowerCase());
                 }
-
-                ListOfferItem oferta = new ListOfferItem(ofertaFromServer[3],tags,ofertaFromServer[4],ofertaFromServer[1],ofertaFromServer[2],ofertaFromServer[0]);
+                ListOfferItem oferta = new ListOfferItem(ofertaFromServer[3], tags, ofertaFromServer[4], ofertaFromServer[1], ofertaFromServer[2], ofertaFromServer[0],"\\\\"+Connection.IP+"\\"+ofertaFromServer[5]);
                 totalOfertas.add(oferta);
             }
 
@@ -110,42 +119,9 @@ public class WarnMarketActivity extends AppCompatActivity implements SearchView.
                     totalOfertas.get(i).setDistance("A " + distanciaParsed + " km. de distancia");
                 }
             }
-
-            /*//Ahora divido cada una de las ofertas. Las ofertas empiezan en la posición 2.
-            for (int i = 2; i < allOffers.length; i++) {
-                String[] offer = allOffers[i].split("_");
-                List<String> tags = new ArrayList<>();
-
-                //Ahora calculo la distancia de la persona al supermercado
-                double distancia = Double.parseDouble(offer[4]);
-
-                if (distancia < 1) {
-                    distancia *= 1000;
-                    comprobarMetros = true;
-                } else {
-                    distancia = Math.round(distancia);
-                    comprobarMetros = false;
-                }
-
-                int distanciaParsed = (int) distancia;
-
-                //Obtengo las etiquetas, que están desde la posición 6 hasta el final
-                for (int j = 5; j < offer.length; j++) {
-                    tags.add(offer[j].toLowerCase());
-                }
-
-                //Añado la oferta a la lista de ofertas para que se visualicen en el recyclerview
-                if (comprobarMetros) {
-                    offerItems.add(new ListOfferItem(offer[3], tags, "A " + distanciaParsed + " m. de distancia", offer[1] + "€", offer[2], offer[0]));
-                } else {
-                    offerItems.add(new ListOfferItem(offer[3], tags, "A " + distanciaParsed + " km. de distancia", offer[1] + "€", offer[2], offer[0]));
-                }
-            }*/
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
-
-        //Arrays.sort(offerItems, (a, b) -> a..compareTo(b.name));
 
         adapter = new ShowOffer(totalOfertas, this);
         RecyclerView recyclerView = findViewById(R.id.recyclerView);

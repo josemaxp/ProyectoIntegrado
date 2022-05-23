@@ -29,6 +29,7 @@ public class Main extends Application {
     private static double yOffset = 0.0;
     private static Scene scene;
     private static Stage stage;
+    private static String IP ="localhost";
     public static Socket kkSocket = null;
     public static PrintWriter out = null;
     public static BufferedReader in = null;
@@ -75,7 +76,7 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         try {
-            kkSocket = new Socket("localhost", 4444);
+            kkSocket = new Socket(IP, 4444);
             out = new PrintWriter(kkSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(kkSocket.getInputStream()));
         } catch (UnknownHostException e) {
@@ -87,5 +88,9 @@ public class Main extends Application {
         }
 
         launch(args);
+    }
+    
+    public void getLocation(){
+        String dblocation = "A:";
     }
 }
