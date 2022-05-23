@@ -89,8 +89,4 @@ public class Main extends Application {
 
         launch(args);
     }
-    
-    public void getLocation(){
-        String dblocation = "A:";
-    }
 }

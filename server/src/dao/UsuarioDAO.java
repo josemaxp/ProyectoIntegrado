@@ -6,7 +6,6 @@
 package dao;
 
 import entity.Usuario;
-import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -56,13 +55,15 @@ public class UsuarioDAO {
         return userID;
     }
 
-    public String updateUser(Session session, String username, String newUsername, String password, String mail) {
+    public boolean updateUser(Session session, String username, String newUsername, String password, String mail) {
         Transaction tx = null;
-        String resultado = "";
+        boolean resultado = false;
         List<Usuario> currentUserInfo = userInfo(username, session);
         String passwordHashed = "";
         int contador = 0;
-        passwordHashed = SHA.generate512(password);
+        if(!password.equals("")){
+            passwordHashed = SHA.generate512(password);
+        }
 
         try {
             tx = session.beginTransaction();
@@ -78,16 +79,14 @@ public class UsuarioDAO {
                 contador++;
             }
 
-            if (!passwordHashed.equals(currentUserInfo.get(0).getPassword())) {
+            if (!passwordHashed.equals(currentUserInfo.get(0).getPassword()) && !password.equals("")) {
                 usuario.setPassword(passwordHashed);
                 contador++;
             }
 
             if (contador > 0) {
                 session.update(usuario);
-                resultado = "true";
-            } else {
-                resultado = "false";
+                resultado = true;
             }
             tx.commit();
         } catch (HibernateException e) {

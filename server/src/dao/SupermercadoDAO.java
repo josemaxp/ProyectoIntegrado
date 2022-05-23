@@ -15,16 +15,14 @@ import org.hibernate.Session;
  */
 public class SupermercadoDAO {
     
-    public String getAllMarkets(Session session) {
+    public List<String> getAllMarkets(Session session) {
         String hql = "select distinct nombre from Supermercado";
         Query query = session.createQuery(hql);
 
         String markets = "";
 
         List<String> listMarkets = query.list();
-        for (String aMarkets : listMarkets) {
-            markets += aMarkets + ":";
-        }
-        return markets;
+        
+        return listMarkets;
     }
 }

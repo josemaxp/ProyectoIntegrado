@@ -128,13 +128,23 @@ public class Main {
                         String updatePassword = inputLine.split(":")[3];
                         String updateEmail = inputLine.split(":")[4];
 
-                        String result = userDAO.updateUser(session, username, updateUsername, updatePassword, updateEmail);
-                        
-                        out.println("S:updateUser:" + result);
+                        boolean result = userDAO.updateUser(session, username, updateUsername, updatePassword, updateEmail);
+
+                        if (result) {
+                            out.println("S:updateUser:true");
+                        } else {
+                            out.println("S:updateUser:false");
+                        }
                     }
 
                     if (inputLine.split(":")[1].equals("Markets")) {
-                        String markets = marketDAO.getAllMarkets(session);
+                        List<String> listMarkets = marketDAO.getAllMarkets(session);
+                        String markets = "";
+                        
+                        for (String aMarkets : listMarkets) {
+                            markets += aMarkets + ":";
+                        }
+
                         out.println("S:Markets:" + markets);
                     }
 
@@ -164,16 +174,26 @@ public class Main {
 
                     if (inputLine.split(":")[1].equals("relationTags")) {
                         String userTag = inputLine.split(":")[2];
-                        String relationTags = tagDAO.getRelationTags(session, userTag);
+                        List<String> relationTags = tagDAO.getRelationTags(session, userTag);
+                        String tagsName = "";
 
-                        out.println("S:relationTags:" + relationTags);
+                        for (int i = 0; i < relationTags.size(); i++) {
+                            tagsName += relationTags.get(0) + ":";
+                        }
+
+                        out.println("S:relationTags:" + tagsName);
                     }
 
                     if (inputLine.split(":")[1].equals("showOffer")) {
                         Double latitud = Double.parseDouble(inputLine.split(":")[2]);
                         Double longitud = Double.parseDouble(inputLine.split(":")[3]);
 
-                        String offers = ofertaDAO.showOffer(session, latitud, longitud);
+                        String offers = "";
+                        List<String> allOffers = ofertaDAO.showOffer(session, latitud, longitud);
+
+                        for (int i = 0; i < allOffers.size(); i++) {
+                            offers += allOffers.get(i);
+                        }
 
                         out.println("S:showOffer:" + offers);
                     }
@@ -215,7 +235,7 @@ public class Main {
                     if (inputLine.split(":")[1].equals("userInfo")) {
                         List<Usuario> user = userDAO.userInfo(username, session);
 
-                        out.println("S:userInfo:" + user.get(0).getUsername() + ":" + user.get(0).getCorreo()+":"+user.get(0).getPuntos());
+                        out.println("S:userInfo:" + user.get(0).getUsername() + ":" + user.get(0).getCorreo() + ":" + user.get(0).getPuntos());
                     }
 
                     if (inputLine.split(":")[1].equals("AddOffer")) {

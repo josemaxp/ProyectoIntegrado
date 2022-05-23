@@ -16,7 +16,7 @@ import org.hibernate.Session;
  * @author josem
  */
 public class EtiquetaDAO {
-    
+
     /**
      * Get top 3 popular tags.
      */
@@ -25,21 +25,21 @@ public class EtiquetaDAO {
         Query query = session.createQuery(hql);
 
         List<String> listPopularTags = query.list();
-        
+
         return listPopularTags;
     }
-    
+
     /**
      * Get top 3 relation tags.
      */
-    public String getRelationTags(Session session, String etiqueta) {
+    public List<String> getRelationTags(Session session, String etiqueta) {
         String hql = "select id from Etiqueta where nombre like :nombre";
         Query query = session.createQuery(hql);
         query.setParameter("nombre", etiqueta);
+        List<String> tagNames = new ArrayList<>();
 
         //Obtengo el id de la etiqueta escrita por el usuario
         List<Integer> tag = query.list();
-        String relaionTags = "";
         //Compruebo que exista
         if (tag.size() > 0) {
             //Ordeno la tabla de las relaciones entre etiquetas a partir de la tabla contador de mayor a menor para así directamente al obtener los 3 primeros, que estos sean los que más se repiten
@@ -64,10 +64,9 @@ public class EtiquetaDAO {
 
                 List<String> tagName = query.list();
 
-                relaionTags += tagName.get(0) + ":";
+                tagNames.add(tagName.get(0));
             }
         }
-
-        return relaionTags;
+        return tagNames;
     }
 }

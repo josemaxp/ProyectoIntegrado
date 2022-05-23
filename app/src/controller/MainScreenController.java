@@ -15,7 +15,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import model.OfferItem;
-import view.Main;
 
 /**
  * FXML Controller class

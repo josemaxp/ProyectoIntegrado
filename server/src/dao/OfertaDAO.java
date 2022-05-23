@@ -31,10 +31,11 @@ import org.hibernate.Transaction;
  */
 public class OfertaDAO {
 
-    public String showOffer(Session session, Double latitud, Double longitud) {
+    public List<String> showOffer(Session session, Double latitud, Double longitud) {
         String hql = "from Oferta";
         Query query = session.createQuery(hql);
-        String offers = "";
+        String offer = "";
+        List<String> allOffers = new ArrayList<>();
 
         List<Oferta> listOffer = query.list();
         for (Oferta aOffer : listOffer) {
@@ -91,11 +92,12 @@ public class OfertaDAO {
                 List<Supermercado> listMarket = query.list();
                 double distancia = distanciaCoord(latitud, longitud, listMarket.get(0).getLatitud(), listMarket.get(0).getLongitud());
 
-                offers += offerUsername.get(0) + "_" + aOffer.getPrecio() + "_" + aOffer.getPrecioUnidad() + "_" + listMarket.get(0).getNombre() + "_" + distancia +"_"+aOffer.getImagen()+ "_" + tagName + ":";
+                offer += offerUsername.get(0) + "_" + aOffer.getPrecio() + "_" + aOffer.getPrecioUnidad() + "_" + listMarket.get(0).getNombre() + "_" + distancia +"_"+aOffer.getImagen()+ "_" + tagName + ":";
+                allOffers.add(offer);
             }
         }
 
-        return offers;
+        return allOffers;
     }
 
     public void addOffer(Session session, String username, String[] tagsList, Float precio, String precioUnidad, String unidad, String imagen, String nombreSupermercado, String direccion, Float longitud, Float latitud) {

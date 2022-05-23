@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">finalProject</string>
+    <string name="app_name">WarnMarket</string>
     <string name="errorEmptyFields">Error, no puede haber campos vacíos.</string>
     <string name="errorUserPass">Error, comprueba tu usuario o contraseña.</string>
     <string name="imageview_contentdescription">Fotografía de la oferta.</string>
@@ -8,7 +8,6 @@
     <string name="title_add_tags">Agrega algunas etiquetas:</string>
     <string name="price">Precio:</string>
     <string name="price_unity">Precio por unidad:</string>
-    <string name="example_tags">Ejemplo: Leche, Puleva, Semidesnatada</string>
     <string name="error_minimun_tags">Por favor, añade al menos 3 etiquetas.</string>
     <string name="error_empty_price">Error, el precio no puede estar vacío.</string>
     <string name="error_empty_unity">Error, debes seleccionar alguna unidad de medida.</string>
@@ -31,4 +30,5 @@
     <string name="error_too_many_tags">Error, solo puedes añadir hasta un máximo de 10 etiquetas.</string>
     <string name="back_button"><![CDATA[<]]></string>
     <string name="next_button"><![CDATA[>]]></string>
+    <string name="user_setting">Ajustes de usuario</string>
 </resources>

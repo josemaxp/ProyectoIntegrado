@@ -53,8 +53,8 @@ public class MyAccount extends AppCompatActivity {
 
 
         update.setOnClickListener(v -> {
-            if (email.getText().toString().equals("") || username.getText().toString().equals("") || password.getText().toString().equals("") || repeatPassword.getText().toString().equals("")) {
-                error.setText("Los campos no pueden estar vacíos.");
+            if (email.getText().toString().equals("") || username.getText().toString().equals("")) {
+                error.setText("Los campos de usuario o email no pueden estar vacíos.");
             } else {
                 if (repeatPassword.getText().toString().equals(password.getText().toString())) {
                     updateUser = new updateUser();
