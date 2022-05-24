@@ -37,6 +37,20 @@
                 android:value=".WarnMarketActivity" />
         </activity>
         <activity
+            android:name=".MyOffers"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MyAccount" />
+        </activity>
+        <activity
+            android:name=".RedeemPoints"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MyAccount" />
+        </activity>
+        <activity
             android:name=".WarnMarketActivity"
             android:exported="false">
             <meta-data

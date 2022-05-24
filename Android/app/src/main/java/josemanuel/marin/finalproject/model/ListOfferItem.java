@@ -10,8 +10,9 @@ public class ListOfferItem implements Comparable<ListOfferItem> {
     String priceUnity;
     String username;
     String image;
+    boolean approvedOffer;
 
-    public ListOfferItem(String market, List<String> tags, String distance, String price, String priceUnity, String username,String image) {
+    public ListOfferItem(String market, List<String> tags, String distance, String price, String priceUnity, String username,String image, boolean approvedOffer) {
         this.market = market;
         this.tags = tags;
         this.distance = distance;
@@ -19,6 +20,7 @@ public class ListOfferItem implements Comparable<ListOfferItem> {
         this.priceUnity = priceUnity;
         this.username = username;
         this.image = image;
+        this.approvedOffer = approvedOffer;
     }
 
     public String getMarket() {
@@ -50,6 +52,8 @@ public class ListOfferItem implements Comparable<ListOfferItem> {
     }
 
     public String getImage() {return image;}
+
+    public Boolean getApprovedOffer() {return approvedOffer;}
 
     @Override
     public int compareTo(ListOfferItem o) {

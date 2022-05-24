@@ -19,7 +19,9 @@ import entity.TenerId;
 import entity.Usuario;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -60,6 +62,9 @@ public class OfertaDAO {
                 }
             }
 
+            //obtengo si la oferta es una oferta aprovada o no
+            boolean approvedOffer = approvedOffer(session, aOffer, listIDTags, listTener);
+
             //Obtengo los nombres de esas etiquetas
             String tagName = "";
             for (int i = 0; i < listIDTags.size(); i++) {
@@ -92,8 +97,9 @@ public class OfertaDAO {
                 List<Supermercado> listMarket = query.list();
                 double distancia = distanciaCoord(latitud, longitud, listMarket.get(0).getLatitud(), listMarket.get(0).getLongitud());
 
-                offer += offerUsername.get(0) + "_" + aOffer.getPrecio() + "_" + aOffer.getPrecioUnidad() + "_" + listMarket.get(0).getNombre() + "_" + distancia +"_"+aOffer.getImagen()+ "_" + tagName + ":";
+                offer += offerUsername.get(0) + "_" + aOffer.getPrecio() + "_" + aOffer.getPrecioUnidad() + "_" + listMarket.get(0).getNombre() + "_" + distancia + "_" + aOffer.getImagen() + "_" + approvedOffer + "_" + tagName + ":";
                 allOffers.add(offer);
+                offer = "";
             }
         }
 
@@ -271,7 +277,7 @@ public class OfertaDAO {
             String hql = "select id from Oferta order by id desc";
             Query query = session.createQuery(hql);
             List<Integer> idOffer = query.list();
-            
+
             hql = "update Oferta set imagen = :path where id = :id";
             query = session.createQuery(hql);
             query.setParameter("path", path);
@@ -301,6 +307,143 @@ public class OfertaDAO {
         double distancia = radioTierra * va2;
 
         return distancia;
+    }
+
+    public List<String> myOffers(Session session, String username, Double latitud, Double longitud) {
+        //Obtener el id del usuario
+        String hql = "select id from Usuario where username = :username";
+        Query query = session.createQuery(hql);
+        query.setParameter("username", username);
+
+        List<Integer> userID = query.list();
+
+        //Obtener las ofertas de únicamente ese usuario
+        hql = "from Oferta where idUsuario = :idUsuario";
+        query = session.createQuery(hql);
+        query.setParameter("idUsuario", userID.get(0));
+
+        System.out.println(userID.get(0));
+
+        String offer = "";
+        List<String> allOffers = new ArrayList<>();
+
+        List<Oferta> listOffer = query.list();
+        for (Oferta aOffer : listOffer) {
+            //Obtener la lista de etiquetas que tiene la oferta
+            hql = "from Tener";
+            query = session.createQuery(hql);
+
+            List<Tener> listTener = query.list();
+            List<Integer> listIDTags = new ArrayList<>();
+
+            for (Tener aTener : listTener) {
+                //Añado en una lista todas los id de las etiquetas que se encuentran en esa oferta
+                if (aTener.getId().getIdOferta() == aOffer.getId()) {
+                    listIDTags.add(aTener.getId().getIdEtiqueta());
+                }
+            }
+
+            //obtengo si la oferta es una oferta aprovada o no
+            boolean approvedOffer = approvedOffer(session, aOffer, listIDTags, listTener);
+
+            //Obtengo los nombres de esas etiquetas
+            String tagName = "";
+            for (int i = 0; i < listIDTags.size(); i++) {
+                hql = "select nombre from Etiqueta where id = :id";
+                query = session.createQuery(hql);
+                query.setParameter("id", listIDTags.get(i));
+
+                List<String> listTagName = query.list();
+                tagName += listTagName.get(0) + "_";
+            }
+
+            //Obtener el supermercado que tiene la oferta
+            hql = "from Estar";
+            query = session.createQuery(hql);
+
+            List<Estar> listEstar = query.list();
+            int marketId = -1;
+
+            for (Estar aEstar : listEstar) {
+                if (aEstar.getId().getIdOferta() == aOffer.getId()) {
+                    marketId = aEstar.getId().getIdSupermercado();
+                }
+            }
+
+            if (marketId != -1) {
+                hql = "from Supermercado where id = :id";
+                query = session.createQuery(hql);
+                query.setParameter("id", marketId);
+
+                List<Supermercado> listMarket = query.list();
+                double distancia = distanciaCoord(latitud, longitud, listMarket.get(0).getLatitud(), listMarket.get(0).getLongitud());
+
+                offer += username + "_" + aOffer.getPrecio() + "_" + aOffer.getPrecioUnidad() + "_" + listMarket.get(0).getNombre() + "_" + distancia + "_" + aOffer.getImagen() + "_" + approvedOffer + "_" + tagName + ":";
+                allOffers.add(offer);
+                offer = "";
+            }
+        }
+
+        return allOffers;
+    }
+
+    private boolean approvedOffer(Session session, Oferta oferta, List<Integer> listIDTags, List<Tener> listTener) {
+        int tagsCount = 0;
+        int idCompareMarket = -1;
+        int idCurrentMarket = -1;
+        boolean approvedOffer = false;
+
+        String hql = "select id from Oferta";
+        Query query = session.createQuery(hql);
+
+        List<Integer> allOffersID = query.list();
+
+        hql = "from Estar";
+        query = session.createQuery(hql);
+
+        List<Estar> market_offer_relation = query.list();
+
+        //Recorro todas las ofertas que existen
+        for (Integer offerID : allOffersID) {
+            Set compareListIDTags = new HashSet();
+
+            //Si la oferta es distinta a la que le paso entonces entra
+            if (offerID != oferta.getId()) {
+
+                //Compruebo si las ofertas están en el mismo supermercado
+                for (Estar aEstar : market_offer_relation) {
+                    if (aEstar.getId().getIdOferta() == offerID) {
+                        idCompareMarket = aEstar.getId().getIdSupermercado();
+                    } else if (aEstar.getId().getIdOferta() == oferta.getId()) {
+                        idCurrentMarket = aEstar.getId().getIdSupermercado();
+                    }
+                }
+
+                //Si están en el mismo, procedo a comprobar las etiquetas que tienen en común
+                if (idCompareMarket == idCurrentMarket) {
+                    //recorro toda la tabla 'Tener' y compruebo que el id de la oferta que está en el bucle ahora mismo es el mismo que el que ha encontrado en la tabla tener.
+                    //Si es el mismo, miro las etiquetas que tiene y las comparo con las de la oferta actual. Si hay más de 3 iguales entonces es una oferta aprobada.
+                    for (Tener aTener : listTener) {
+                        if (aTener.getId().getIdOferta() == offerID) {
+                            compareListIDTags.add(aTener.getId().getIdEtiqueta());
+                        }
+                    }
+
+                    //Ahora compruebo las etiquetas compartidas
+                    for (int i = 0; i < listIDTags.size(); i++) {
+                        if (compareListIDTags.contains(listIDTags.get(i))) {
+                            tagsCount++;
+                        }
+                    }
+
+                    if (tagsCount >= 3) {
+                        approvedOffer = true;
+                    }
+                }
+            }
+        }
+
+        return approvedOffer;
     }
 
 }

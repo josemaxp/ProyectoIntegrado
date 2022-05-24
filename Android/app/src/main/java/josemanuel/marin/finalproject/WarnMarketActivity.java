@@ -89,11 +89,16 @@ public class WarnMarketActivity extends AppCompatActivity implements SearchView.
             for (int i = 2; i < allOffers.length; i++) {
                 String[] ofertaFromServer = allOffers[i].split("_");
                 List<String> tags = new ArrayList<>();
-                //Obtengo las etiquetas, que están desde la posición 6 hasta el final
-                for (int j = 6; j < ofertaFromServer.length; j++) {
+                //Obtengo las etiquetas, que están desde la posición 7 hasta el final
+                for (int j = 7; j < ofertaFromServer.length; j++) {
                     tags.add(ofertaFromServer[j].toLowerCase());
                 }
-                ListOfferItem oferta = new ListOfferItem(ofertaFromServer[3], tags, ofertaFromServer[4], ofertaFromServer[1], ofertaFromServer[2], ofertaFromServer[0],"\\\\"+Connection.IP+"\\"+ofertaFromServer[5]);
+                boolean approvedOffer = false;
+                if(ofertaFromServer[6].equals("true")){
+                    approvedOffer = true;
+                }
+
+                ListOfferItem oferta = new ListOfferItem(ofertaFromServer[3], tags, ofertaFromServer[4], ofertaFromServer[1], ofertaFromServer[2], ofertaFromServer[0],"\\\\"+Connection.IP+"\\"+ofertaFromServer[5],approvedOffer);
                 totalOfertas.add(oferta);
             }
 
@@ -154,7 +159,6 @@ public class WarnMarketActivity extends AppCompatActivity implements SearchView.
             String offers = "";
             try {
                 offers = in.readLine();
-
             } catch (IOException e) {
                 e.printStackTrace();
             }

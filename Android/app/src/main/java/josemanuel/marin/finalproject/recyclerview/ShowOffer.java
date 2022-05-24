@@ -54,7 +54,7 @@ public class ShowOffer extends RecyclerView.Adapter<ShowOffer.OfferViewHolder> {
 
     public class OfferViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final TextView textViewOfferMarket, textViewOfferTags, textViewOfferDistance, textViewOfferPrice, textViewOfferPriceUnity, textViewOfferUsername;
-        public final ImageView imageViewOffer;
+        public final ImageView imageViewOffer,imageViewApprovedOffer;
         final ShowOffer mAdapter;
 
         OfferViewHolder(@NonNull View itemView, ShowOffer adapter) {
@@ -66,6 +66,7 @@ public class ShowOffer extends RecyclerView.Adapter<ShowOffer.OfferViewHolder> {
             textViewOfferPriceUnity = itemView.findViewById(R.id.textViewOfferPriceUnity);
             textViewOfferUsername = itemView.findViewById(R.id.textViewOfferUsername);
             imageViewOffer = itemView.findViewById(R.id.imageViewOffer);
+            imageViewApprovedOffer = itemView.findViewById(R.id.imageViewApprovedOffer);
             this.mAdapter = adapter;
             itemView.setOnClickListener((View.OnClickListener) this);
         }
@@ -87,6 +88,12 @@ public class ShowOffer extends RecyclerView.Adapter<ShowOffer.OfferViewHolder> {
             textViewOfferPrice.setText(item.getPrice());
             textViewOfferPriceUnity.setText("(" + item.getPriceUnity() + ")");
             textViewOfferUsername.setText(item.getUsername());
+
+            if(item.getApprovedOffer()){
+                imageViewApprovedOffer.setVisibility(View.VISIBLE);
+            }else{
+                imageViewApprovedOffer.setVisibility(View.GONE);
+            }
 
             File file = new File(item.getImage());
 

@@ -159,7 +159,7 @@ public class LocationFragment extends Fragment {
         try {
             username = getUser.execute().get().split(":");
             //LocalDateTime
-            File f = new File(getContext().getCacheDir(), "D"+LocalDate.now()+"%H"+LocalDateTime.now().getHour()+"%M"+LocalDateTime.now().getMinute()+"%S"+LocalDateTime.now().getSecond() + "%" + username[2]);
+            File f = new File(getContext().getCacheDir(), "D" + LocalDate.now() + "%H" + LocalDateTime.now().getHour() + "%M" + LocalDateTime.now().getMinute() + "%S" + LocalDateTime.now().getSecond() + "%" + username[2]);
             try {
                 f.createNewFile();
 
@@ -234,18 +234,10 @@ public class LocationFragment extends Fragment {
                     os.write(filebyte, 0, filebyte.length);
                 }
                 os.flush();
-                System.out.println(in.readLine());
-                //
+                in.readLine();
             } catch (IOException e) {
                 e.printStackTrace();
-            }/* finally {
-                try {
-                    if (os != null)
-                        os.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }*/
+            }
             return null;
         }
 

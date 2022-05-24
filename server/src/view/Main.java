@@ -21,6 +21,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
+import java.util.Set;
 import org.hibernate.Session;
 import util.HibernateUtil;
 
@@ -140,7 +141,7 @@ public class Main {
                     if (inputLine.split(":")[1].equals("Markets")) {
                         List<String> listMarkets = marketDAO.getAllMarkets(session);
                         String markets = "";
-                        
+
                         for (String aMarkets : listMarkets) {
                             markets += aMarkets + ":";
                         }
@@ -174,11 +175,11 @@ public class Main {
 
                     if (inputLine.split(":")[1].equals("relationTags")) {
                         String userTag = inputLine.split(":")[2];
-                        List<String> relationTags = tagDAO.getRelationTags(session, userTag);
+                        Set<String> relationTags = tagDAO.getRelationTags(session, userTag);
                         String tagsName = "";
 
-                        for (int i = 0; i < relationTags.size(); i++) {
-                            tagsName += relationTags.get(0) + ":";
+                        for (String s : relationTags) {
+                            tagsName += s + ":";
                         }
 
                         out.println("S:relationTags:" + tagsName);
@@ -190,6 +191,21 @@ public class Main {
 
                         String offers = "";
                         List<String> allOffers = ofertaDAO.showOffer(session, latitud, longitud);
+
+                        for (int i = 0; i < allOffers.size(); i++) {
+                            offers += allOffers.get(i);
+                        }
+
+                        out.println("S:showOffer:" + offers);
+                    }
+
+                    if (inputLine.split(":")[1].equals("myOffers")) {
+                        String usermane = inputLine.split(":")[2];
+                        Double latitud = Double.parseDouble(inputLine.split(":")[3]);
+                        Double longitud = Double.parseDouble(inputLine.split(":")[4]);
+
+                        String offers = "";
+                        List<String> allOffers = ofertaDAO.myOffers(session, username, latitud, longitud);
 
                         for (int i = 0; i < allOffers.size(); i++) {
                             offers += allOffers.get(i);

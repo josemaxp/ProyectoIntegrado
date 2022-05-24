@@ -1,5 +1,6 @@
 package josemanuel.marin.finalproject;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Button;
@@ -40,6 +41,7 @@ public class MyAccount extends AppCompatActivity {
         update = findViewById(R.id.buttonUpdate);
         myOffers = findViewById(R.id.buttonMyOffers);
         redeem = findViewById(R.id.buttonRedeem);
+
         initData = new initData();
         try {
             String[] userInfo = initData.execute().get().split(":");
@@ -72,6 +74,16 @@ public class MyAccount extends AppCompatActivity {
                     error.setText("Las contraseñas no coinciden.");
                 }
             }
+        });
+
+        myOffers.setOnClickListener(v -> {
+            Intent intent = new Intent(MyAccount.this, MyOffers.class);
+            startActivity(intent);
+        });
+
+        redeem.setOnClickListener(v -> {
+            Intent intent = new Intent(MyAccount.this, RedeemPoints.class);
+            startActivity(intent);
         });
     }
 

@@ -7,7 +7,9 @@ package dao;
 
 import entity.Relacionetiqueta;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -32,11 +34,11 @@ public class EtiquetaDAO {
     /**
      * Get top 3 relation tags.
      */
-    public List<String> getRelationTags(Session session, String etiqueta) {
+    public Set getRelationTags(Session session, String etiqueta) {
         String hql = "select id from Etiqueta where nombre like :nombre";
         Query query = session.createQuery(hql);
         query.setParameter("nombre", etiqueta);
-        List<String> tagNames = new ArrayList<>();
+        Set tagNames = new HashSet<>();
 
         //Obtengo el id de la etiqueta escrita por el usuario
         List<Integer> tag = query.list();

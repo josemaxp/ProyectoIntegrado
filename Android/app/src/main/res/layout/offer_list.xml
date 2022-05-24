@@ -74,8 +74,6 @@
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageViewOffer"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/imageViewOffer" />
 
             <TextView
@@ -118,6 +116,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageViewOffer"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageViewApprovedOffer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewOfferDistance"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textViewOfferDistance"
+                app:srcCompat="@drawable/approved_offfer" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

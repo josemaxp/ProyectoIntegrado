@@ -1,16 +1,21 @@
 package josemanuel.marin.finalproject.controller;
 
+import android.os.AsyncTask;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class Connection {
-    static Socket kkSocket;
+    static Socket socket;
     public static String IP = "192.168.1.139";
 
     public Connection() {
         try {
-            kkSocket = new Socket(IP, 4444);
+            socket = new Socket(IP, 4444);
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host: .");
             System.exit(1);
@@ -22,6 +27,6 @@ public class Connection {
     }
 
     public static Socket getSocket() {
-        return kkSocket;
+        return socket;
     }
 }
