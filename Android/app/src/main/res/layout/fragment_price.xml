@@ -7,96 +7,109 @@
     android:background="#292A33"
     tools:context=".fragments.PriceFragment">
 
-    <TextView
-        android:id="@+id/textViewPriceTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:text="@string/price"
-        android:textColor="#ACB0CC"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textViewPriceUnityTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:text="@string/price_unity"
-        android:textColor="#ACB0CC"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPrice" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/editTextPrice"
-        android:layout_width="175dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/et_style"
-        android:ems="10"
-        android:inputType="numberDecimal|numberSigned"
-        android:padding="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPriceTitle" />
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="342dp"
+                android:layout_height="276dp"
+                android:layout_marginTop="32dp"
+                android:src="@drawable/price_help"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextPriceUnity" />
 
-    <EditText
-        android:id="@+id/editTextPriceUnity"
-        android:layout_width="175dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/et_style"
-        android:ems="10"
-        android:inputType="numberDecimal|numberSigned"
-        android:padding="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPriceUnityTitle" />
+            <TextView
+                android:id="@+id/textViewEuro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="€"
+                android:textColor="#ACB0CC"
+                android:textSize="34sp"
+                app:layout_constraintBottom_toBottomOf="@+id/editTextPrice"
+                app:layout_constraintStart_toEndOf="@+id/editTextPrice"
+                app:layout_constraintTop_toTopOf="@+id/editTextPrice" />
 
-    <TextView
-        android:id="@+id/textViewEuro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="€"
-        android:textColor="#ACB0CC"
-        android:textSize="34sp"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextPrice"
-        app:layout_constraintStart_toEndOf="@+id/editTextPrice"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPriceTitle" />
+            <TextView
+                android:id="@+id/textViewPriceUnityTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:text="@string/price_unity"
+                android:textColor="#ACB0CC"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextPrice" />
 
-    <TextView
-        android:id="@+id/textViewEuroUnity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="€  /"
-        android:textColor="#ACB0CC"
-        android:textSize="34sp"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextPriceUnity"
-        app:layout_constraintStart_toEndOf="@+id/editTextPriceUnity"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPriceUnityTitle"
-        app:layout_constraintVertical_bias="1.0" />
+            <TextView
+                android:id="@+id/textViewEuroUnity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="€  /"
+                android:textColor="#ACB0CC"
+                android:textSize="34sp"
+                app:layout_constraintBottom_toBottomOf="@+id/editTextPriceUnity"
+                app:layout_constraintStart_toEndOf="@+id/editTextPriceUnity"
+                app:layout_constraintTop_toBottomOf="@+id/textViewPriceUnityTitle" />
 
-    <Spinner
-        android:id="@+id/spinnerUnity"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:entries="@array/unidades"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewEuroUnity"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textViewEuroUnity"
-        app:layout_constraintTop_toTopOf="@+id/textViewEuroUnity"
-        app:layout_constraintVertical_bias="0.571" />
+            <TextView
+                android:id="@+id/textViewPriceTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:text="@string/price"
+                android:textColor="#ACB0CC"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Spinner
+                android:id="@+id/spinnerUnity"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:entries="@array/unidades"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewEuroUnity"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textViewEuroUnity"
+                app:layout_constraintTop_toTopOf="@+id/textViewEuroUnity" />
+
+            <EditText
+                android:id="@+id/editTextPriceUnity"
+                android:layout_width="175dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/et_style"
+                android:ems="10"
+                android:inputType="numberDecimal|numberSigned"
+                android:padding="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewPriceUnityTitle" />
+
+            <EditText
+                android:id="@+id/editTextPrice"
+                android:layout_width="175dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/et_style"
+                android:ems="10"
+                android:inputType="numberDecimal|numberSigned"
+                android:padding="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewPriceTitle" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

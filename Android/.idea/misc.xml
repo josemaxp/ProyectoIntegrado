@@ -7,8 +7,10 @@
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/drawable/boton_inicio.xml" value="0.2035" />
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/drawable/button_style.xml" value="0.118" />
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/drawable/et_style.xml" value="0.22777777777777777" />
+        <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/drawable/fastfood.xml" value="0.2035" />
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/drawable/imageView_style.xml" value="0.118" />
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/drawable/imageview_style.xml" value="0.118" />
+        <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/drawable/more_options_icon.xml" value="0.2035" />
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/drawable/offer_approved.xml" value="0.2035" />
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/drawable/spinner_item.xml" value="0.118" />
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/drawable/spinner_style.xml" value="0.118" />
@@ -23,13 +25,16 @@
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/layout/fragment_price.xml" value="0.2359375" />
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/layout/fragment_tags.xml" value="0.21403508771929824" />
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/layout/fragment_tags2.xml" value="0.264" />
+        <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/layout/ip_dialog.xml" value="0.25" />
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/layout/login.xml" value="0.25" />
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/layout/login2.xml" value="0.264" />
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/layout/my_account.xml" value="0.1" />
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/layout/my_offers.xml" value="0.25" />
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/layout/offer_list.xml" value="0.24497991967871485" />
+        <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/layout/offer_menu.xml" value="0.25" />
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/layout/redeem_points.xml" value="0.24895833333333334" />
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/layout/register.xml" value="0.25" />
+        <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/menu/offer_menu.xml" value="0.25" />
       </map>
     </option>
   </component>

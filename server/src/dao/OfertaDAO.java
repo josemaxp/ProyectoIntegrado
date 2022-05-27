@@ -97,7 +97,7 @@ public class OfertaDAO {
                 List<Supermercado> listMarket = query.list();
                 double distancia = distanciaCoord(latitud, longitud, listMarket.get(0).getLatitud(), listMarket.get(0).getLongitud());
 
-                offer += offerUsername.get(0) + "_" + aOffer.getPrecio() + "_" + aOffer.getPrecioUnidad() + "_" + listMarket.get(0).getNombre() + "_" + distancia + "_" + aOffer.getImagen() + "_" + approvedOffer + "_" + tagName + ":";
+                offer += offerUsername.get(0) + "_" + aOffer.getPrecio() + "_" + aOffer.getPrecioUnidad() + "_" + listMarket.get(0).getNombre() + "_" + distancia + "_" + aOffer.getImagen() + "_" + approvedOffer + "_" + aOffer.getId() + "_" + listMarket.get(0).getLatitud() + "_" + listMarket.get(0).getLongitud() + "_" + tagName + ":";
                 allOffers.add(offer);
                 offer = "";
             }
@@ -122,6 +122,12 @@ public class OfertaDAO {
         for (Usuario aUser : listUser) {
             userID = aUser.getId();
         }
+
+        hql = "update Usuario set puntos = puntos+100 where id like :id";
+        query = session.createQuery(hql);
+        query.setParameter("id", userID);
+
+        query.executeUpdate();
 
         try {
             tx = session.beginTransaction();
@@ -378,7 +384,7 @@ public class OfertaDAO {
                 List<Supermercado> listMarket = query.list();
                 double distancia = distanciaCoord(latitud, longitud, listMarket.get(0).getLatitud(), listMarket.get(0).getLongitud());
 
-                offer += username + "_" + aOffer.getPrecio() + "_" + aOffer.getPrecioUnidad() + "_" + listMarket.get(0).getNombre() + "_" + distancia + "_" + aOffer.getImagen() + "_" + approvedOffer + "_" + tagName + ":";
+                offer += username + "_" + aOffer.getPrecio() + "_" + aOffer.getPrecioUnidad() + "_" + listMarket.get(0).getNombre() + "_" + distancia + "_" + aOffer.getImagen() + "_" + approvedOffer + "_" + aOffer.getId() + "_" + listMarket.get(0).getLatitud() + "_" + listMarket.get(0).getLongitud() + "_" + tagName + ":";
                 allOffers.add(offer);
                 offer = "";
             }
@@ -393,10 +399,10 @@ public class OfertaDAO {
         int idCurrentMarket = -1;
         boolean approvedOffer = false;
 
-        String hql = "select id from Oferta";
+        String hql = "from Oferta";
         Query query = session.createQuery(hql);
 
-        List<Integer> allOffersID = query.list();
+        List<Oferta> allOffers = query.list();
 
         hql = "from Estar";
         query = session.createQuery(hql);
@@ -404,15 +410,15 @@ public class OfertaDAO {
         List<Estar> market_offer_relation = query.list();
 
         //Recorro todas las ofertas que existen
-        for (Integer offerID : allOffersID) {
+        for (Oferta offer : allOffers) {
             Set compareListIDTags = new HashSet();
 
-            //Si la oferta es distinta a la que le paso entonces entra
-            if (offerID != oferta.getId()) {
+            //Si la oferta es distinta a la que le paso y el usuario es distinto entonces entra
+            if (offer.getId() != oferta.getId() && offer.getIdUsuario() != oferta.getIdUsuario()) {
 
                 //Compruebo si las ofertas están en el mismo supermercado
                 for (Estar aEstar : market_offer_relation) {
-                    if (aEstar.getId().getIdOferta() == offerID) {
+                    if (aEstar.getId().getIdOferta() == offer.getId()) {
                         idCompareMarket = aEstar.getId().getIdSupermercado();
                     } else if (aEstar.getId().getIdOferta() == oferta.getId()) {
                         idCurrentMarket = aEstar.getId().getIdSupermercado();
@@ -424,7 +430,7 @@ public class OfertaDAO {
                     //recorro toda la tabla 'Tener' y compruebo que el id de la oferta que está en el bucle ahora mismo es el mismo que el que ha encontrado en la tabla tener.
                     //Si es el mismo, miro las etiquetas que tiene y las comparo con las de la oferta actual. Si hay más de 3 iguales entonces es una oferta aprobada.
                     for (Tener aTener : listTener) {
-                        if (aTener.getId().getIdOferta() == offerID) {
+                        if (aTener.getId().getIdOferta() == offer.getId()) {
                             compareListIDTags.add(aTener.getId().getIdEtiqueta());
                         }
                     }
@@ -444,6 +450,69 @@ public class OfertaDAO {
         }
 
         return approvedOffer;
+    }
+
+    public void deleteOffer(Session session, int id) {
+
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+
+            Oferta oferta = (Oferta) session.get(Oferta.class, id);
+            session.delete(oferta);
+
+            String hql = "from Estar";
+            Query query = session.createQuery(hql);
+
+            List<Estar> offersInMarkets = query.list();
+
+            for (Estar aEstar : offersInMarkets) {
+                if (aEstar.getId().getIdOferta() == id) {
+                    hql = "delete Estar where id = :id";
+                    query = session.createQuery(hql);
+                    query.setParameter("id", aEstar.getId());
+
+                    query.executeUpdate();
+                }
+            }
+            
+            hql = "from Publicar";
+            query = session.createQuery(hql);
+
+            List<Publicar> offersUsers = query.list();
+
+            for (Publicar aPublicar : offersUsers) {
+                if (aPublicar.getId().getIdOferta() == id) {
+                    hql = "delete Publicar where id = :id";
+                    query = session.createQuery(hql);
+                    query.setParameter("id", aPublicar.getId());
+
+                    query.executeUpdate();
+                }
+            }
+            
+            hql = "from Tener";
+            query = session.createQuery(hql);
+
+            List<Tener> offersTags = query.list();
+
+            for (Tener aTener : offersTags) {
+                if (aTener.getId().getIdOferta() == id) {
+                    hql = "delete Tener where id = :id";
+                    query = session.createQuery(hql);
+                    query.setParameter("id", aTener.getId());
+
+                    query.executeUpdate();
+                }
+            }
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }
     }
 
 }

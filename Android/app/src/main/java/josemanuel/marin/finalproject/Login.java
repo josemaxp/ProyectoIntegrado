@@ -2,7 +2,9 @@ package josemanuel.marin.finalproject;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -13,6 +15,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,15 +34,17 @@ import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import josemanuel.marin.finalproject.controller.Connection;
+import josemanuel.marin.finalproject.dialogs.IPDialog;
 
 public class Login extends AppCompatActivity implements LocationListener {
     Button loginButton, registerButton, guestButton;
     EditText username, password;
     TextView error;
+    ImageView imageViewIP;
     public static Double latitud, longitud;
     public static String direccion;
-    connectServer Con;
     login login;
+    connectServer Con;
     LocationManager locationManager;
     PrintWriter out;
     BufferedReader in;
@@ -49,59 +54,71 @@ public class Login extends AppCompatActivity implements LocationListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
-        if (Con == null) {
-            Con = new connectServer();
-            Con.execute();
-        }
-
-        //Get location
-        checkLocationPermissions();
-        getLocationManager();
-
         username = findViewById(R.id.LoginUsernameText);
         password = findViewById(R.id.LoginPasswordText);
         loginButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButtonLogin);
         guestButton = findViewById(R.id.guestButton);
         error = findViewById(R.id.textViewError);
+        imageViewIP = findViewById(R.id.imageViewIP);
+
+        imageViewIP.setOnClickListener(v -> {
+            IPDialog dialogo = new IPDialog();
+            dialogo.show(getSupportFragmentManager(), "IP");
+        });
+
+        //Get location
+        checkLocationPermissions();
+        getLocationManager();
+
+        SharedPreferences preferences = getSharedPreferences("IP", MODE_PRIVATE);
+        String ip = preferences.getString("IP","");
+
+        preferences = getSharedPreferences("USERNAME", MODE_PRIVATE);
+        String usernameSaved = preferences.getString("USERNAME","");
+
+        preferences = getSharedPreferences("PASSWORD", MODE_PRIVATE);
+        String passwordSaved = preferences.getString("PASSWORD","");
+
+        System.out.println(usernameSaved+","+passwordSaved);
+
+        if(!ip.equals("")){
+            Connection.IP = ip;
+            Con = new connectServer();
+            Con.execute();
+        }
+
+        if(!usernameSaved.equals("") && !passwordSaved.equals("")){
+            username.setText(usernameSaved);
+            password.setText(passwordSaved);
+        }
 
         loginButton.setOnClickListener(view -> {
-            System.out.println(username.getText().toString());
-            login = new login();
-            try {
-                error.setText(login.execute(username.getText().toString(), password.getText().toString()).get());
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
+            if (!Connection.IP.equals("")) {
+                System.out.println(username.getText().toString());
+                login = new login();
+                try {
+                    error.setText(login.execute(username.getText().toString(), password.getText().toString()).get());
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
         guestButton.setOnClickListener(view -> {
-            Intent intent = new Intent(Login.this, WarnMarketActivity.class);
-            startActivity(intent);
+            if (!Connection.IP.equals("")) {
+                Intent intent = new Intent(Login.this, WarnMarketActivity.class);
+                startActivity(intent);
+            }
         });
 
         registerButton.setOnClickListener(view -> {
-            Intent intent = new Intent(Login.this, Register.class);
-            startActivity(intent);
+            if (!Connection.IP.equals("")) {
+                Intent intent = new Intent(Login.this, Register.class);
+                startActivity(intent);
+            }
         });
-    }
 
-    class connectServer extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            new Connection();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-        }
     }
 
     class login extends AsyncTask<String, String, String> {
@@ -127,6 +144,16 @@ public class Login extends AppCompatActivity implements LocationListener {
                     String fromServer = in.readLine();
 
                     if (fromServer.split(":")[2].equals("true")) {
+                        SharedPreferences preferences = getSharedPreferences("USERNAME", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("USERNAME", username.getText().toString());
+                        editor.apply();
+
+                        SharedPreferences preferences2 = getSharedPreferences("PASSWORD", MODE_PRIVATE);
+                        SharedPreferences.Editor editor2 = preferences2.edit();
+                        editor2.putString("PASSWORD", password.getText().toString());
+                        editor2.apply();
+
                         Intent intent = new Intent(Login.this, WarnMarketActivity.class);
                         startActivity(intent);
                     } else {
@@ -201,6 +228,24 @@ public class Login extends AppCompatActivity implements LocationListener {
                 }
                 return;
             }
+        }
+    }
+
+    class connectServer extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            Connection conexion = new Connection();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
         }
     }
 }

@@ -220,7 +220,6 @@ public class Main {
 
                         File userImages = new File("images/" + username);
                         if (!userImages.exists()) {
-                            System.out.println("Creando carpeta de imágenes para el usuario " + username);
                             userImages.mkdirs();
                         }
 
@@ -234,6 +233,7 @@ public class Main {
                         int numeroBytesLeidos = 0;
 
                         while (numeroBytesLeidos != filebyte.length) {
+
                             numeroBytesLeidos += is.read(filebyte, 0, filebyte.length);
                             bos.write(filebyte, 0, numeroBytesLeidos);
                         }
@@ -266,6 +266,12 @@ public class Main {
                         Float longitud = Float.parseFloat(inputLine.split(":")[10]);
 
                         ofertaDAO.addOffer(session, username, tagsList, precio, precioUnidad, unidad, imagen, nombreSupermercado, direccion, longitud, latitud);
+                    }
+                    
+                    if (inputLine.split(":")[1].equals("deleteOffer")) {
+                        int offerID = Integer.parseInt(inputLine.split(":")[2]);
+
+                        ofertaDAO.deleteOffer(session, offerID);
                     }
                 }
             } catch (IOException ex) {
