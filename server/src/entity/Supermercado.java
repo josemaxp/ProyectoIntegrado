@@ -1,5 +1,5 @@
 package entity;
-// Generated 30-abr-2022 18:28:06 by Hibernate Tools 4.3.1
+// Generated 28-may-2022 19:18:53 by Hibernate Tools 4.3.1
 
 
 
@@ -14,15 +14,21 @@ public class Supermercado  implements java.io.Serializable {
      private Float longitud;
      private Float latitud;
      private String direccion;
+     private String poblacion;
+     private String provincia;
+     private String comunidadAutonoma;
 
     public Supermercado() {
     }
 
-    public Supermercado(String nombre, Float longitud, Float latitud, String direccion) {
+    public Supermercado(String nombre, Float longitud, Float latitud, String direccion, String poblacion, String provincia, String comunidadAutonoma) {
        this.nombre = nombre;
        this.longitud = longitud;
        this.latitud = latitud;
        this.direccion = direccion;
+       this.poblacion = poblacion;
+       this.provincia = provincia;
+       this.comunidadAutonoma = comunidadAutonoma;
     }
    
     public Integer getId() {
@@ -59,6 +65,27 @@ public class Supermercado  implements java.io.Serializable {
     
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+    public String getPoblacion() {
+        return this.poblacion;
+    }
+    
+    public void setPoblacion(String poblacion) {
+        this.poblacion = poblacion;
+    }
+    public String getProvincia() {
+        return this.provincia;
+    }
+    
+    public void setProvincia(String provincia) {
+        this.provincia = provincia;
+    }
+    public String getComunidadAutonoma() {
+        return this.comunidadAutonoma;
+    }
+    
+    public void setComunidadAutonoma(String comunidadAutonoma) {
+        this.comunidadAutonoma = comunidadAutonoma;
     }
 
 

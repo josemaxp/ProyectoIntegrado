@@ -17,6 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import util.ConnectionManager;
 import view.Main;
 
 /**
@@ -59,9 +60,9 @@ public class LoginController implements Initializable {
                 textFieldLoginError.setText("Los campos no pueden estar vacíos.");
 
             } else {
-                Main.out.println("CL:" + "login:" + textFieldLoginUsername.getText() + ":" + textFieldLoginPassword.getText());
+                ConnectionManager.out.println("CL:" + "login:" + textFieldLoginUsername.getText() + ":" + textFieldLoginPassword.getText());
 
-                String fromServer = Main.in.readLine();
+                String fromServer = ConnectionManager.in.readLine();
 
                 if (fromServer.split(":")[2].equals("true")) {
                     textFieldLoginError.setText("Correct login.");
@@ -96,6 +97,11 @@ public class LoginController implements Initializable {
 
     @FXML
     private void onClickGuest(MouseEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/view/MainScreen.fxml"));
+            Main.changeScene(root, "Offers");
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
-
 }

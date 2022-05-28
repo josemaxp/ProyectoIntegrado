@@ -97,7 +97,7 @@ public class OfertaDAO {
                 List<Supermercado> listMarket = query.list();
                 double distancia = distanciaCoord(latitud, longitud, listMarket.get(0).getLatitud(), listMarket.get(0).getLongitud());
 
-                offer += offerUsername.get(0) + "_" + aOffer.getPrecio() + "_" + aOffer.getPrecioUnidad() + "_" + listMarket.get(0).getNombre() + "_" + distancia + "_" + aOffer.getImagen() + "_" + approvedOffer + "_" + aOffer.getId() + "_" + listMarket.get(0).getLatitud() + "_" + listMarket.get(0).getLongitud() + "_" + tagName + ":";
+                offer += offerUsername.get(0) + "_" + aOffer.getPrecio() + "_" + aOffer.getPrecioUnidad() + "_" + listMarket.get(0).getNombre() + "_" + distancia + "_" + aOffer.getImagen() + "_" + approvedOffer + "_" + aOffer.getId() + "_" + listMarket.get(0).getLatitud() + "_" + listMarket.get(0).getLongitud() + "_" + listMarket.get(0).getPoblacion() + "_" + listMarket.get(0).getProvincia() + "_" + listMarket.get(0).getComunidadAutonoma() + "_" + tagName + ":";
                 allOffers.add(offer);
                 offer = "";
             }
@@ -149,7 +149,12 @@ public class OfertaDAO {
             }
 
             if (marketID == -1) {
-                Supermercado supermercado = new Supermercado(nombreSupermercado, longitud, latitud, direccion);
+                String direccionLugar = direccion.split("|")[0];
+                String poblacion = direccion.split("|")[1];
+                String provincia = direccion.split("|")[2];
+                String comunidadAutonoma = direccion.split("|")[3];
+
+                Supermercado supermercado = new Supermercado(nombreSupermercado, longitud, latitud, direccionLugar, poblacion, provincia, comunidadAutonoma);
                 supermercadoID = (Integer) session.save(supermercado);
 
                 EstarId estarId = new EstarId(supermercadoID, ofertaID);
@@ -384,7 +389,7 @@ public class OfertaDAO {
                 List<Supermercado> listMarket = query.list();
                 double distancia = distanciaCoord(latitud, longitud, listMarket.get(0).getLatitud(), listMarket.get(0).getLongitud());
 
-                offer += username + "_" + aOffer.getPrecio() + "_" + aOffer.getPrecioUnidad() + "_" + listMarket.get(0).getNombre() + "_" + distancia + "_" + aOffer.getImagen() + "_" + approvedOffer + "_" + aOffer.getId() + "_" + listMarket.get(0).getLatitud() + "_" + listMarket.get(0).getLongitud() + "_" + tagName + ":";
+                offer += username + "_" + aOffer.getPrecio() + "_" + aOffer.getPrecioUnidad() + "_" + listMarket.get(0).getNombre() + "_" + distancia + "_" + aOffer.getImagen() + "_" + approvedOffer + "_" + aOffer.getId() + "_" + listMarket.get(0).getLatitud() + "_" + listMarket.get(0).getLongitud() + "_" + listMarket.get(0).getPoblacion() + "_" + listMarket.get(0).getProvincia() + "_" + listMarket.get(0).getComunidadAutonoma() + "_" + tagName + ":";
                 allOffers.add(offer);
                 offer = "";
             }
@@ -476,7 +481,7 @@ public class OfertaDAO {
                     query.executeUpdate();
                 }
             }
-            
+
             hql = "from Publicar";
             query = session.createQuery(hql);
 
@@ -491,7 +496,7 @@ public class OfertaDAO {
                     query.executeUpdate();
                 }
             }
-            
+
             hql = "from Tener";
             query = session.createQuery(hql);
 

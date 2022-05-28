@@ -16,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import util.ConnectionManager;
 import view.Main;
 
 /**
@@ -56,10 +57,10 @@ public class RegisterController implements Initializable {
             textFieldError.setText("Los campos no pueden estar vacíos.");
         } else {
             if (texxtFieldRepeatPassword.getText().equals(textFieldPassword.getText())) {
-                Main.out.println("CL:" + "register:" + textFieldUsername.getText() + ":" + textFieldPassword.getText() + ":" + textFieldemail.getText());
+                ConnectionManager.out.println("CL:" + "register:" + textFieldUsername.getText() + ":" + textFieldPassword.getText() + ":" + textFieldemail.getText());
                 String fromServer;
                 try {
-                    fromServer = Main.in.readLine();
+                    fromServer = ConnectionManager.in.readLine();
                     if (fromServer.split(":")[2].equals("true")) {
                         textFieldError.setText("Usuario creado.");
                     } else {

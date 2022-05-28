@@ -64,6 +64,9 @@ CREATE TABLE supermercado(
     longitud float,
     latitud float,
     direccion varchar(1000),
+poblacion varchar(200),
+provincia  varchar(200),
+comunidadAutonoma varchar(200),
     CONSTRAINT supermercado_pk PRIMARY KEY (id)
 );
 

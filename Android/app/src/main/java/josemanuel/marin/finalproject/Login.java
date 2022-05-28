@@ -42,7 +42,7 @@ public class Login extends AppCompatActivity implements LocationListener {
     TextView error;
     ImageView imageViewIP;
     public static Double latitud, longitud;
-    public static String direccion;
+    public static String direccion, poblacion, comunidadAutonoma, provincia;
     login login;
     connectServer Con;
     LocationManager locationManager;
@@ -189,9 +189,13 @@ public class Login extends AppCompatActivity implements LocationListener {
             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
             List<Address> addresses = geocoder.getFromLocation(loc.getLatitude(), loc.getLongitude(), 1);
 
-            direccion = addresses.get(0).getAddressLine(0);
             latitud = addresses.get(0).getLatitude();
             longitud = addresses.get(0).getLongitude();
+            poblacion = addresses.get(0).getLocality();
+            provincia = addresses.get(0).getSubAdminArea();
+            comunidadAutonoma = addresses.get(0).getAdminArea();
+            direccion = addresses.get(0).getAddressLine(0) +"|"+poblacion+"|"+provincia+"|"+comunidadAutonoma;
+
         } catch (Exception e) {
             e.printStackTrace();
         }

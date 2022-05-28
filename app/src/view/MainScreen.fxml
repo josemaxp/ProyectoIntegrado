@@ -4,6 +4,7 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
+<?import io.github.palexdev.materialfx.controls.legacy.MFXLegacyComboBox?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
@@ -18,7 +19,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #292A33;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainScreenController">
    <children>
-      <VBox layoutX="-100.0" opacity="0.0" prefHeight="400.0" prefWidth="150.0">
+      <VBox opacity="0.0" prefHeight="400.0" prefWidth="150.0">
          <children>
             <Pane prefHeight="62.0" prefWidth="150.0">
                <children>
@@ -56,11 +57,14 @@
             <Font name="SansSerif Bold" size="36.0" />
          </font>
       </Label>
-      <AutoCompleteTextField fx:id="autocompleteSearch" layoutX="146.0" layoutY="62.0" minHeight="25.0" prefHeight="25.0" prefWidth="307.0" />
-      <FontAwesomeIconView fill="#fd93b2" glyphName="SEARCH" layoutX="429.0" layoutY="81.0" size="20" text="" wrappingWidth="24.0" />
-      <HBox fx:id="hboxOffer" layoutX="21.0" layoutY="112.0" prefHeight="260.0" prefWidth="550.0">
+      <AutoCompleteTextField fx:id="autocompleteSearch" layoutX="106.0" layoutY="59.0" minHeight="25.0" prefHeight="26.0" prefWidth="388.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 10;" />
+      <FontAwesomeIconView fill="#fd93b2" glyphName="SEARCH" layoutX="470.0" layoutY="79.0" size="20" text="" wrappingWidth="24.0" />
+      <MFXLegacyComboBox fx:id="comboBoxPoblacion" invalidLineColor="#fc447a" layoutX="102.0" layoutY="101.0" lineColor="#fd93b2" prefHeight="26.0" prefWidth="110.0" unfocusedLineColor="#292a33" />
+      <MFXLegacyComboBox fx:id="comboBoxProvincia" invalidLineColor="#fc447a" layoutX="244.0" layoutY="101.0" lineColor="#fd93b2" prefHeight="25.0" prefWidth="110.0" unfocusedLineColor="#292a33" />
+      <MFXLegacyComboBox fx:id="comboBoxComunidadAutonoma" invalidLineColor="#fc447a" layoutX="385.0" layoutY="101.0" lineColor="#fd93b2" prefHeight="25.0" prefWidth="110.0" unfocusedLineColor="#292a33" />
+      <HBox fx:id="hboxOffer" layoutX="21.0" layoutY="142.0" prefHeight="230.0" prefWidth="550.0">
          <children>
-            <MFXScrollPane fx:id="scrollPaneOffer" prefHeight="260.0" prefWidth="550.0" style="-fx-background-color: #292A33;" HBox.hgrow="ALWAYS">
+            <MFXScrollPane fx:id="scrollPaneOffer" prefHeight="250.0" prefWidth="550.0" style="-fx-background-color: #292A33;" HBox.hgrow="ALWAYS">
                <content>
                   <GridPane fx:id="gridPaneOffer" prefHeight="0.0" prefWidth="0.0">
                     <columnConstraints>

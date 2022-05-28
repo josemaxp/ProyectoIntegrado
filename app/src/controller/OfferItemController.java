@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
+import model.OfferItem;
 
 /**
  * FXML Controller class
@@ -25,13 +26,15 @@ public class OfferItemController implements Initializable {
     @FXML
     private Text Tags;
     @FXML
-    private Text distance;
-    @FXML
     private Text Price;
     @FXML
     private Text PriceUnity;
     @FXML
     private Text user;
+    @FXML
+    private ImageView imageApproved;
+
+    private OfferItem offerItem;
 
     /**
      * Initializes the controller class.
@@ -39,6 +42,26 @@ public class OfferItemController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
-    
+    }
+
+    public void setData(OfferItem offerItem) {
+        this.offerItem = offerItem;
+
+        String tags = "";
+        for (int i = 0; i < offerItem.getTags().size(); i++) {
+            //Capitalizo las palabras para mostrarlas
+            if (i < offerItem.getTags().size() - 1) {
+                tags += offerItem.getTags().get(i).substring(0, 1).toUpperCase() + offerItem.getTags().get(i).substring(1) + " - ";
+            } else {
+                tags += offerItem.getTags().get(i).substring(0, 1).toUpperCase() + offerItem.getTags().get(i).substring(1);
+            }
+        }
+
+        market.setText(offerItem.getMarket());
+        Tags.setText(tags);
+        Price.setText(offerItem.getPrice());
+        PriceUnity.setText("(" +offerItem.getPriceUnity()+")");
+        user.setText(offerItem.getUsername());
+    }
+
 }

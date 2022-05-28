@@ -18,6 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import util.ConnectionManager;
 
 /**
  *
@@ -29,10 +30,6 @@ public class Main extends Application {
     private static double yOffset = 0.0;
     private static Scene scene;
     private static Stage stage;
-    private static String IP ="localhost";
-    public static Socket kkSocket = null;
-    public static PrintWriter out = null;
-    public static BufferedReader in = null;
 
     /**
      * Move the stage
@@ -75,17 +72,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        try {
-            kkSocket = new Socket(IP, 4444);
-            out = new PrintWriter(kkSocket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(kkSocket.getInputStream()));
-        } catch (UnknownHostException e) {
-            System.err.println("Don't know about host: .");
-            System.exit(1);
-        } catch (IOException e) {
-            System.err.println("Couldn't get I/O for the connection to: .");
-            System.exit(1);
-        }
+        new ConnectionManager().getConnection();
 
         launch(args);
     }

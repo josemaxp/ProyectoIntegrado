@@ -11,21 +11,26 @@ import java.util.List;
  * @author josem
  */
 public class OfferItem {
+
     String market;
     List<String> tags;
-    String distance;
     String price;
     String priceUnity;
     String username;
     //String image;
+    String poblacion;
+    String provincia;
+    String comunidadAutonoma;
 
-    public OfferItem(String market, List<String> tags, String distance, String price, String priceUnity, String username) {
+    public OfferItem(String market, List<String> tags, String price, String priceUnity, String username,String image, boolean approvedOffer, int id, String poblacion, String provincia, String comunidadAutonoma) {
         this.market = market;
         this.tags = tags;
-        this.distance = distance;
         this.price = price;
         this.priceUnity = priceUnity;
         this.username = username;
+        this.poblacion = poblacion;
+        this.provincia = provincia;
+        this.comunidadAutonoma = comunidadAutonoma;
     }
 
     public String getMarket() {
@@ -34,14 +39,6 @@ public class OfferItem {
 
     public List<String> getTags() {
         return tags;
-    }
-
-    public String getDistance() {
-        return distance;
-    }
-
-    public void setDistance(String distance) {
-        this.distance = distance;
     }
 
     public String getPrice() {
@@ -54,9 +51,5 @@ public class OfferItem {
 
     public String getUsername() {
         return username;
-    }
-
-    public int compareTo(OfferItem o) {
-        return distance.compareTo(o.distance);
     }
 }

@@ -89,8 +89,8 @@ public class WarnMarketActivity extends AppCompatActivity implements SearchView.
             for (int i = 2; i < allOffers.length; i++) {
                 String[] ofertaFromServer = allOffers[i].split("_");
                 List<String> tags = new ArrayList<>();
-                //Obtengo las etiquetas, que están desde la posición 10 hasta el final
-                for (int j = 10; j < ofertaFromServer.length; j++) {
+                //Obtengo las etiquetas, que están desde la posición 13 hasta el final
+                for (int j = 13; j < ofertaFromServer.length; j++) {
                     tags.add(ofertaFromServer[j].toLowerCase());
                 }
                 boolean approvedOffer = false;
