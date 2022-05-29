@@ -52,4 +52,16 @@ public class OfferItem {
     public String getUsername() {
         return username;
     }
+
+    public String getPoblacion() {
+        return poblacion;
+    }
+
+    public String getProvincia() {
+        return provincia;
+    }
+
+    public String getComunidadAutonoma() {
+        return comunidadAutonoma;
+    }
 }

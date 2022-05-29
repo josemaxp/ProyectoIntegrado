@@ -5,26 +5,26 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="150.0" prefWidth="500.0" style="-fx-background-color: #3F414E; -fx-background-radius: 25;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.OfferItemController">
+<AnchorPane id="AnchorPane" maxWidth="400.0" minHeight="150.0" minWidth="400.0" prefHeight="150.0" prefWidth="400.0" style="-fx-background-color: #3F414E; -fx-background-radius: 25;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.OfferItemController">
    <children>
-      <ImageView fx:id="image" fitHeight="100.0" fitWidth="100.0" layoutX="14.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="imageApproved" fitHeight="43.0" fitWidth="45.0" layoutX="430.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true" />
-      <Text fx:id="market" fill="#fd93b2" layoutX="135.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Supermercado" textAlignment="CENTER" wrappingWidth="344.53673553466797">
+      <ImageView fx:id="image" fitHeight="110.0" fitWidth="110.0" layoutX="14.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="imageApproved" fitHeight="43.0" fitWidth="45.0" layoutX="341.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true" />
+      <Text fx:id="market" fill="#fd93b2" layoutX="124.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Supermercado" textAlignment="CENTER" wrappingWidth="263.7367477416992">
          <font>
-            <Font name="SansSerif Bold" size="12.0" />
+            <Font name="SansSerif Bold" size="14.0" />
          </font></Text>
-      <Text fx:id="Tags" fill="WHITE" layoutX="135.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-" wrappingWidth="344.53673553466797" />
-      <Text fx:id="Price" fill="#fc447a" layoutX="135.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0.6" wrappingWidth="34.13671875">
+      <Text fx:id="Tags" fill="WHITE" layoutX="124.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-" wrappingWidth="263.7367477416992" />
+      <Text fx:id="Price" fill="#fc447a" layoutX="135.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0.6" wrappingWidth="45.0">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
       </Text>
-      <Text fx:id="PriceUnity" fill="WHITE" layoutX="176.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0.6€/L" wrappingWidth="82.13671875">
+      <Text fx:id="PriceUnity" fill="WHITE" layoutX="180.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0.6€/L" wrappingWidth="95.7366943359375">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Text>
-      <Text fx:id="user" fill="#fd93b2" layoutX="14.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Usuario" wrappingWidth="438.93675994873047">
+      <Text fx:id="user" fill="#fd93b2" layoutX="135.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Usuario" textAlignment="JUSTIFY" wrappingWidth="150.13682746887207">
          <font>
             <Font name="SansSerif Bold" size="12.0" />
          </font>

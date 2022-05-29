@@ -14,15 +14,42 @@ import org.hibernate.Session;
  * @author josem
  */
 public class SupermercadoDAO {
-    
+
     public List<String> getAllMarkets(Session session) {
         String hql = "select distinct nombre from Supermercado";
         Query query = session.createQuery(hql);
 
-        String markets = "";
-
         List<String> listMarkets = query.list();
-        
+
         return listMarkets;
+    }
+
+    public List<String> getComunidadesAutonomas(Session session) {
+        String hql = "select distinct comunidadAutonoma from Supermercado";
+        Query query = session.createQuery(hql);
+
+        List<String> listComunidadesAutonomas = query.list();
+
+        return listComunidadesAutonomas;
+    }
+
+    public List<String> getProvincias(Session session, String CCAA) {
+        String hql = "select distinct provincia from Supermercado where comunidadAutonoma = :CCAA";
+        Query query = session.createQuery(hql);
+        query.setParameter("CCAA", CCAA);
+
+        List<String> listProvincias = query.list();
+
+        return listProvincias;
+    }
+
+    public List<String> getPoblacion(Session session, String provincia) {
+        String hql = "select distinct poblacion from Supermercado where provincia = :provincia";
+        Query query = session.createQuery(hql);
+        query.setParameter("provincia", provincia);
+
+        List<String> listPoblaciones = query.list();
+
+        return listPoblaciones;
     }
 }

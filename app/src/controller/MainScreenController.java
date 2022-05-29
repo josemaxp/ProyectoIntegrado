@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -45,11 +48,39 @@ public class MainScreenController implements Initializable {
     private MFXLegacyComboBox<String> comboBoxComunidadAutonoma;
 
     private List<OfferItem> totalOfertas;
+    private ObservableList<String> comunidadesAutonomas = FXCollections.observableArrayList();
+    private ObservableList<String> provincias = FXCollections.observableArrayList();
+    private ObservableList<String> poblaciones = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        totalOfertas.addAll(getData());
-        int column = 0;
+        showOffer();
+        initComboBox();
+    }
+
+    private void initComboBox() {
+        comunidadesAutonomas.clear();
+        comboBoxProvincia.setDisable(true);
+        comboBoxPoblacion.setDisable(true);
+        ConnectionManager.out.println("CL:comunidadesAutonomas");
+
+        String[] fromServer = null;
+        try {
+            fromServer = ConnectionManager.in.readLine().split(":");
+        } catch (IOException ex) {
+            Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (fromServer.length > 2) {
+            for (int i = 2; i < fromServer.length; i++) {
+                comunidadesAutonomas.add(fromServer[i]);
+            }
+
+            comboBoxComunidadAutonoma.setItems(comunidadesAutonomas);
+        }
+    }
+
+    private void showOffer() {
+        totalOfertas = getData();
         int row = 0;
 
         try {
@@ -58,17 +89,13 @@ public class MainScreenController implements Initializable {
                 fxmlLoader.setLocation(getClass().getResource("/view/OfferItem.fxml"));
                 AnchorPane anchorPane = fxmlLoader.load();
 
-                OfferItemController offerItemController = new OfferItemController();
+                OfferItemController offerItemController = fxmlLoader.getController();
                 offerItemController.setData(totalOfertas.get(i));
 
-                if (column == 1) {
-                    column = 0;
-                    row++;
-                }
+                row++;
 
-                gridPaneOffer.add(anchorPane, i, i);
+                gridPaneOffer.add(anchorPane, 0, i);
                 gridPaneOffer.setMargin(anchorPane, new Insets(10));
-
             }
         } catch (IOException ex) {
             Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
@@ -81,7 +108,7 @@ public class MainScreenController implements Initializable {
 
         String fromServer = "";
         try {
-            fromServer = fromServer = ConnectionManager.in.readLine();
+            fromServer = ConnectionManager.in.readLine();
         } catch (IOException ex) {
             Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -106,5 +133,135 @@ public class MainScreenController implements Initializable {
         }
 
         return totalOfertas;
+    }
+
+    @FXML
+    private void onClickSelectCA(ActionEvent event) {
+        if (!comboBoxComunidadAutonoma.getValue().equals("")) {
+            provincias.clear();
+            comboBoxProvincia.setDisable(false);
+
+            ConnectionManager.out.println("CL:provincias:" + comboBoxComunidadAutonoma.getValue());
+
+            String[] fromServer = null;
+            try {
+                fromServer = ConnectionManager.in.readLine().split(":");
+            } catch (IOException ex) {
+                Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (fromServer.length > 2) {
+                for (int i = 2; i < fromServer.length; i++) {
+                    provincias.add(fromServer[i]);
+                }
+
+                comboBoxProvincia.setItems(provincias);
+            }
+
+            totalOfertas.clear();
+            totalOfertas = getData();
+            int row = 0;
+
+            try {
+                for (int i = 0; i < totalOfertas.size(); i++) {
+                    if (totalOfertas.get(i).getComunidadAutonoma().equals(comboBoxComunidadAutonoma.getValue())) {
+                        FXMLLoader fxmlLoader = new FXMLLoader();
+                        fxmlLoader.setLocation(getClass().getResource("/view/OfferItem.fxml"));
+                        AnchorPane anchorPane = fxmlLoader.load();
+
+                        OfferItemController offerItemController = fxmlLoader.getController();
+                        offerItemController.setData(totalOfertas.get(i));
+
+                        row++;
+
+                        gridPaneOffer.add(anchorPane, 0, i);
+                        gridPaneOffer.setMargin(anchorPane, new Insets(10));
+                    }
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }
+
+    @FXML
+    private void onClickSelectProvincia(ActionEvent event) {
+        if (!comboBoxProvincia.getValue().equals("")) {            
+            gridPaneOffer.getChildren().clear();
+            poblaciones.clear();
+            comboBoxPoblacion.setDisable(false);
+
+            ConnectionManager.out.println("CL:poblaciones:" + comboBoxProvincia.getValue());
+
+            String[] fromServer = null;
+            try {
+                fromServer = ConnectionManager.in.readLine().split(":");
+            } catch (IOException ex) {
+                Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (fromServer.length > 2) {
+                for (int i = 2; i < fromServer.length; i++) {
+                    poblaciones.add(fromServer[i]);
+                }
+
+                comboBoxPoblacion.setItems(poblaciones);
+            }
+
+            totalOfertas.clear();
+            totalOfertas = getData();
+            int row = 0;
+
+            try {
+                for (int i = 0; i < totalOfertas.size(); i++) {
+                    if (totalOfertas.get(i).getProvincia().equals(comboBoxProvincia.getValue())) {
+                        FXMLLoader fxmlLoader = new FXMLLoader();
+                        fxmlLoader.setLocation(getClass().getResource("/view/OfferItem.fxml"));
+                        AnchorPane anchorPane = fxmlLoader.load();
+
+                        OfferItemController offerItemController = fxmlLoader.getController();
+                        offerItemController.setData(totalOfertas.get(i));
+
+                        row++;
+
+                        gridPaneOffer.add(anchorPane, 0, i);
+                        gridPaneOffer.setMargin(anchorPane, new Insets(10));
+                    }
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }
+
+    @FXML
+    private void onClickSelectPoblacion(ActionEvent event) {
+        if (!comboBoxPoblacion.getValue().equals("")) {
+            gridPaneOffer.getChildren().clear();
+            totalOfertas.clear();
+            totalOfertas = getData();
+            int row = 0;
+
+            try {
+                for (int i = 0; i < totalOfertas.size(); i++) {
+                    if (totalOfertas.get(i).getPoblacion().equals(comboBoxPoblacion.getValue())) {
+                        FXMLLoader fxmlLoader = new FXMLLoader();
+                        fxmlLoader.setLocation(getClass().getResource("/view/OfferItem.fxml"));
+                        AnchorPane anchorPane = fxmlLoader.load();
+
+                        OfferItemController offerItemController = fxmlLoader.getController();
+                        offerItemController.setData(totalOfertas.get(i));
+
+                        row++;
+
+                        gridPaneOffer.add(anchorPane, 0, i);
+                        gridPaneOffer.setMargin(anchorPane, new Insets(10));
+                    }
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
     }
 }

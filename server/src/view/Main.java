@@ -188,7 +188,6 @@ public class Main {
                     if (inputLine.split(":")[1].equals("showOffer")) {
                         Double latitud = Double.parseDouble(inputLine.split(":")[2]);
                         Double longitud = Double.parseDouble(inputLine.split(":")[3]);
-
                         String offers = "";
                         List<String> allOffers = ofertaDAO.showOffer(session, latitud, longitud);
 
@@ -197,6 +196,46 @@ public class Main {
                         }
 
                         out.println("S:showOffer:" + offers);
+                    }
+                    
+                    if(inputLine.split(":")[1].equals("comunidadesAutonomas")){
+                        List<String> allCCAA = marketDAO.getComunidadesAutonomas(session);
+                        String CCAA = "";
+                        
+                        for (int i = 0; i < allCCAA.size(); i++) {
+                            CCAA += allCCAA.get(i)+":";
+                        }
+                        
+                        out.println("S:comunidadesAutonomas:" + CCAA);
+                    
+                    }
+                    
+                    if(inputLine.split(":")[1].equals("provincias")){
+                        String CCAA = inputLine.split(":")[2];
+                        
+                        List<String> allProvincias = marketDAO.getProvincias(session,CCAA);
+                        String provincia = "";
+                        
+                        for (int i = 0; i < allProvincias.size(); i++) {
+                            provincia += allProvincias.get(i)+":";
+                        }
+                        
+                        out.println("S:comunidadesAutonomas:" + provincia);
+                    
+                    }
+                    
+                    if(inputLine.split(":")[1].equals("poblaciones")){
+                        String provincia = inputLine.split(":")[2];
+                        
+                        List<String> allPoblaciones = marketDAO.getPoblacion(session,provincia);
+                        String poblacion = "";
+                        
+                        for (int i = 0; i < allPoblaciones.size(); i++) {
+                            poblacion += allPoblaciones.get(i)+":";
+                        }
+                        
+                        out.println("S:comunidadesAutonomas:" + poblacion);
+                    
                     }
 
                     if (inputLine.split(":")[1].equals("myOffers")) {
