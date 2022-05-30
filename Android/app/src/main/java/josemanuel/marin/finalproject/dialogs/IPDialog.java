@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -74,7 +75,7 @@ public class IPDialog extends DialogFragment {
 
         @Override
         protected Void doInBackground(Void... params) {
-            Connection conexion = new Connection();
+            new Connection();
             return null;
         }
 

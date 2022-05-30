@@ -47,7 +47,7 @@
       </MFXPasswordField>
       <FontAwesomeIconView fill="#fd93b2" glyphName="USER" layoutX="136.0" layoutY="180.0" size="20" text="" />
       <FontAwesomeIconView fill="#fd93b2" glyphName="LOCK" layoutX="137.0" layoutY="221.0" size="20" text="" />
-      <FontAwesomeIconView fx:id="iconLoginExit" fill="#fd93b2" glyphName="CLOSE" layoutX="556.0" layoutY="33.0" onMouseClicked="#onClickLoginExit" size="20">
+      <FontAwesomeIconView fx:id="iconLoginExit" fill="#fd93b2" glyphName="CLOSE" layoutX="578.0" layoutY="21.0" onMouseClicked="#onClickLoginExit" size="20">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></FontAwesomeIconView>
@@ -76,5 +76,13 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
+      <ImageView fitHeight="30.0" fitWidth="36.0" layoutX="563.0" layoutY="362.0" onMouseClicked="#onClickIP" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/ip.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
    </children>
 </AnchorPane>

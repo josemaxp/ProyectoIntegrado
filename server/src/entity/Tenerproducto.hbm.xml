@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 30-may-2022 12:51:54 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entity.Tenerproducto" table="tenerproducto" catalog="proyectofinal" optimistic-lock="version">
+        <composite-id name="id" class="entity.TenerproductoId">
+            <key-property name="idProducto" type="int">
+                <column name="id_producto" />
+            </key-property>
+            <key-property name="idReceta" type="int">
+                <column name="id_receta" />
+            </key-property>
+        </composite-id>
+        <property name="cantidad" type="java.lang.Double">
+            <column name="cantidad" precision="22" scale="0" />
+        </property>
+        <property name="unidadmedida" type="string">
+            <column name="unidadmedida" length="20" />
+        </property>
+    </class>
+</hibernate-mapping>

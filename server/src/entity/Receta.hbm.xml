@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 30-may-2022 12:51:54 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entity.Receta" table="receta" catalog="proyectofinal" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="nombre" length="200" />
+        </property>
+        <property name="tiempo" type="string">
+            <column name="tiempo" length="200" />
+        </property>
+        <property name="comensales" type="java.lang.Integer">
+            <column name="comensales" />
+        </property>
+        <property name="pasos" type="string">
+            <column name="pasos" length="4000" />
+        </property>
+        <property name="utensilios" type="string">
+            <column name="utensilios" length="4000" />
+        </property>
+        <property name="likes" type="java.lang.Integer">
+            <column name="likes" />
+        </property>
+        <property name="imagen" type="string">
+            <column name="imagen" length="4000" />
+        </property>
+        <property name="idUsuario" type="java.lang.Integer">
+            <column name="id_usuario" />
+        </property>
+    </class>
+</hibernate-mapping>

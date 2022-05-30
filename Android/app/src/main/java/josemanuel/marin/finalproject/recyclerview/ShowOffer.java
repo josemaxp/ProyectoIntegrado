@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,11 +42,14 @@ public class ShowOffer extends RecyclerView.Adapter<ShowOffer.OfferViewHolder> i
     BufferedReader in = null;
     getUser getUser;
     deleteOffer deleteOffer;
+    reportOffer reportOffer;
     int offerID;
+    int position;
 
     public ShowOffer(List<ListOfferItem> mData, Context context) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = mData;
+        this.context = context;
         listaOriginal = new ArrayList<>();
         listaOriginal.addAll(mData);
     }
@@ -59,6 +64,7 @@ public class ShowOffer extends RecyclerView.Adapter<ShowOffer.OfferViewHolder> i
     @Override
     public void onBindViewHolder(@NonNull OfferViewHolder holder, int position) {
         holder.bindData(mData.get(position));
+        this.position = holder.getAdapterPosition();
     }
 
     @Override
@@ -185,11 +191,12 @@ public class ShowOffer extends RecyclerView.Adapter<ShowOffer.OfferViewHolder> i
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.report_offer:
+                reportOffer = new reportOffer();
+                reportOffer.execute();
                 return true;
             case R.id.delete_offer:
                 deleteOffer = new deleteOffer();
                 deleteOffer.execute();
-                notifyDataSetChanged();
                 return true;
             default:
                 return false;
@@ -253,7 +260,6 @@ public class ShowOffer extends RecyclerView.Adapter<ShowOffer.OfferViewHolder> i
             out.println("CL:deleteOffer:" + offerID);
             try {
                 result = in.readLine();
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -263,7 +269,41 @@ public class ShowOffer extends RecyclerView.Adapter<ShowOffer.OfferViewHolder> i
 
         @Override
         protected void onPostExecute(String result) {
-            notifyDataSetChanged();
+            notifyItemRemoved(position);
+        }
+    }
+
+    class reportOffer extends AsyncTask<Void, Void, String> {
+        Socket s;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            s = Connection.getSocket();
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            try {
+                out = new PrintWriter(s.getOutputStream(), true);
+                in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String result = "";
+            out.println("CL:reportOffer:" + offerID);
+            try {
+                result = in.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Toast.makeText(context, "Oferta denunciada", Toast.LENGTH_LONG).show();
         }
     }
 }

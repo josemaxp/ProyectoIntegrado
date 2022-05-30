@@ -245,7 +245,7 @@ public class LocationFragment extends Fragment {
         protected void onPostExecute(File result) {
             Intent intent = new Intent(getContext(), WarnMarketActivity.class);
             startActivity(intent);
-            Toast.makeText(getContext(), "Offer added", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Oferta creada", Toast.LENGTH_LONG).show();
         }
     }
 

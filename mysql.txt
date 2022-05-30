@@ -78,3 +78,57 @@ CREATE TABLE estar(
 	CONSTRAINT estar_id_oferta_fk FOREIGN KEY (id_oferta) REFERENCES oferta (id)
 );
 
+CREATE TABLE denunciasOfertas(
+	id_usuario int,
+    id_oferta int,
+    CONSTRAINT denunciasOfertas_pk PRIMARY KEY (id_usuario,id_oferta),
+    CONSTRAINT denunciasOfertas_id_usuario_fk FOREIGN KEY (id_usuario) REFERENCES usuario (id),
+	CONSTRAINT denunciasOfertas_id_oferta_fk FOREIGN KEY (id_oferta) REFERENCES oferta (id)
+);
+
+CREATE TABLE receta(
+	id int NOT NULL AUTO_INCREMENT,
+    nombre varchar(200),
+    tiempo varchar(200),
+    comensales int,
+    pasos varchar(4000),
+    utensilios varchar(4000),
+    likes int,
+    imagen varchar(4000),
+    id_usuario int,
+    CONSTRAINT receta_pk PRIMARY KEY (id),
+    CONSTRAINT receta_id_usuario_fk FOREIGN KEY (id_usuario) REFERENCES usuario (id)
+);
+
+CREATE TABLE denunciasRecetas(
+	id_usuario int,
+    id_receta int,
+    CONSTRAINT denunciasRecetas_pk PRIMARY KEY (id_usuario,id_receta),
+    CONSTRAINT denunciasRecetas_id_usuario_fk FOREIGN KEY (id_usuario) REFERENCES usuario (id),
+	CONSTRAINT denunciasRecetas_id_oferta_fk FOREIGN KEY (id_receta) REFERENCES receta (id)
+);
+
+CREATE TABLE favoritosRecetas(
+	id_usuario int,
+    id_receta int,
+    CONSTRAINT denunciasRecetas_pk PRIMARY KEY (id_usuario,id_receta),
+    CONSTRAINT denunciasRecetas_id_usuario_fk FOREIGN KEY (id_usuario) REFERENCES usuario (id),
+	CONSTRAINT denunciasRecetas_id_oferta_fk FOREIGN KEY (id_receta) REFERENCES receta (id)
+);
+
+CREATE TABLE producto(
+	id int NOT NULL AUTO_INCREMENT,
+    nombre varchar(200) UNIQUE,
+    CONSTRAINT producto_pk PRIMARY KEY (id)
+);
+
+
+CREATE TABLE tenerproducto(
+	id_producto int,
+    id_receta int,
+    cantidad double,
+    unidadmedida varchar(20),
+    CONSTRAINT tenerproducto_pk PRIMARY KEY (id_producto,id_receta),
+    CONSTRAINT tenerproducto_id_usuario_fk FOREIGN KEY (id_producto) REFERENCES producto (id),
+	CONSTRAINT tenerproducto_id_oferta_fk FOREIGN KEY (id_receta) REFERENCES receta (id)
+);

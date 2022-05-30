@@ -41,12 +41,18 @@ Contributor(s):
 -->
 <hibernate-reverse-engineering>
   <schema-selection match-catalog="proyectofinal"/>
-  <table-filter match-name="oferta"/>
-  <table-filter match-name="supermercado"/>
   <table-filter match-name="usuario"/>
-  <table-filter match-name="publicar"/>
   <table-filter match-name="relacionetiqueta"/>
+  <table-filter match-name="receta"/>
+  <table-filter match-name="etiqueta"/>
+  <table-filter match-name="publicar"/>
+  <table-filter match-name="favoritosrecetas"/>
+  <table-filter match-name="oferta"/>
+  <table-filter match-name="denunciasrecetas"/>
+  <table-filter match-name="producto"/>
+  <table-filter match-name="supermercado"/>
+  <table-filter match-name="tenerproducto"/>
+  <table-filter match-name="denunciasofertas"/>
   <table-filter match-name="estar"/>
   <table-filter match-name="tener"/>
-  <table-filter match-name="etiqueta"/>
 </hibernate-reverse-engineering>

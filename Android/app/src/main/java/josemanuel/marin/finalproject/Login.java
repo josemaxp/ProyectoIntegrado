@@ -2,7 +2,6 @@ package josemanuel.marin.finalproject;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -62,33 +61,26 @@ public class Login extends AppCompatActivity implements LocationListener {
         error = findViewById(R.id.textViewError);
         imageViewIP = findViewById(R.id.imageViewIP);
 
-        imageViewIP.setOnClickListener(v -> {
-            IPDialog dialogo = new IPDialog();
-            dialogo.show(getSupportFragmentManager(), "IP");
-        });
-
         //Get location
         checkLocationPermissions();
         getLocationManager();
 
         SharedPreferences preferences = getSharedPreferences("IP", MODE_PRIVATE);
-        String ip = preferences.getString("IP","");
+        String ip = preferences.getString("IP", "");
 
         preferences = getSharedPreferences("USERNAME", MODE_PRIVATE);
-        String usernameSaved = preferences.getString("USERNAME","");
+        String usernameSaved = preferences.getString("USERNAME", "");
 
         preferences = getSharedPreferences("PASSWORD", MODE_PRIVATE);
-        String passwordSaved = preferences.getString("PASSWORD","");
+        String passwordSaved = preferences.getString("PASSWORD", "");
 
-        System.out.println(usernameSaved+","+passwordSaved);
-
-        if(!ip.equals("")){
-            Connection.IP = ip;
+        if (!ip.equals("")) {
+            Connection.setIP(ip);
             Con = new connectServer();
             Con.execute();
         }
 
-        if(!usernameSaved.equals("") && !passwordSaved.equals("")){
+        if (!usernameSaved.equals("") && !passwordSaved.equals("")) {
             username.setText(usernameSaved);
             password.setText(passwordSaved);
         }
@@ -117,6 +109,11 @@ public class Login extends AppCompatActivity implements LocationListener {
                 Intent intent = new Intent(Login.this, Register.class);
                 startActivity(intent);
             }
+        });
+
+        imageViewIP.setOnClickListener(v -> {
+            IPDialog dialogo = new IPDialog();
+            dialogo.show(getSupportFragmentManager(), "IP");
         });
 
     }
@@ -194,7 +191,7 @@ public class Login extends AppCompatActivity implements LocationListener {
             poblacion = addresses.get(0).getLocality();
             provincia = addresses.get(0).getSubAdminArea();
             comunidadAutonoma = addresses.get(0).getAdminArea();
-            direccion = addresses.get(0).getAddressLine(0) +"|"+poblacion+"|"+provincia+"|"+comunidadAutonoma;
+            direccion = addresses.get(0).getAddressLine(0) + "|" + poblacion + "|" + provincia + "|" + comunidadAutonoma;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -243,7 +240,7 @@ public class Login extends AppCompatActivity implements LocationListener {
 
         @Override
         protected Void doInBackground(Void... params) {
-            Connection conexion = new Connection();
+            new Connection();
             return null;
         }
 

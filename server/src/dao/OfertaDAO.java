@@ -5,6 +5,8 @@
  */
 package dao;
 
+import entity.Denunciasofertas;
+import entity.DenunciasofertasId;
 import entity.Estar;
 import entity.EstarId;
 import entity.Etiqueta;
@@ -509,6 +511,67 @@ public class OfertaDAO {
                     query.setParameter("id", aTener.getId());
 
                     query.executeUpdate();
+                }
+            }
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
+    public void reportOffer(Session session, int offerID, String username) {
+
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+            boolean comprobarDenuncia = false;
+            int contadorDenuncias = 0;
+
+            String hql = "select id from Usuario where username = :username";
+            Query query = session.createQuery(hql);
+            query.setParameter("username", username);
+
+            List<Integer> userID = query.list();
+
+            hql = "from Denunciasofertas";
+            query = session.createQuery(hql);
+
+            List<Denunciasofertas> denunciasOfertasList = query.list();
+
+            for (Denunciasofertas aDenuncia : denunciasOfertasList) {
+                if (aDenuncia.getId().getIdOferta() == offerID && aDenuncia.getId().getIdUsuario() == userID.get(0)) {
+                    comprobarDenuncia = true;
+                }
+
+                if (aDenuncia.getId().getIdOferta() == offerID) {
+                    contadorDenuncias++;
+                }
+            }
+
+            if (!comprobarDenuncia) {
+                DenunciasofertasId denunciasOfertasId = new DenunciasofertasId(userID.get(0),offerID);
+                Denunciasofertas denunciasofertas = new Denunciasofertas(denunciasOfertasId);
+
+                session.save(denunciasofertas);
+
+                //Lo hago de nuevo para contar la nueva denuncia
+                hql = "from Denunciasofertas";
+                query = session.createQuery(hql);
+
+                denunciasOfertasList = query.list();
+
+                for (Denunciasofertas aDenuncia : denunciasOfertasList) {
+                    if (aDenuncia.getId().getIdOferta() == offerID) {
+                        contadorDenuncias++;
+                    }
+                }
+
+                if (contadorDenuncias == 10) {
+                    deleteOffer(session, offerID);
                 }
             }
             tx.commit();

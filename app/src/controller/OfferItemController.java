@@ -4,10 +4,13 @@
  */
 package controller;
 
+import com.sun.imageio.plugins.common.ImageUtil;
+import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import model.OfferItem;
@@ -60,8 +63,15 @@ public class OfferItemController implements Initializable {
         market.setText(offerItem.getMarket());
         Tags.setText(tags);
         Price.setText(offerItem.getPrice());
-        PriceUnity.setText("(" +offerItem.getPriceUnity()+")");
+        PriceUnity.setText("(" + offerItem.getPriceUnity() + ")");
         user.setText(offerItem.getUsername());
+
+        //Image offerImage = new Image(offerItem.getImage());
+        //if (offerItem.getImage().equals("")) {
+        Image offerImage = new Image("/images/noImageFound.jpg");
+        //} 
+        
+        image.setImage(offerImage);
     }
 
 }

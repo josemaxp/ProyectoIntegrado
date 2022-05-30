@@ -1,6 +1,8 @@
 package controller;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import io.github.palexdev.materialfx.controls.MFXScrollPane;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import io.github.palexdev.materialfx.controls.legacy.MFXLegacyComboBox;
 import java.io.IOException;
 import java.net.URL;
@@ -9,17 +11,24 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import model.OfferItem;
 import util.ConnectionManager;
 
@@ -51,6 +60,14 @@ public class MainScreenController implements Initializable {
     private ObservableList<String> comunidadesAutonomas = FXCollections.observableArrayList();
     private ObservableList<String> provincias = FXCollections.observableArrayList();
     private ObservableList<String> poblaciones = FXCollections.observableArrayList();
+    @FXML
+    private FontAwesomeIconView iconLoginExit;
+    @FXML
+    private MFXTextField textFieldSearch;
+    @FXML
+    private FontAwesomeIconView iconMenu;
+    @FXML
+    private VBox vboxMenu;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -153,12 +170,8 @@ public class MainScreenController implements Initializable {
                 for (int i = 2; i < fromServer.length; i++) {
                     provincias.add(fromServer[i]);
                 }
-
                 comboBoxProvincia.setItems(provincias);
             }
-
-            totalOfertas.clear();
-            totalOfertas = getData();
             int row = 0;
 
             try {
@@ -180,13 +193,12 @@ public class MainScreenController implements Initializable {
             } catch (IOException ex) {
                 Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
     }
 
     @FXML
     private void onClickSelectProvincia(ActionEvent event) {
-        if (!comboBoxProvincia.getValue().equals("")) {            
+        if (!comboBoxProvincia.getValue().equals("")) {
             gridPaneOffer.getChildren().clear();
             poblaciones.clear();
             comboBoxPoblacion.setDisable(false);
@@ -207,8 +219,6 @@ public class MainScreenController implements Initializable {
                 comboBoxPoblacion.setItems(poblaciones);
             }
 
-            totalOfertas.clear();
-            totalOfertas = getData();
             int row = 0;
 
             try {
@@ -230,7 +240,6 @@ public class MainScreenController implements Initializable {
             } catch (IOException ex) {
                 Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
     }
 
@@ -238,8 +247,6 @@ public class MainScreenController implements Initializable {
     private void onClickSelectPoblacion(ActionEvent event) {
         if (!comboBoxPoblacion.getValue().equals("")) {
             gridPaneOffer.getChildren().clear();
-            totalOfertas.clear();
-            totalOfertas = getData();
             int row = 0;
 
             try {
@@ -263,5 +270,98 @@ public class MainScreenController implements Initializable {
             }
 
         }
+    }
+
+    @FXML
+    private void onClickLoginExit(MouseEvent event) {
+        if (event.getSource() == iconLoginExit) {
+            System.exit(0);
+        }
+    }
+
+    public void filterData() {
+        int row = 0;
+        gridPaneOffer.getChildren().clear();
+        String[] quitarEspacio = textFieldSearch.getText().trim().replaceAll(" +", " ").split(" ");
+
+        try {
+            for (int i = 0; i < totalOfertas.size(); i++) {
+                for (String s : quitarEspacio) {
+                    if (totalOfertas.get(i).getMarket().toLowerCase().contains(s.toLowerCase())) {
+                        FXMLLoader fxmlLoader = new FXMLLoader();
+                        fxmlLoader.setLocation(getClass().getResource("/view/OfferItem.fxml"));
+                        AnchorPane anchorPane = fxmlLoader.load();
+                        OfferItemController offerItemController = fxmlLoader.getController();
+                        offerItemController.setData(totalOfertas.get(i));
+
+                        row++;
+
+                        gridPaneOffer.add(anchorPane, 0, i);
+                        gridPaneOffer.setMargin(anchorPane, new Insets(10));
+                    }
+
+                    for (int j = 0; j < totalOfertas.get(i).getTags().size(); j++) {
+                        if (totalOfertas.get(i).getTags().get(j).contains(s.toLowerCase())) {
+                            FXMLLoader fxmlLoader = new FXMLLoader();
+                            fxmlLoader.setLocation(getClass().getResource("/view/OfferItem.fxml"));
+                            AnchorPane anchorPane = fxmlLoader.load();
+                            OfferItemController offerItemController = fxmlLoader.getController();
+                            offerItemController.setData(totalOfertas.get(i));
+
+                            row++;
+
+                            gridPaneOffer.add(anchorPane, 0, i);
+                            gridPaneOffer.setMargin(anchorPane, new Insets(10));
+                        }
+                    }
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void search(KeyEvent event) {
+        filterData();
+    }
+
+    @FXML
+    private void onClickMenu(MouseEvent event) {
+        vboxMenu.setLayoutX(vboxMenu.getWidth() * -1);
+        this.slideMenu(vboxMenu.getWidth());
+        vboxMenu.setDisable(false);
+        vboxMenu.setOpacity(1);
+        iconMenu.setDisable(true);
+    }
+
+    private void slideMenu(Double width) {
+        TranslateTransition slide = new TranslateTransition();
+        slide.setDuration(Duration.seconds(0.8));
+        slide.setNode(vboxMenu);
+        slide.setToX(width);
+        slide.play();
+    }
+
+    private void resetMenuProperties() {
+        vboxMenu.setOpacity(0);
+        vboxMenu.setDisable(true);
+        iconMenu.setDisable(false);
+        this.slideMenu(vboxMenu.getWidth() * -1);
+    }
+
+    @FXML
+    private void onClickOfferButton(ActionEvent event) {
+        this.resetMenuProperties();
+    }
+
+    @FXML
+    private void onClickRecipeButton(ActionEvent event) {
+        this.resetMenuProperties();
+    }
+
+    @FXML
+    private void onClickMyAccountButton(ActionEvent event) {
+        this.resetMenuProperties();
     }
 }

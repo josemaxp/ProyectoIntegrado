@@ -17,7 +17,7 @@ public class OfferItem {
     String price;
     String priceUnity;
     String username;
-    //String image;
+    String image;
     String poblacion;
     String provincia;
     String comunidadAutonoma;
@@ -27,6 +27,7 @@ public class OfferItem {
         this.tags = tags;
         this.price = price;
         this.priceUnity = priceUnity;
+        this.image = image;
         this.username = username;
         this.poblacion = poblacion;
         this.provincia = provincia;
@@ -63,5 +64,9 @@ public class OfferItem {
 
     public String getComunidadAutonoma() {
         return comunidadAutonoma;
+    }
+
+    public String getImage() {
+        return image;
     }
 }

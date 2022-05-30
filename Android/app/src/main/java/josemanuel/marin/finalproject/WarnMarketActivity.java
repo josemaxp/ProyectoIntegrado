@@ -26,7 +26,7 @@ import josemanuel.marin.finalproject.model.ListOfferItem;
 import josemanuel.marin.finalproject.recyclerview.ShowOffer;
 
 public class WarnMarketActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
-    Button addButton, profileButton;
+    Button addButton, profileButton,recipesButton;
     SearchView searchView;
     List<ListOfferItem> offerItems;
     PrintWriter out = null;
@@ -43,6 +43,7 @@ public class WarnMarketActivity extends AppCompatActivity implements SearchView.
         addButton = findViewById(R.id.addButton);
         searchView = findViewById(R.id.searchView);
         profileButton = findViewById(R.id.profileButton);
+        recipesButton = findViewById(R.id.recipesButton);
 
         getUser = new getUser();
         String[] username = null;
@@ -71,6 +72,11 @@ public class WarnMarketActivity extends AppCompatActivity implements SearchView.
                 Intent intent = new Intent(WarnMarketActivity.this, MyAccount.class);
                 startActivity(intent);
             }
+        });
+
+        recipesButton.setOnClickListener(v ->{
+            Intent intent = new Intent(WarnMarketActivity.this, RecipesActivity.class);
+            startActivity(intent);
         });
     }
 

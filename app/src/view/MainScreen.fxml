@@ -19,49 +19,28 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #292A33;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainScreenController">
    <children>
-      <VBox layoutX="-101.0" opacity="0.0" prefHeight="400.0" prefWidth="150.0">
-         <children>
-            <Pane prefHeight="62.0" prefWidth="150.0">
-               <children>
-                  <ImageView fitHeight="400.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/wave150x400.png" />
-                     </image>
-                  </ImageView>
-                  <Label alignment="CENTER" prefHeight="75.0" prefWidth="150.0" text="WarnMarket" textAlignment="CENTER" textFill="#fc447a">
-                     <font>
-                        <Font name="SansSerif Bold" size="22.0" />
-                     </font>
-                  </Label>
-                  <MFXButton depthLevel="LEVEL4" layoutX="13.0" layoutY="95.0" prefHeight="25.0" prefWidth="125.0" rippleRadiusMultiplier="1.0" style="-fx-background-color: #fd93b2; -fx-background-radius: 25;" text="Ofertas" textFill="#252850">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </MFXButton>
-                  <MFXButton depthLevel="LEVEL5" layoutX="13.0" layoutY="145.0" prefWidth="125.0" style="-fx-background-color: #fd93b2; -fx-background-radius: 25;" text="Recetas" textFill="#252850">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </MFXButton>
-                  <MFXButton depthLevel="LEVEL5" layoutX="13.0" layoutY="195.0" prefWidth="125.0" style="-fx-background-color: #fd93b2; -fx-background-radius: 25;" text="Mi cuenta" textFill="#252850">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </MFXButton>
-               </children>
-            </Pane>
-         </children>
-      </VBox>
       <Label fx:id="titleText" alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="600.0" text="Ofertas" textFill="#fc447a">
          <font>
             <Font name="SansSerif Bold" size="36.0" />
          </font>
       </Label>
-      <MFXTextField floatMode="DISABLED" layoutX="100.0" layoutY="55.0" minHeight="30.0" prefHeight="30.0" prefWidth="400.0" />
-      <FontAwesomeIconView fill="#fd93b2" glyphName="SEARCH" layoutX="469.0" layoutY="78.0" size="20" text="" wrappingWidth="24.0" />
-      <MFXLegacyComboBox fx:id="comboBoxPoblacion" invalidLineColor="#fc447a" layoutX="389.0" layoutY="101.0" lineColor="#fd93b2" onAction="#onClickSelectPoblacion" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #FFFFFF;" unfocusedLineColor="#292a33" />
-      <MFXLegacyComboBox fx:id="comboBoxProvincia" invalidLineColor="#fc447a" layoutX="244.0" layoutY="101.0" lineColor="#fd93b2" onAction="#onClickSelectProvincia" prefHeight="25.0" prefWidth="110.0" style="-fx-background-color: #FFFFFF;" unfocusedLineColor="#292a33" />
-      <MFXLegacyComboBox fx:id="comboBoxComunidadAutonoma" invalidLineColor="#fc447a" layoutX="100.0" layoutY="101.0" lineColor="#fd93b2" onAction="#onClickSelectCA" prefHeight="25.0" prefWidth="110.0" style="-fx-background-color: #FFFFFF;" unfocusedLineColor="#292a33" />
+      <MFXTextField fx:id="textFieldSearch" floatMode="DISABLED" layoutX="100.0" layoutY="55.0" minHeight="30.0" onKeyReleased="#search" prefHeight="30.0" prefWidth="400.0">
+         <cursor>
+            <Cursor fx:constant="TEXT" />
+         </cursor></MFXTextField>
+      <FontAwesomeIconView fill="#fd93b2" glyphName="SEARCH" layoutX="475.0" layoutY="77.0" size="20" text="" wrappingWidth="24.0" />
+      <MFXLegacyComboBox fx:id="comboBoxPoblacion" invalidLineColor="#fc447a" layoutX="389.0" layoutY="101.0" lineColor="#fd93b2" onAction="#onClickSelectPoblacion" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #FFFFFF;" unfocusedLineColor="#292a33">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></MFXLegacyComboBox>
+      <MFXLegacyComboBox fx:id="comboBoxProvincia" invalidLineColor="#fc447a" layoutX="244.0" layoutY="101.0" lineColor="#fd93b2" onAction="#onClickSelectProvincia" prefHeight="25.0" prefWidth="110.0" style="-fx-background-color: #FFFFFF;" unfocusedLineColor="#292a33">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></MFXLegacyComboBox>
+      <MFXLegacyComboBox fx:id="comboBoxComunidadAutonoma" invalidLineColor="#fc447a" layoutX="100.0" layoutY="101.0" lineColor="#fd93b2" onAction="#onClickSelectCA" prefHeight="25.0" prefWidth="110.0" style="-fx-background-color: #FFFFFF;" unfocusedLineColor="#292a33">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></MFXLegacyComboBox>
       <HBox fx:id="hboxOffer" layoutX="93.0" layoutY="138.0" prefHeight="230.0" prefWidth="450.0">
          <children>
             <MFXScrollPane fx:id="scrollPaneOffer" prefHeight="250.0" prefWidth="450.0" style="-fx-background-color: #292A33;" HBox.hgrow="ALWAYS">
@@ -75,5 +54,48 @@
             </MFXScrollPane>
          </children>
       </HBox>
+      <FontAwesomeIconView fx:id="iconLoginExit" fill="#fd93b2" glyphName="CLOSE" layoutX="578.0" layoutY="21.0" onMouseClicked="#onClickLoginExit" size="20">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </FontAwesomeIconView>
+      <FontAwesomeIconView fx:id="iconMenu" fill="#fd93b2" glyphName="BARS" layoutX="5.0" layoutY="21.0" onMouseClicked="#onClickMenu" size="20">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </FontAwesomeIconView>
+      <VBox fx:id="vboxMenu" layoutX="-150.0" opacity="0.0" prefHeight="400.0" prefWidth="150.0">
+         <children>
+            <Pane prefHeight="62.0" prefWidth="150.0">
+               <children>
+                  <ImageView fitHeight="400.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/wave150x400.png" />
+                     </image>
+                  </ImageView>
+                  <Label alignment="CENTER" prefHeight="75.0" prefWidth="150.0" text="WarnMarket" textAlignment="CENTER" textFill="#fc447a">
+                     <font>
+                        <Font name="SansSerif Bold" size="22.0" />
+                     </font>
+                  </Label>
+                  <MFXButton depthLevel="LEVEL4" layoutX="13.0" layoutY="95.0" onAction="#onClickOfferButton" prefHeight="25.0" prefWidth="125.0" rippleRadiusMultiplier="1.0" style="-fx-background-color: #fd93b2; -fx-background-radius: 25;" text="Ofertas" textFill="#252850">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </MFXButton>
+                  <MFXButton depthLevel="LEVEL5" layoutX="13.0" layoutY="145.0" onAction="#onClickRecipeButton" prefWidth="125.0" style="-fx-background-color: #fd93b2; -fx-background-radius: 25;" text="Recetas" textFill="#252850">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </MFXButton>
+                  <MFXButton depthLevel="LEVEL5" layoutX="13.0" layoutY="195.0" onAction="#onClickMyAccountButton" prefWidth="125.0" style="-fx-background-color: #fd93b2; -fx-background-radius: 25;" text="Mi cuenta" textFill="#252850">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </MFXButton>
+               </children>
+            </Pane>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

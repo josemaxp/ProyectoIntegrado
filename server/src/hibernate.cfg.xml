@@ -45,15 +45,21 @@ Contributor(s):
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/proyectofinal?zeroDateTimeBehavior=convertToNull</property>
     <property name="hibernate.connection.username">root</property>
-    <property name="hibernate.query.factory_class">org.hibernate.hql.internal.ast.ASTQueryTranslatorFactory</property>
     <property name="hibernate.show_sql">true</property>
-    <mapping resource="entity/Usuario.hbm.xml"/>
+    <property name="hibernate.query.factory_class">org.hibernate.hql.internal.ast.ASTQueryTranslatorFactory</property>
+    <mapping resource="entity/Producto.hbm.xml"/>
+    <mapping resource="entity/Favoritosrecetas.hbm.xml"/>
     <mapping resource="entity/Etiqueta.hbm.xml"/>
     <mapping resource="entity/Supermercado.hbm.xml"/>
     <mapping resource="entity/Tener.hbm.xml"/>
-    <mapping resource="entity/Publicar.hbm.xml"/>
     <mapping resource="entity/Estar.hbm.xml"/>
     <mapping resource="entity/Relacionetiqueta.hbm.xml"/>
     <mapping resource="entity/Oferta.hbm.xml"/>
+    <mapping resource="entity/Usuario.hbm.xml"/>
+    <mapping resource="entity/Receta.hbm.xml"/>
+    <mapping resource="entity/Denunciasrecetas.hbm.xml"/>
+    <mapping resource="entity/Publicar.hbm.xml"/>
+    <mapping resource="entity/Denunciasofertas.hbm.xml"/>
+    <mapping resource="entity/Tenerproducto.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

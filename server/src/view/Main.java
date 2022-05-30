@@ -7,6 +7,7 @@ package view;
 
 import dao.EtiquetaDAO;
 import dao.OfertaDAO;
+import dao.RecetaDAO;
 import dao.SupermercadoDAO;
 import dao.UsuarioDAO;
 import entity.Usuario;
@@ -90,6 +91,7 @@ public class Main {
             SupermercadoDAO marketDAO = new SupermercadoDAO();
             EtiquetaDAO tagDAO = new EtiquetaDAO();
             OfertaDAO ofertaDAO = new OfertaDAO();
+            RecetaDAO recetaDAO = new RecetaDAO();
             String inputLine;
             String username = "";
 
@@ -198,44 +200,54 @@ public class Main {
                         out.println("S:showOffer:" + offers);
                     }
                     
-                    if(inputLine.split(":")[1].equals("comunidadesAutonomas")){
+                    if (inputLine.split(":")[1].equals("getRecipes")) {
+                        String recipes = "";
+                        List<String> allRecipes = recetaDAO.showRecipe(session);
+
+                        for (int i = 0; i < allRecipes.size(); i++) {
+                            recipes += allRecipes.get(i);
+                        }
+
+                        out.println("S:getRecipes:" + recipes);
+                    }
+
+                    if (inputLine.split(":")[1].equals("comunidadesAutonomas")) {
                         List<String> allCCAA = marketDAO.getComunidadesAutonomas(session);
                         String CCAA = "";
-                        
+
                         for (int i = 0; i < allCCAA.size(); i++) {
-                            CCAA += allCCAA.get(i)+":";
+                            CCAA += allCCAA.get(i) + ":";
                         }
-                        
+
                         out.println("S:comunidadesAutonomas:" + CCAA);
-                    
+
                     }
-                    
-                    if(inputLine.split(":")[1].equals("provincias")){
+
+                    if (inputLine.split(":")[1].equals("provincias")) {
                         String CCAA = inputLine.split(":")[2];
-                        
-                        List<String> allProvincias = marketDAO.getProvincias(session,CCAA);
+
+                        List<String> allProvincias = marketDAO.getProvincias(session, CCAA);
                         String provincia = "";
-                        
+
                         for (int i = 0; i < allProvincias.size(); i++) {
-                            provincia += allProvincias.get(i)+":";
+                            provincia += allProvincias.get(i) + ":";
                         }
-                        
+
                         out.println("S:comunidadesAutonomas:" + provincia);
-                    
+
                     }
-                    
-                    if(inputLine.split(":")[1].equals("poblaciones")){
+
+                    if (inputLine.split(":")[1].equals("poblaciones")) {
                         String provincia = inputLine.split(":")[2];
-                        
-                        List<String> allPoblaciones = marketDAO.getPoblacion(session,provincia);
+
+                        List<String> allPoblaciones = marketDAO.getPoblacion(session, provincia);
                         String poblacion = "";
-                        
+
                         for (int i = 0; i < allPoblaciones.size(); i++) {
-                            poblacion += allPoblaciones.get(i)+":";
+                            poblacion += allPoblaciones.get(i) + ":";
                         }
-                        
+
                         out.println("S:comunidadesAutonomas:" + poblacion);
-                    
                     }
 
                     if (inputLine.split(":")[1].equals("myOffers")) {
@@ -306,11 +318,21 @@ public class Main {
 
                         ofertaDAO.addOffer(session, username, tagsList, precio, precioUnidad, unidad, imagen, nombreSupermercado, direccion, longitud, latitud);
                     }
-                    
+
                     if (inputLine.split(":")[1].equals("deleteOffer")) {
                         int offerID = Integer.parseInt(inputLine.split(":")[2]);
 
                         ofertaDAO.deleteOffer(session, offerID);
+
+                        out.println("S:deleteOffer");
+                    }
+                    
+                    if (inputLine.split(":")[1].equals("reportOffer")) {
+                        int offerID = Integer.parseInt(inputLine.split(":")[2]);
+
+                        ofertaDAO.reportOffer(session, offerID, username);
+
+                        out.println("S:reportOffer");
                     }
                 }
             } catch (IOException ex) {

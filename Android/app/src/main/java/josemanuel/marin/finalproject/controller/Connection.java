@@ -1,20 +1,12 @@
 package josemanuel.marin.finalproject.controller;
 
-import android.os.AsyncTask;
-
-import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Properties;
 
 public class Connection {
     static Socket socket;
-    public static String IP = "";
+    public static String IP;
 
     public Connection() {
         try  {
@@ -32,5 +24,7 @@ public class Connection {
         return socket;
     }
 
-    public static void setIP(String ip){IP = ip;}
+    public static void setIP(String ip){
+        IP = ip;
+    }
 }

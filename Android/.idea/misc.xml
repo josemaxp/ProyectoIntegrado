@@ -17,6 +17,7 @@
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/drawable/wave.xml" value="0.2035" />
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/layout/activity_add_offer.xml" value="0.2" />
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/layout/activity_recipes.xml" value="0.25" />
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/layout/activity_warn_market.xml" value="0.22262773722627738" />
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/layout/button_inicio.xml" value="0.24895833333333334" />
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/layout/color_spinner_layout.xml" value="0.25" />
@@ -32,9 +33,11 @@
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/layout/my_offers.xml" value="0.25" />
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/layout/offer_list.xml" value="0.24497991967871485" />
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/layout/offer_menu.xml" value="0.25" />
+        <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/layout/recipe_list.xml" value="0.24895833333333334" />
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/layout/redeem_points.xml" value="0.24895833333333334" />
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/layout/register.xml" value="0.25" />
         <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/menu/offer_menu.xml" value="0.25" />
+        <entry key="..\:/Estudios/FP/Segundo curso/ProyectoFinal/ProyectoIntegrado/Android/app/src/main/res/menu/recipe_menu.xml" value="0.25" />
       </map>
     </option>
   </component>

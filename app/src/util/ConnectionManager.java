@@ -19,10 +19,11 @@ import java.util.logging.Logger;
  */
 public class ConnectionManager {
 
-    public static String IP = "";
+    public static String IP = "192.168.107.167";
     public static Socket kkSocket = null;
     public static PrintWriter out = null;
     public static BufferedReader in = null;
+    static Properties prop;
 
     private Connection connection;
     private static ConnectionManager instance;
@@ -30,9 +31,9 @@ public class ConnectionManager {
     public ConnectionManager() {
         try ( InputStream is = new FileInputStream("warnmarket.ini")) {
 
-            Properties prop = new Properties();
+            prop = new Properties();
             prop.load(is);
-            IP = prop.getProperty("IP");
+            //IP = prop.getProperty("IP");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -45,6 +46,10 @@ public class ConnectionManager {
         }
 
         return instance;
+    }
+
+    public static void setProperty(String IP) {
+        prop.setProperty("IP", IP);
     }
 
     public synchronized Connection getConnection() {

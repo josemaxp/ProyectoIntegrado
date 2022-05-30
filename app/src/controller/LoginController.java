@@ -6,6 +6,7 @@ import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,6 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import util.ConnectionManager;
@@ -102,6 +104,19 @@ public class LoginController implements Initializable {
             Main.changeScene(root, "Offers");
         } catch (IOException e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    @FXML
+    private void onClickIP(MouseEvent event) {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("IP");
+        dialog.setHeaderText("Introduce la IP del servidor");
+
+        Optional<String> result = dialog.showAndWait();
+        
+        if (result.isPresent() && !result.get().equals("")) {
+            ConnectionManager.setProperty(result.get());
         }
     }
 }
