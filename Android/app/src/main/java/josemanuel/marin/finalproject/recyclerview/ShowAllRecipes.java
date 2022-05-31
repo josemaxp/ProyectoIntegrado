@@ -87,10 +87,21 @@ public class ShowAllRecipes extends RecyclerView.Adapter<ShowAllRecipes.RecipeVi
         }
 
         void bindData(final ListRecipeItem item) {
+            System.out.println(item.getTime());
+            String[] timeSeparated = item.getTime().trim().split("\\.");
+            String newTime = "";
+
+            if (timeSeparated[0].equals("00")) {
+                newTime = timeSeparated[1] + " minuto(s)";
+            } else {
+                newTime = timeSeparated[0] + " hora(s) y " + timeSeparated[1] + " minuto(s)";
+            }
+
             textViewRecipeName.setText(item.getName());
-            textViewRecipeTime.setText(item.getTime());
-            textViewRecipePeople.setText(item.getPeople());
-            textViewRecipeLikes.setText(item.getLikes());
+            textViewRecipeTime.setText(newTime);
+            textViewRecipePeople.setText(item.getPeople() + "");
+            textViewRecipeLikes.setText(item.getLikes() + "");
+            textViewRecipeUsername.setText(item.getUsername());
 
             File file = new File(item.getImage());
             Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
@@ -145,8 +156,6 @@ public class ShowAllRecipes extends RecyclerView.Adapter<ShowAllRecipes.RecipeVi
         menu.inflate(R.menu.recipe_menu);
 
         this.recipeID = recipeID;
-
-        System.out.println(recipeID);
 
         if (currentUSer.length > 2 && currentUSer[2].equals(username)) {
             menu.getMenu().findItem(R.id.delete_recipe).setVisible(true);

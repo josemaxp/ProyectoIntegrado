@@ -335,8 +335,6 @@ public class OfertaDAO {
         query = session.createQuery(hql);
         query.setParameter("idUsuario", userID.get(0));
 
-        System.out.println(userID.get(0));
-
         String offer = "";
         List<String> allOffers = new ArrayList<>();
 

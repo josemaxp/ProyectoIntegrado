@@ -321,7 +321,6 @@ public class TagsFragment extends Fragment {
             List<String> tagsName = new ArrayList<>();
 
             for (int i = 2; i < tagsNameFromServer.length; i++) {
-                System.out.println(tagsNameFromServer[i]);
                 tagsName.add(tagsNameFromServer[i]);
             }
 

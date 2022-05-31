@@ -5,12 +5,12 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class Connection {
-    static Socket socket;
-    public static String IP;
+    static Socket socket = null;
+    public static String IP = "";
 
     public Connection() {
-        try  {
-            socket = new Socket(IP, 4444);
+        try {
+            socket = new Socket(getIP(), 4444);
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host:");
             IP = "";
@@ -22,6 +22,10 @@ public class Connection {
 
     public static Socket getSocket() {
         return socket;
+    }
+
+    public static String getIP() {
+        return IP;
     }
 
     public static void setIP(String ip){

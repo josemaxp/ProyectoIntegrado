@@ -61,8 +61,8 @@ public class RecipesActivity extends AppCompatActivity implements SearchView.OnQ
             if (finalUsername.length == 2) {
                 Toast.makeText(this, "Error, debes iniciar sesión para poder crear una receta.", Toast.LENGTH_LONG).show();
             } else {
-                /*Intent intent = new Intent(RecipesActivity.this, AddRecipe.class);
-                startActivity(intent);*/
+                Intent intent = new Intent(RecipesActivity.this, AddRecipe.class);
+                startActivity(intent);
             }
         });
 
@@ -94,12 +94,12 @@ public class RecipesActivity extends AppCompatActivity implements SearchView.OnQ
             for (int i = 2; i < allRecipes.length; i++) {
                 String[] recipeFromServer = allRecipes[i].split("_");
                 List<String> products = new ArrayList<>();
-                //Obtengo los prodcutos, que están desde la posición 9 hasta el final
+                //Obtengo los productos, que están desde la posición 9 hasta el final
                 for (int j = 9; j < recipeFromServer.length; j++) {
                     products.add(recipeFromServer[j].toLowerCase());
                 }
 
-                ListRecipeItem oferta = new ListRecipeItem(Integer.parseInt(recipeFromServer[0]), recipeFromServer[1], recipeFromServer[2], products, Integer.parseInt(recipeFromServer[3]), recipeFromServer[4],Integer.parseInt(recipeFromServer[5]),recipeFromServer[6],"\\\\"+Connection.IP+"\\"+recipeFromServer[7],recipeFromServer[9]);
+                ListRecipeItem oferta = new ListRecipeItem(Integer.parseInt(recipeFromServer[0]), recipeFromServer[1], recipeFromServer[2], products, Integer.parseInt(recipeFromServer[3]), recipeFromServer[4],Integer.parseInt(recipeFromServer[5]),recipeFromServer[6],"\\\\"+Connection.IP+"\\"+recipeFromServer[7],recipeFromServer[8]);
                 totalRecetas.add(oferta);
             }
         } catch (ExecutionException | InterruptedException e) {
@@ -107,7 +107,7 @@ public class RecipesActivity extends AppCompatActivity implements SearchView.OnQ
         }
 
         adapter = new ShowAllRecipes(totalRecetas, this);
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewRecipes);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);

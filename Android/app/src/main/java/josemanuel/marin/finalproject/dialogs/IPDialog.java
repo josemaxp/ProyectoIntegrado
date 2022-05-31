@@ -14,6 +14,8 @@ import android.widget.EditText;
 
 import androidx.fragment.app.DialogFragment;
 
+import java.io.IOException;
+import java.net.Socket;
 import java.util.Objects;
 
 import josemanuel.marin.finalproject.R;
@@ -43,7 +45,7 @@ public class IPDialog extends DialogFragment {
                 .setMessage("Introduce la IP del servidor")
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        String ip = editTextIP.getText().toString();
+                        String ip = editTextIP.getText().toString().trim();
 
                         if (!ip.equals("")) {
                             Connection.setIP(ip);

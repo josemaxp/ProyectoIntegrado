@@ -22,7 +22,7 @@ public class ListRecipeItem {
         this.people = people;
         this.steps = steps;
         this.likes = likes;
-        Cookware = cookware;
+        this.Cookware = cookware;
         this.image = image;
         this.time = time;
     }

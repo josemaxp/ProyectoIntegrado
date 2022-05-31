@@ -76,6 +76,7 @@ public class Login extends AppCompatActivity implements LocationListener {
 
         if (!ip.equals("")) {
             Connection.setIP(ip);
+
             Con = new connectServer();
             Con.execute();
         }
@@ -87,7 +88,6 @@ public class Login extends AppCompatActivity implements LocationListener {
 
         loginButton.setOnClickListener(view -> {
             if (!Connection.IP.equals("")) {
-                System.out.println(username.getText().toString());
                 login = new login();
                 try {
                     error.setText(login.execute(username.getText().toString(), password.getText().toString()).get());

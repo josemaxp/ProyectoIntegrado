@@ -66,6 +66,13 @@
                 android:value=".WarnMarketActivity" />
         </activity>
         <activity
+            android:name=".AddRecipe"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".RecipesActivity" />
+        </activity>
+        <activity
             android:name=".Login"
             android:exported="true">
             <intent-filter>

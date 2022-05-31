@@ -51,9 +51,6 @@ public class LocationFragment extends Fragment {
     BufferedReader in = null;
     uploadImage uploadImage;
 
-    public LocationFragment() {
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -104,8 +101,6 @@ public class LocationFragment extends Fragment {
                         PriceFragment.getUnity(), ImageFragment.getBitmap().toString(), getMarket(), getLocationData());
 
                 transformImage();
-
-
             }
         });
 

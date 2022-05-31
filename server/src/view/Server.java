@@ -7,6 +7,7 @@ package view;
 
 import dao.EtiquetaDAO;
 import dao.OfertaDAO;
+import dao.ProductoDAO;
 import dao.RecetaDAO;
 import dao.SupermercadoDAO;
 import dao.UsuarioDAO;
@@ -21,6 +22,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import org.hibernate.Session;
@@ -30,7 +32,7 @@ import util.HibernateUtil;
  *
  * @author josem
  */
-public class Main {
+public class Server {
 
     public static void main(String[] args) {
         int portService = 4444;
@@ -92,6 +94,7 @@ public class Main {
             EtiquetaDAO tagDAO = new EtiquetaDAO();
             OfertaDAO ofertaDAO = new OfertaDAO();
             RecetaDAO recetaDAO = new RecetaDAO();
+            ProductoDAO productoDAO = new ProductoDAO();
             String inputLine;
             String username = "";
 
@@ -294,9 +297,50 @@ public class Main {
 
                         out.println("");
                     }
+                    
+                    if (inputLine.split(":")[1].equals("imgRecipe")) {
+                        String fileName = inputLine.split(":")[2];
+                        byte[] filebyte = new byte[Integer.valueOf(inputLine.split(":")[3])];
+
+                        File userImages = new File("images/" + username);
+                        if (!userImages.exists()) {
+                            userImages.mkdirs();
+                        }
+
+                        String path = "images\\" + username + "\\" + fileName + ".png";
+                        FileOutputStream fos = new FileOutputStream(path);
+                        recetaDAO.imageInformation(session, path);
+
+                        InputStream is = clientSocket.getInputStream();
+
+                        BufferedOutputStream bos = new BufferedOutputStream(fos);
+                        int numeroBytesLeidos = 0;
+
+                        while (numeroBytesLeidos != filebyte.length) {
+
+                            numeroBytesLeidos += is.read(filebyte, 0, filebyte.length);
+                            bos.write(filebyte, 0, numeroBytesLeidos);
+                        }
+
+                        bos.close();
+                        fos.close();
+
+                        out.println("");
+                    }
 
                     if (inputLine.split(":")[1].equals("getUser")) {
                         out.println("S:getUser:" + username);
+                    }
+                    
+                    if (inputLine.split(":")[1].equals("getProductsName")) {
+                        List<String> listProductsName = productoDAO.getProductsName(session);
+                        String products = "";
+
+                        for (String aProducts : listProductsName) {
+                            products += aProducts + ":";
+                        }
+
+                        out.println("S:getProductsName:" + products);
                     }
 
                     if (inputLine.split(":")[1].equals("userInfo")) {
@@ -318,6 +362,22 @@ public class Main {
 
                         ofertaDAO.addOffer(session, username, tagsList, precio, precioUnidad, unidad, imagen, nombreSupermercado, direccion, longitud, latitud);
                     }
+                    
+                    if (inputLine.split(":")[1].equals("addRecipe")) {                        
+                        String recipeName = inputLine.split(":")[2];
+                        String steps = inputLine.split(":")[3];
+                        String cookware = inputLine.split(":")[4];
+                        int people = Integer.parseInt(inputLine.split(":")[5]);
+                        String time = inputLine.split(":")[6];
+                        
+                        //Desde la posición 7 hasta el final son todos los productos
+                        List<String> products = new ArrayList();
+                        for (int i = 7; i < inputLine.split(":").length; i++) {
+                            products.add(inputLine.split(":")[i]);
+                        }
+
+                        recetaDAO.addRecipe(session, username, recipeName, steps, cookware, people, time,products);
+                    }
 
                     if (inputLine.split(":")[1].equals("deleteOffer")) {
                         int offerID = Integer.parseInt(inputLine.split(":")[2]);
@@ -327,12 +387,28 @@ public class Main {
                         out.println("S:deleteOffer");
                     }
                     
+                    if (inputLine.split(":")[1].equals("deleteRecipe")) {
+                        int recipeID = Integer.parseInt(inputLine.split(":")[2]);
+
+                        recetaDAO.deleteRecipe(session, recipeID);
+
+                        out.println("S:deleteRecipe");
+                    }
+                    
                     if (inputLine.split(":")[1].equals("reportOffer")) {
                         int offerID = Integer.parseInt(inputLine.split(":")[2]);
 
                         ofertaDAO.reportOffer(session, offerID, username);
 
                         out.println("S:reportOffer");
+                    }
+                    
+                    if (inputLine.split(":")[1].equals("reportRecipe")) {
+                        int recipeID = Integer.parseInt(inputLine.split(":")[2]);
+
+                        recetaDAO.reportRecipe(session, recipeID, username);
+
+                        out.println("S:reportRecipe");
                     }
                 }
             } catch (IOException ex) {
