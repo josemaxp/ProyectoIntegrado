@@ -1,9 +1,12 @@
-package josemanuel.marin.finalproject.model;
+package model;
 
-import java.io.Serializable;
 import java.util.List;
 
-public class ListRecipeItem implements Serializable {
+/**
+ *
+ * @author josem
+ */
+public class RecipeItem {
     int id;
     String username;
     String name;
@@ -15,7 +18,7 @@ public class ListRecipeItem implements Serializable {
     String image;
     String time;
 
-    public ListRecipeItem(int id,String username, String name, List<String> products, int people, String steps, int likes, String cookware, String image, String time) {
+    public RecipeItem(int id,String username, String name, List<String> products, int people, String steps, int likes, String cookware, String image, String time) {
         this.id = id;
         this.username = username;
         this.name = name;

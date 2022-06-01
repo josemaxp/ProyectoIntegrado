@@ -43,9 +43,9 @@
          </cursor></MFXLegacyComboBox>
       <HBox fx:id="hboxOffer" layoutX="93.0" layoutY="138.0" prefHeight="230.0" prefWidth="450.0">
          <children>
-            <MFXScrollPane fx:id="scrollPaneOffer" prefHeight="250.0" prefWidth="450.0" style="-fx-background-color: #292A33;" HBox.hgrow="ALWAYS">
+            <MFXScrollPane fx:id="scrollPane" prefHeight="250.0" prefWidth="450.0" style="-fx-background-color: #292A33;" HBox.hgrow="ALWAYS">
                <content>
-                  <GridPane fx:id="gridPaneOffer" prefHeight="0.0" prefWidth="0.0">
+                  <GridPane fx:id="gridPane" prefHeight="0.0" prefWidth="0.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>

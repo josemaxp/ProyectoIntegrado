@@ -202,7 +202,7 @@ public class Server {
 
                         out.println("S:showOffer:" + offers);
                     }
-                    
+
                     if (inputLine.split(":")[1].equals("getRecipes")) {
                         String recipes = "";
                         List<String> allRecipes = recetaDAO.showRecipe(session);
@@ -268,6 +268,19 @@ public class Server {
                         out.println("S:showOffer:" + offers);
                     }
 
+                    if (inputLine.split(":")[1].equals("myRecipes")) {
+                        String usermane = inputLine.split(":")[2];
+
+                        String recipes = "";
+                        List<String> allRecipes = recetaDAO.myRecipes(session, username);
+
+                        for (int i = 0; i < allRecipes.size(); i++) {
+                            recipes += allRecipes.get(i);
+                        }
+
+                        out.println("S:myRecipes:" + recipes);
+                    }
+
                     if (inputLine.split(":")[1].equals("img")) {
                         String fileName = inputLine.split(":")[2];
                         byte[] filebyte = new byte[Integer.valueOf(inputLine.split(":")[3])];
@@ -297,7 +310,7 @@ public class Server {
 
                         out.println("");
                     }
-                    
+
                     if (inputLine.split(":")[1].equals("imgRecipe")) {
                         String fileName = inputLine.split(":")[2];
                         byte[] filebyte = new byte[Integer.valueOf(inputLine.split(":")[3])];
@@ -331,7 +344,7 @@ public class Server {
                     if (inputLine.split(":")[1].equals("getUser")) {
                         out.println("S:getUser:" + username);
                     }
-                    
+
                     if (inputLine.split(":")[1].equals("getProductsName")) {
                         List<String> listProductsName = productoDAO.getProductsName(session);
                         String products = "";
@@ -362,21 +375,21 @@ public class Server {
 
                         ofertaDAO.addOffer(session, username, tagsList, precio, precioUnidad, unidad, imagen, nombreSupermercado, direccion, longitud, latitud);
                     }
-                    
-                    if (inputLine.split(":")[1].equals("addRecipe")) {                        
+
+                    if (inputLine.split(":")[1].equals("addRecipe")) {
                         String recipeName = inputLine.split(":")[2];
                         String steps = inputLine.split(":")[3];
                         String cookware = inputLine.split(":")[4];
                         int people = Integer.parseInt(inputLine.split(":")[5]);
                         String time = inputLine.split(":")[6];
-                        
+
                         //Desde la posición 7 hasta el final son todos los productos
                         List<String> products = new ArrayList();
                         for (int i = 7; i < inputLine.split(":").length; i++) {
                             products.add(inputLine.split(":")[i]);
                         }
 
-                        recetaDAO.addRecipe(session, username, recipeName, steps, cookware, people, time,products);
+                        recetaDAO.addRecipe(session, username, recipeName, steps, cookware, people, time, products);
                     }
 
                     if (inputLine.split(":")[1].equals("deleteOffer")) {
@@ -386,7 +399,7 @@ public class Server {
 
                         out.println("S:deleteOffer");
                     }
-                    
+
                     if (inputLine.split(":")[1].equals("deleteRecipe")) {
                         int recipeID = Integer.parseInt(inputLine.split(":")[2]);
 
@@ -394,7 +407,7 @@ public class Server {
 
                         out.println("S:deleteRecipe");
                     }
-                    
+
                     if (inputLine.split(":")[1].equals("reportOffer")) {
                         int offerID = Integer.parseInt(inputLine.split(":")[2]);
 
@@ -402,13 +415,34 @@ public class Server {
 
                         out.println("S:reportOffer");
                     }
-                    
+
                     if (inputLine.split(":")[1].equals("reportRecipe")) {
                         int recipeID = Integer.parseInt(inputLine.split(":")[2]);
 
                         recetaDAO.reportRecipe(session, recipeID, username);
 
                         out.println("S:reportRecipe");
+                    }
+
+                    if (inputLine.split(":")[1].equals("likeRecipe")) {
+                        int recipeID = Integer.parseInt(inputLine.split(":")[2]);
+                        String usernameUpload = inputLine.split(":")[3];
+
+                        recetaDAO.likeRecipe(username, recipeID, usernameUpload);
+                    }
+                    if (inputLine.split(":")[1].equals("dislikeRecipe")) {
+                        int recipeID = Integer.parseInt(inputLine.split(":")[2]);
+                        String usernameUpload = inputLine.split(":")[3];
+
+                        recetaDAO.dislikeRecipe(session, username, recipeID, usernameUpload);
+                    }
+                    if (inputLine.split(":")[1].equals("getLikeRecipe")) {
+                        int recipeID = Integer.parseInt(inputLine.split(":")[2]);
+
+                        boolean result = recetaDAO.getLikeRecipe(session, username, recipeID);
+
+                        out.println("S:getLikeRecipe:" + result);
+
                     }
                 }
             } catch (IOException ex) {

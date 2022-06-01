@@ -11,6 +11,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import util.HibernateUtil;
 import util.SHA;
 
 /**
@@ -61,7 +62,7 @@ public class UsuarioDAO {
         List<Usuario> currentUserInfo = userInfo(username, session);
         String passwordHashed = "";
         int contador = 0;
-        if(!password.equals("")){
+        if (!password.equals("")) {
             passwordHashed = SHA.generate512(password);
         }
 
@@ -126,4 +127,70 @@ public class UsuarioDAO {
 
         return listUser;
     }
+
+    public int getUserID(Session session, String username) {
+        String hql = "select id from Usuario where username like :keyword";
+        Query query = session.createQuery(hql);
+        query.setParameter("keyword", username);
+
+        List<Integer> listUser = query.list();
+
+        return listUser.get(0);
+
+    }
+
+    public void addPoints(String username, int points) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        Transaction tx = null;
+        int userID = getUserID(session, username);
+
+        try {
+            tx = session.beginTransaction();
+
+            String hql = "update Usuario set puntos = puntos + :points where id like :id";
+            Query query = session.createQuery(hql);
+            query.setParameter("points", points);
+            query.setParameter("id", userID);
+
+            query.executeUpdate();
+
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+    public void removePoints(String username, int points) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        Transaction tx = null;
+        int userID = getUserID(session, username);
+
+        try {
+            tx = session.beginTransaction();
+
+            String hql = "update Usuario set puntos = puntos - :points where id like :id";
+            Query query = session.createQuery(hql);
+            query.setParameter("points", points);
+            query.setParameter("id", userID);
+
+            query.executeUpdate();
+
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
 }

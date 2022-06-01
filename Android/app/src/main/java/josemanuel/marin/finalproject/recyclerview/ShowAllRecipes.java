@@ -1,6 +1,7 @@
 package josemanuel.marin.finalproject.recyclerview;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -27,6 +28,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import josemanuel.marin.finalproject.R;
+import josemanuel.marin.finalproject.RecipeClicked;
 import josemanuel.marin.finalproject.controller.Connection;
 import josemanuel.marin.finalproject.model.ListRecipeItem;
 
@@ -87,7 +89,6 @@ public class ShowAllRecipes extends RecyclerView.Adapter<ShowAllRecipes.RecipeVi
         }
 
         void bindData(final ListRecipeItem item) {
-            System.out.println(item.getTime());
             String[] timeSeparated = item.getTime().trim().split("\\.");
             String newTime = "";
 
@@ -112,7 +113,9 @@ public class ShowAllRecipes extends RecyclerView.Adapter<ShowAllRecipes.RecipeVi
             });
 
             itemView.setOnClickListener(v -> {
-                //intent a receta en grande
+                Intent intent = new Intent(context, RecipeClicked.class);
+                intent.putExtra("Recipe", item);
+                context.startActivity(intent);
             });
         }
     }

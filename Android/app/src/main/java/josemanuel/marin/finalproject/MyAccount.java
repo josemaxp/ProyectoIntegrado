@@ -22,7 +22,7 @@ import josemanuel.marin.finalproject.controller.Connection;
 public class MyAccount extends AppCompatActivity {
     EditText username, email, password, repeatPassword;
     TextView error, points;
-    Button update, myOffers, redeem;
+    Button update, myOffers, redeem, myRecipes;
     PrintWriter out;
     BufferedReader in;
     updateUser updateUser;
@@ -40,14 +40,18 @@ public class MyAccount extends AppCompatActivity {
         error = findViewById(R.id.textViewErrorUpdate);
         update = findViewById(R.id.buttonUpdate);
         myOffers = findViewById(R.id.buttonMyOffers);
+        myRecipes = findViewById(R.id.buttonMyRecipes);
         redeem = findViewById(R.id.buttonRedeem);
 
         initData = new initData();
         try {
             String[] userInfo = initData.execute().get().split(":");
-            username.setText(userInfo[2]);
-            email.setText(userInfo[3]);
-            points.setText("Puntos: " + userInfo[4]);
+
+            if(userInfo.length > 2) {
+                username.setText(userInfo[2]);
+                email.setText(userInfo[3]);
+                points.setText("Puntos: " + userInfo[4]);
+            }
 
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
@@ -78,6 +82,11 @@ public class MyAccount extends AppCompatActivity {
 
         myOffers.setOnClickListener(v -> {
             Intent intent = new Intent(MyAccount.this, MyOffers.class);
+            startActivity(intent);
+        });
+
+        myRecipes.setOnClickListener(v -> {
+            Intent intent = new Intent(MyAccount.this, MyRecipes.class);
             startActivity(intent);
         });
 

@@ -30,6 +30,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import model.OfferItem;
+import model.RecipeItem;
 import util.ConnectionManager;
 
 /**
@@ -44,22 +45,15 @@ public class MainScreenController implements Initializable {
     @FXML
     private HBox hboxOffer;
     @FXML
-    private MFXScrollPane scrollPaneOffer;
+    private MFXScrollPane scrollPane;
     @FXML
-    private GridPane gridPaneOffer;
-
-    private List<OfferItem> offers = new ArrayList<>();
+    private GridPane gridPane;
     @FXML
     private MFXLegacyComboBox<String> comboBoxPoblacion;
     @FXML
     private MFXLegacyComboBox<String> comboBoxProvincia;
     @FXML
     private MFXLegacyComboBox<String> comboBoxComunidadAutonoma;
-
-    private List<OfferItem> totalOfertas;
-    private ObservableList<String> comunidadesAutonomas = FXCollections.observableArrayList();
-    private ObservableList<String> provincias = FXCollections.observableArrayList();
-    private ObservableList<String> poblaciones = FXCollections.observableArrayList();
     @FXML
     private FontAwesomeIconView iconLoginExit;
     @FXML
@@ -68,6 +62,13 @@ public class MainScreenController implements Initializable {
     private FontAwesomeIconView iconMenu;
     @FXML
     private VBox vboxMenu;
+
+    private List<OfferItem> totalOfertas;
+    private List<RecipeItem> totalRecetas;
+    private ObservableList<String> comunidadesAutonomas = FXCollections.observableArrayList();
+    private ObservableList<String> provincias = FXCollections.observableArrayList();
+    private ObservableList<String> poblaciones = FXCollections.observableArrayList();
+    private boolean activePane = false; //false = offers // true = recipes
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -96,32 +97,9 @@ public class MainScreenController implements Initializable {
         }
     }
 
-    private void showOffer() {
-        totalOfertas = getData();
-        int row = 0;
-
-        try {
-            for (int i = 0; i < totalOfertas.size(); i++) {
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("/view/OfferItem.fxml"));
-                AnchorPane anchorPane = fxmlLoader.load();
-
-                OfferItemController offerItemController = fxmlLoader.getController();
-                offerItemController.setData(totalOfertas.get(i));
-
-                row++;
-
-                gridPaneOffer.add(anchorPane, 0, i);
-                gridPaneOffer.setMargin(anchorPane, new Insets(10));
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    private List<OfferItem> getData() {
+    private List<OfferItem> getOfferData() {
+        totalOfertas = new ArrayList<>();
         ConnectionManager.out.println("CL:showOffer:" + 0 + ":" + 0);
-        List<OfferItem> totalOfertas = new ArrayList<>();
 
         String fromServer = "";
         try {
@@ -150,6 +128,83 @@ public class MainScreenController implements Initializable {
         }
 
         return totalOfertas;
+    }
+
+    private void showOffer() {
+        gridPane.getChildren().clear();
+        totalOfertas = getOfferData();
+        int row = 0;
+
+        try {
+            for (int i = 0; i < totalOfertas.size(); i++) {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("/view/OfferItem.fxml"));
+                AnchorPane anchorPane = fxmlLoader.load();
+
+                OfferItemController offerItemController = fxmlLoader.getController();
+                offerItemController.setData(totalOfertas.get(i));
+
+                row++;
+
+                gridPane.add(anchorPane, 0, i);
+                gridPane.setMargin(anchorPane, new Insets(10));
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private List<RecipeItem> getRecipeData() {
+        totalRecetas = new ArrayList<>();
+        ConnectionManager.out.println("CL:getRecipes");
+
+        String fromServer = "";
+        try {
+            fromServer = ConnectionManager.in.readLine();
+        } catch (IOException ex) {
+            Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //Separo la información usando ':'. Así se quedaría dividido en todas las ofertas existentes.
+        String[] recipesSeparated = fromServer.split(":");
+
+        //Divido cada una de las ofertas. Las ofertas empiezan en la posición 2.
+        for (int i = 2; i < recipesSeparated.length; i++) {
+            String[] recipeFromServer = recipesSeparated[i].split("_");
+            List<String> products = new ArrayList<>();
+            //Obtengo los productos, que están desde la posición 9 hasta el final
+            for (int j = 9; j < recipeFromServer.length; j++) {
+                products.add(recipeFromServer[j].toLowerCase());
+            }
+
+            RecipeItem recipe = new RecipeItem(Integer.parseInt(recipeFromServer[0]), recipeFromServer[1], recipeFromServer[2], products, Integer.parseInt(recipeFromServer[3]), recipeFromServer[4], Integer.parseInt(recipeFromServer[5]), recipeFromServer[6], "\\\\" + ConnectionManager.IP + "\\" + recipeFromServer[7], recipeFromServer[8]);
+            totalRecetas.add(recipe);
+        }
+
+        return totalRecetas;
+    }
+
+    private void showRecipe() {
+        gridPane.getChildren().clear();
+        totalRecetas = getRecipeData();
+        int row = 0;
+
+        try {
+            for (int i = 0; i < totalRecetas.size(); i++) {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("/view/OfferItem.fxml"));
+                AnchorPane anchorPane = fxmlLoader.load();
+
+                OfferItemController offerItemController = fxmlLoader.getController();
+                //offerItemController.setData(totalRecetas.get(i));
+
+                row++;
+
+                gridPane.add(anchorPane, 0, i);
+                gridPane.setMargin(anchorPane, new Insets(10));
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
@@ -186,8 +241,8 @@ public class MainScreenController implements Initializable {
 
                         row++;
 
-                        gridPaneOffer.add(anchorPane, 0, i);
-                        gridPaneOffer.setMargin(anchorPane, new Insets(10));
+                        gridPane.add(anchorPane, 0, i);
+                        gridPane.setMargin(anchorPane, new Insets(10));
                     }
                 }
             } catch (IOException ex) {
@@ -199,7 +254,7 @@ public class MainScreenController implements Initializable {
     @FXML
     private void onClickSelectProvincia(ActionEvent event) {
         if (!comboBoxProvincia.getValue().equals("")) {
-            gridPaneOffer.getChildren().clear();
+            gridPane.getChildren().clear();
             poblaciones.clear();
             comboBoxPoblacion.setDisable(false);
 
@@ -233,8 +288,8 @@ public class MainScreenController implements Initializable {
 
                         row++;
 
-                        gridPaneOffer.add(anchorPane, 0, i);
-                        gridPaneOffer.setMargin(anchorPane, new Insets(10));
+                        gridPane.add(anchorPane, 0, i);
+                        gridPane.setMargin(anchorPane, new Insets(10));
                     }
                 }
             } catch (IOException ex) {
@@ -246,7 +301,7 @@ public class MainScreenController implements Initializable {
     @FXML
     private void onClickSelectPoblacion(ActionEvent event) {
         if (!comboBoxPoblacion.getValue().equals("")) {
-            gridPaneOffer.getChildren().clear();
+            gridPane.getChildren().clear();
             int row = 0;
 
             try {
@@ -261,8 +316,8 @@ public class MainScreenController implements Initializable {
 
                         row++;
 
-                        gridPaneOffer.add(anchorPane, 0, i);
-                        gridPaneOffer.setMargin(anchorPane, new Insets(10));
+                        gridPane.add(anchorPane, 0, i);
+                        gridPane.setMargin(anchorPane, new Insets(10));
                     }
                 }
             } catch (IOException ex) {
@@ -279,29 +334,21 @@ public class MainScreenController implements Initializable {
         }
     }
 
+    @FXML
+    private void search(KeyEvent event) {
+        filterData();
+    }
+
     public void filterData() {
         int row = 0;
-        gridPaneOffer.getChildren().clear();
+        gridPane.getChildren().clear();
         String[] quitarEspacio = textFieldSearch.getText().trim().replaceAll(" +", " ").split(" ");
 
         try {
-            for (int i = 0; i < totalOfertas.size(); i++) {
-                for (String s : quitarEspacio) {
-                    if (totalOfertas.get(i).getMarket().toLowerCase().contains(s.toLowerCase())) {
-                        FXMLLoader fxmlLoader = new FXMLLoader();
-                        fxmlLoader.setLocation(getClass().getResource("/view/OfferItem.fxml"));
-                        AnchorPane anchorPane = fxmlLoader.load();
-                        OfferItemController offerItemController = fxmlLoader.getController();
-                        offerItemController.setData(totalOfertas.get(i));
-
-                        row++;
-
-                        gridPaneOffer.add(anchorPane, 0, i);
-                        gridPaneOffer.setMargin(anchorPane, new Insets(10));
-                    }
-
-                    for (int j = 0; j < totalOfertas.get(i).getTags().size(); j++) {
-                        if (totalOfertas.get(i).getTags().get(j).contains(s.toLowerCase())) {
+            if (!activePane) {
+                for (int i = 0; i < totalOfertas.size(); i++) {
+                    for (String s : quitarEspacio) {
+                        if (totalOfertas.get(i).getMarket().toLowerCase().contains(s.toLowerCase())) {
                             FXMLLoader fxmlLoader = new FXMLLoader();
                             fxmlLoader.setLocation(getClass().getResource("/view/OfferItem.fxml"));
                             AnchorPane anchorPane = fxmlLoader.load();
@@ -310,20 +357,31 @@ public class MainScreenController implements Initializable {
 
                             row++;
 
-                            gridPaneOffer.add(anchorPane, 0, i);
-                            gridPaneOffer.setMargin(anchorPane, new Insets(10));
+                            gridPane.add(anchorPane, 0, i);
+                            gridPane.setMargin(anchorPane, new Insets(10));
+                        }
+
+                        for (int j = 0; j < totalOfertas.get(i).getTags().size(); j++) {
+                            if (totalOfertas.get(i).getTags().get(j).contains(s.toLowerCase())) {
+                                FXMLLoader fxmlLoader = new FXMLLoader();
+                                fxmlLoader.setLocation(getClass().getResource("/view/OfferItem.fxml"));
+                                AnchorPane anchorPane = fxmlLoader.load();
+                                OfferItemController offerItemController = fxmlLoader.getController();
+                                offerItemController.setData(totalOfertas.get(i));
+
+                                row++;
+
+                                gridPane.add(anchorPane, 0, i);
+                                gridPane.setMargin(anchorPane, new Insets(10));
+                            }
                         }
                     }
                 }
+            } else {
             }
         } catch (IOException ex) {
             Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    @FXML
-    private void search(KeyEvent event) {
-        filterData();
     }
 
     @FXML
@@ -353,11 +411,31 @@ public class MainScreenController implements Initializable {
     @FXML
     private void onClickOfferButton(ActionEvent event) {
         this.resetMenuProperties();
+
+        titleText.setText("Ofertas");
+        showOffer();
+        activePane = false;
+
+        comboBoxComunidadAutonoma.setDisable(false);
+        if (!comboBoxPoblacion.getValue().equals("")) {
+            comboBoxPoblacion.setDisable(false);
+        }
+        if (!comboBoxProvincia.getValue().equals("")) {
+            comboBoxProvincia.setDisable(false);
+        }
+
     }
 
     @FXML
     private void onClickRecipeButton(ActionEvent event) {
         this.resetMenuProperties();
+
+        titleText.setText("Recetas");
+        //showRecipe();
+        activePane = true;
+        comboBoxComunidadAutonoma.setDisable(true);
+        comboBoxPoblacion.setDisable(true);
+        comboBoxProvincia.setDisable(true);
     }
 
     @FXML

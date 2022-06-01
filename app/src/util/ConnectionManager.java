@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  */
 public class ConnectionManager {
 
-    public static String IP = "192.168.107.167";
+    public static String IP = "192.168.1.139";
     public static Socket kkSocket = null;
     public static PrintWriter out = null;
     public static BufferedReader in = null;

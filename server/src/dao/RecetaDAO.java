@@ -9,6 +9,8 @@ import entity.DenunciasofertasId;
 import entity.Denunciasrecetas;
 import entity.DenunciasrecetasId;
 import entity.Estar;
+import entity.Favoritosrecetas;
+import entity.FavoritosrecetasId;
 import entity.Oferta;
 import entity.Producto;
 import entity.Receta;
@@ -21,6 +23,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import util.HibernateUtil;
 
 /**
  *
@@ -80,6 +83,59 @@ public class RecetaDAO {
         }
 
         return allRecipes;
+    }
+
+    public List<String> myRecipes(Session session, String Username) {
+        UsuarioDAO usuariodao = new UsuarioDAO();
+        int userID = usuariodao.getUserID(session, Username);
+
+        String hql = "from Receta where idUsuario = :idUsuario";
+        Query query = session.createQuery(hql);
+        query.setParameter("idUsuario", userID);
+        
+        List<Receta> listRecipe = query.list();
+
+        String recipes = "";
+        List<String> myRecipes = new ArrayList<>();
+
+        for (Receta aRecipe : listRecipe) {
+
+            //Obtener la lista de productos que tiene la receta
+            hql = "from Tenerproducto";
+            query = session.createQuery(hql);
+
+            List<Tenerproducto> listTener = query.list();
+            List<Tenerproducto> listProducts = new ArrayList<>();
+
+            for (Tenerproducto aTener : listTener) {
+                //Añado en una lista todas los id de los productos que se encuentran en esa receta
+                if (aTener.getId().getIdReceta() == aRecipe.getId()) {
+                    listProducts.add(aTener);
+                }
+            }
+
+            //Obtengo la información de esos productos
+            String productName = "";
+            for (int i = 0; i < listProducts.size(); i++) {
+                hql = "from Producto where id = :id";
+                query = session.createQuery(hql);
+                query.setParameter("id", listProducts.get(i).getId().getIdProducto());
+
+                List<Producto> listProductName = query.list();
+                productName += listProductName.get(0).getNombre() + "|" + listProducts.get(i).getCantidad() + "|" + listProducts.get(i).getUnidadmedida() + "_";
+            }
+
+            if (productName.equals("")) {
+                productName = "null";
+            }
+
+            recipes += aRecipe.getId() + "_" + Username + "_" + aRecipe.getNombre() + "_" + aRecipe.getComensales() + "_" + aRecipe.getPasos() + "_" + aRecipe.getLikes() + "_" + aRecipe.getUtensilios() + "_" + aRecipe.getImagen() + "_" + aRecipe.getTiempo() + "_" + productName + ":";
+            myRecipes.add(recipes);
+            recipes = "";
+
+        }
+
+        return myRecipes;
     }
 
     public void addRecipe(Session session, String username, String recipeName, String steps, String cookware, int people, String time, List<String> products) {
@@ -244,6 +300,101 @@ public class RecetaDAO {
                     deleteRecipe(session, recipeID);
                 }
             }
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
+    public boolean getLikeRecipe(Session session, String username, int recipeID) {
+        boolean recipeLiked = false;
+
+        String hql = "from Favoritosrecetas";
+        Query query = session.createQuery(hql);
+
+        List<Favoritosrecetas> favRecipes = query.list();
+        UsuarioDAO userID = new UsuarioDAO();
+        int uID = userID.getUserID(session, username);
+
+        for (Favoritosrecetas aFav : favRecipes) {
+            if (aFav.getId().getIdReceta() == recipeID && aFav.getId().getIdUsuario() == uID) {
+                recipeLiked = true;
+            }
+        }
+
+        return recipeLiked;
+    }
+
+    public void likeRecipe(String username, int recipeID, String usernameUpload) {
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        UsuarioDAO user = new UsuarioDAO();
+        int userID = user.getUserID(session, username);
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+
+            FavoritosrecetasId favoritosRecetasID = new FavoritosrecetasId(userID, recipeID);
+            Favoritosrecetas favoritosRecetas = new Favoritosrecetas(favoritosRecetasID);
+
+            session.save(favoritosRecetas);
+
+            user.addPoints(usernameUpload, 10);
+
+            String hql = "update Receta set likes = likes+1 where id = :id";
+            Query query = session.createQuery(hql);
+            query.setParameter("id", recipeID);
+
+            query.executeUpdate();
+
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+    public void dislikeRecipe(Session session, String username, int recipeID, String usernameUpload) {
+        UsuarioDAO user = new UsuarioDAO();
+        int userID = user.getUserID(session, username);
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+            FavoritosrecetasId favoritosRecetasID = new FavoritosrecetasId(userID, recipeID);
+            Favoritosrecetas favoritosRecetas = new Favoritosrecetas(favoritosRecetasID);
+
+            String hql = "from Favoritosrecetas";
+            Query query = session.createQuery(hql);
+
+            List<Favoritosrecetas> favRecipes = query.list();
+
+            for (Favoritosrecetas aFav : favRecipes) {
+                if (aFav.getId().getIdReceta() == recipeID && aFav.getId().getIdUsuario() == userID) {
+                    hql = "delete Favoritosrecetas where id = :id";
+                    query = session.createQuery(hql);
+                    query.setParameter("id", aFav.getId());
+
+                    query.executeUpdate();
+                }
+            }
+
+            hql = "update Receta set likes = likes-1 where id = :id";
+            query = session.createQuery(hql);
+            query.setParameter("id", recipeID);
+
+            query.executeUpdate();
+
+            user.removePoints(usernameUpload, 10);
+
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {
