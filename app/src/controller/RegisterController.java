@@ -17,7 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import util.ConnectionManager;
-import view.Main;
+import view.WarnMaketApp;
 
 /**
  * FXML Controller class
@@ -86,7 +86,7 @@ public class RegisterController implements Initializable {
     private void onClickBack(MouseEvent event) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
-            Main.changeScene(root, "Login");
+            WarnMaketApp.changeScene(root, "Login");
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }

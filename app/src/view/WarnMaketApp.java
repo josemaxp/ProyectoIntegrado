@@ -18,7 +18,7 @@ import util.ConnectionManager;
  *
  * @author josem
  */
-public class Main extends Application {
+public class WarnMaketApp extends Application {
 
     private static double xOffset = 0.0;
     private static double yOffset = 0.0;
@@ -42,16 +42,16 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Main.stage = stage;
+        WarnMaketApp.stage = stage;
         Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
 
-        moveStage(root, Main.stage);
+        moveStage(root, WarnMaketApp.stage);
 
         scene = new Scene(root);
-        Main.stage.setTitle("Login");
-        Main.stage.initStyle(StageStyle.UNDECORATED);
-        Main.stage.setScene(scene);
-        Main.stage.show();
+        WarnMaketApp.stage.setTitle("Login");
+        WarnMaketApp.stage.initStyle(StageStyle.UNDECORATED);
+        WarnMaketApp.stage.setScene(scene);
+        WarnMaketApp.stage.show();
     }
 
     /**

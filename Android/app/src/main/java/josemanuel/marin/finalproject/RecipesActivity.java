@@ -106,6 +106,8 @@ public class RecipesActivity extends AppCompatActivity implements SearchView.OnQ
             e.printStackTrace();
         }
 
+        Collections.sort(totalRecetas);
+
         adapter = new ShowAllRecipes(totalRecetas, this);
         RecyclerView recyclerView = findViewById(R.id.recyclerViewRecipes);
         recyclerView.setHasFixedSize(true);

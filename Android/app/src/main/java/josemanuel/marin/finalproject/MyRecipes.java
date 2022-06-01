@@ -1,11 +1,8 @@
 package josemanuel.marin.finalproject;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,6 +14,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -40,8 +38,6 @@ public class MyRecipes extends AppCompatActivity implements SearchView.OnQueryTe
         setContentView(R.layout.my_recipes);
 
         searchViewRecipes = findViewById(R.id.searchViewMyRecipes);
-
-
 
         showRecipes();
     }
@@ -79,6 +75,8 @@ public class MyRecipes extends AppCompatActivity implements SearchView.OnQueryTe
             e.printStackTrace();
         }
 
+        Collections.sort(totalRecetas);
+
         adapter = new ShowAllRecipes(totalRecetas, this);
         RecyclerView recyclerView = findViewById(R.id.recyclerViewMyRecipes);
         recyclerView.setHasFixedSize(true);
@@ -106,7 +104,7 @@ public class MyRecipes extends AppCompatActivity implements SearchView.OnQueryTe
                 e.printStackTrace();
             }
 
-            out.println("CL:myRecipes:"+params[0]);
+            out.println("CL:myRecipes:" + params[0]);
             String recipes = "";
             try {
                 recipes = in.readLine();

@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -175,16 +174,19 @@ public class ShowOffer extends RecyclerView.Adapter<ShowOffer.OfferViewHolder> i
         this.offerID = offerID;
 
         System.out.println(offerID);
+        if (currentUSer.length > 2) {
+            if (currentUSer[2].equals(username)) {
+                menu.getMenu().findItem(R.id.delete_offer).setVisible(true);
+                menu.getMenu().findItem(R.id.report_offer).setVisible(false);
+            } else {
+                menu.getMenu().findItem(R.id.delete_offer).setVisible(false);
+                menu.getMenu().findItem(R.id.report_offer).setVisible(true);
+            }
 
-        if (currentUSer.length > 2 && currentUSer[2].equals(username)) {
-            menu.getMenu().findItem(R.id.delete_offer).setVisible(true);
-            menu.getMenu().findItem(R.id.report_offer).setVisible(false);
+            menu.show();
         } else {
-            menu.getMenu().findItem(R.id.delete_offer).setVisible(false);
-            menu.getMenu().findItem(R.id.report_offer).setVisible(true);
+            Toast.makeText(context, "Inicia sesión para interactuar con la oferta.", Toast.LENGTH_LONG).show();
         }
-
-        menu.show();
     }
 
     @Override

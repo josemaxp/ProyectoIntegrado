@@ -7,6 +7,7 @@ import io.github.palexdev.materialfx.controls.legacy.MFXLegacyComboBox;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -187,15 +188,17 @@ public class MainScreenController implements Initializable {
         gridPane.getChildren().clear();
         totalRecetas = getRecipeData();
         int row = 0;
+        
+        Collections.sort(totalRecetas);
 
         try {
             for (int i = 0; i < totalRecetas.size(); i++) {
                 FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("/view/OfferItem.fxml"));
+                fxmlLoader.setLocation(getClass().getResource("/view/RecipeItem.fxml"));
                 AnchorPane anchorPane = fxmlLoader.load();
 
-                OfferItemController offerItemController = fxmlLoader.getController();
-                //offerItemController.setData(totalRecetas.get(i));
+                RecipeItemController recipeItemController = fxmlLoader.getController();
+                recipeItemController.setData(totalRecetas.get(i));
 
                 row++;
 
@@ -378,6 +381,37 @@ public class MainScreenController implements Initializable {
                     }
                 }
             } else {
+                for (int i = 0; i < totalRecetas.size(); i++) {
+                    for (String s : quitarEspacio) {
+                        if (totalRecetas.get(i).getName().toLowerCase().contains(s.toLowerCase())) {
+                            FXMLLoader fxmlLoader = new FXMLLoader();
+                            fxmlLoader.setLocation(getClass().getResource("/view/RecipeItem.fxml"));
+                            AnchorPane anchorPane = fxmlLoader.load();
+                            RecipeItemController recipeItemController = fxmlLoader.getController();
+                            recipeItemController.setData(totalRecetas.get(i));
+
+                            row++;
+
+                            gridPane.add(anchorPane, 0, i);
+                            gridPane.setMargin(anchorPane, new Insets(10));
+                        }
+
+                        for (int j = 0; j < totalRecetas.get(i).getProducts().size(); j++) {
+                            if (totalRecetas.get(i).getProducts().get(j).contains(s.toLowerCase())) {
+                                FXMLLoader fxmlLoader = new FXMLLoader();
+                                fxmlLoader.setLocation(getClass().getResource("/view/RecipeItem.fxml"));
+                                AnchorPane anchorPane = fxmlLoader.load();
+                                RecipeItemController recipeItemController = fxmlLoader.getController();
+                                recipeItemController.setData(totalRecetas.get(i));
+
+                                row++;
+
+                                gridPane.add(anchorPane, 0, i);
+                                gridPane.setMargin(anchorPane, new Insets(10));
+                            }
+                        }
+                    }
+                }
             }
         } catch (IOException ex) {
             Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
@@ -417,10 +451,10 @@ public class MainScreenController implements Initializable {
         activePane = false;
 
         comboBoxComunidadAutonoma.setDisable(false);
-        if (!comboBoxPoblacion.getValue().equals("")) {
+        if (!comboBoxPoblacion.getItems().isEmpty()) {
             comboBoxPoblacion.setDisable(false);
         }
-        if (!comboBoxProvincia.getValue().equals("")) {
+        if (!comboBoxPoblacion.getItems().isEmpty()) {
             comboBoxProvincia.setDisable(false);
         }
 
@@ -431,7 +465,7 @@ public class MainScreenController implements Initializable {
         this.resetMenuProperties();
 
         titleText.setText("Recetas");
-        //showRecipe();
+        showRecipe();
         activePane = true;
         comboBoxComunidadAutonoma.setDisable(true);
         comboBoxPoblacion.setDisable(true);

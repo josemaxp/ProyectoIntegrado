@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -29,6 +30,7 @@ public class RecipeClicked extends AppCompatActivity {
     getLikeRecipe getLikeRecipe;
     likeRecipe likeRecipe;
     dislikeRecipe dislikeRecipe;
+    getUser getUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,36 +77,63 @@ public class RecipeClicked extends AppCompatActivity {
         textViewProductsFromServer.setText(products);
         textViewCookwareFromServer.setText(recipe.getCookware().replace("|", "\n"));
 
-        getLikeRecipe = new getLikeRecipe();
-        String [] recipeLiked = null;
+        getUser = new getUser();
+        String[] user = null;
         try {
-            recipeLiked = getLikeRecipe.execute().get().split(":");
-        } catch (ExecutionException | InterruptedException e) {
+            user = getUser.execute().get().split(":");
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        if (recipeLiked[2].equals("true")) {
-            imageViewLike.setVisibility(View.VISIBLE);
-            imageViewDislike.setVisibility(View.GONE);
+        if (user.length > 2) {
+
+            getLikeRecipe = new getLikeRecipe();
+            String[] recipeLiked = null;
+            try {
+                recipeLiked = getLikeRecipe.execute().get().split(":");
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+
+
+            if (recipeLiked[2].equals("true")) {
+                imageViewLike.setVisibility(View.VISIBLE);
+                imageViewDislike.setVisibility(View.GONE);
+            } else {
+                imageViewLike.setVisibility(View.GONE);
+                imageViewDislike.setVisibility(View.VISIBLE);
+            }
         } else {
             imageViewLike.setVisibility(View.GONE);
             imageViewDislike.setVisibility(View.VISIBLE);
         }
 
+        String[] finalUser = user;
         imageViewLike.setOnClickListener(v -> {
-            dislikeRecipe = new dislikeRecipe();
-            dislikeRecipe.execute();
+            if (finalUser.length > 2) {
+                dislikeRecipe = new dislikeRecipe();
+                dislikeRecipe.execute();
 
-            imageViewLike.setVisibility(View.GONE);
-            imageViewDislike.setVisibility(View.VISIBLE);
+                imageViewLike.setVisibility(View.GONE);
+                imageViewDislike.setVisibility(View.VISIBLE);
+            } else {
+                Toast.makeText(this, "Inicia sesión para poder dar me gusta.", Toast.LENGTH_LONG).show();
+            }
         });
 
         imageViewDislike.setOnClickListener(v -> {
-            likeRecipe = new likeRecipe();
-            likeRecipe.execute();
 
-            imageViewLike.setVisibility(View.VISIBLE);
-            imageViewDislike.setVisibility(View.GONE);
+            if (finalUser.length > 2) {
+                likeRecipe = new likeRecipe();
+                likeRecipe.execute();
+
+                imageViewLike.setVisibility(View.VISIBLE);
+                imageViewDislike.setVisibility(View.GONE);
+            } else {
+                Toast.makeText(this, "Inicia sesión para poder dar me gusta.", Toast.LENGTH_LONG).show();
+            }
         });
     }
 
@@ -161,7 +190,7 @@ public class RecipeClicked extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            out.println("CL:likeRecipe:" + recipeID +":"+ userUpload);
+            out.println("CL:likeRecipe:" + recipeID + ":" + userUpload);
 
 
             return null;
@@ -190,7 +219,7 @@ public class RecipeClicked extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            out.println("CL:dislikeRecipe:" + recipeID +":"+ userUpload);
+            out.println("CL:dislikeRecipe:" + recipeID + ":" + userUpload);
 
             return null;
         }
@@ -198,6 +227,37 @@ public class RecipeClicked extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
+        }
+    }
+
+    class getUser extends AsyncTask<Void, Void, String> {
+        Socket s;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            s = Connection.getSocket();
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            try {
+                out = new PrintWriter(s.getOutputStream(), true);
+                in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            String user = "";
+            out.println("CL:getUser");
+            try {
+                user = in.readLine();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return user;
         }
     }
 }

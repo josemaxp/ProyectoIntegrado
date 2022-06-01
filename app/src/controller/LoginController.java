@@ -20,7 +20,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import util.ConnectionManager;
-import view.Main;
+import view.WarnMaketApp;
 
 /**
  * FXML Controller class
@@ -69,12 +69,12 @@ public class LoginController implements Initializable {
                 if (fromServer.split(":")[2].equals("true")) {
                     textFieldLoginError.setText("Correct login.");
 
-                    /*try {
-                Parent root = FXMLLoader.load(getClass().getResource("/view/Main.fxml"));
-                RefugioApp.changeScene(root, "Main");
-                } catch (IOException e) {
-                System.out.println(e.getMessage());
-                }*/
+                    try {
+                        Parent root = FXMLLoader.load(getClass().getResource("/view/MainScreen.fxml"));
+                        WarnMaketApp.changeScene(root, "WarnMarket");
+                    } catch (IOException e) {
+                        System.out.println(e.getMessage());
+                    }
                 } else {
                     textFieldLoginError.setText("Error, comprueba tu usuario o contraseña.");
                 }
@@ -91,7 +91,7 @@ public class LoginController implements Initializable {
     private void onClickLoginRegister(MouseEvent event) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/view/Register.fxml"));
-            Main.changeScene(root, "Register");
+            WarnMaketApp.changeScene(root, "Register");
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -101,7 +101,7 @@ public class LoginController implements Initializable {
     private void onClickGuest(MouseEvent event) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/view/MainScreen.fxml"));
-            Main.changeScene(root, "Offers");
+            WarnMaketApp.changeScene(root, "WarnMarket");
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -114,7 +114,7 @@ public class LoginController implements Initializable {
         dialog.setHeaderText("Introduce la IP del servidor");
 
         Optional<String> result = dialog.showAndWait();
-        
+
         if (result.isPresent() && !result.get().equals("")) {
             ConnectionManager.setProperty(result.get());
         }

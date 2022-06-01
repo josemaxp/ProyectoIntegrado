@@ -10,12 +10,13 @@ import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
-import model.OfferItem;
+import model.RecipeItem;
 import util.ConnectionManager;
 
 /**
@@ -23,52 +24,54 @@ import util.ConnectionManager;
  *
  * @author josem
  */
-public class OfferItemController implements Initializable {
+public class RecipeItemController implements Initializable {
 
     @FXML
     private ImageView image;
     @FXML
-    private Text market;
-    @FXML
-    private Text Tags;
-    @FXML
-    private Text Price;
-    @FXML
-    private Text PriceUnity;
+    private Text recipeName;
     @FXML
     private Text user;
     @FXML
-    private ImageView imageApproved;
+    private Text likes;
+    @FXML
+    private FontAwesomeIconView people;
+    @FXML
+    private Text time;
+    @FXML
+    private Text peopleText;
     @FXML
     private FontAwesomeIconView report;
     @FXML
     private FontAwesomeIconView delete;
-    
+
     private String username = "";
-    private String usernameUpload = "";
-    private int offerID = -1;
-       
+    private String usernmaeUpload = "";
+    private int recipeID = -1;
+
+    /**
+     * Initializes the controller class.
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
     }
 
-    public void setData(OfferItem offerItem) {
-        String tags = "";
-        for (int i = 0; i < offerItem.getTags().size(); i++) {
-            //Capitalizo las palabras para mostrarlas
-            if (i < offerItem.getTags().size() - 1) {
-                tags += offerItem.getTags().get(i).substring(0, 1).toUpperCase() + offerItem.getTags().get(i).substring(1) + " - ";
-            } else {
-                tags += offerItem.getTags().get(i).substring(0, 1).toUpperCase() + offerItem.getTags().get(i).substring(1);
-            }
+    public void setData(RecipeItem RecipeItem) {
+        String[] timeSeparated = RecipeItem.getTime().trim().split("\\.");
+        String newTime = "";
+
+        if (timeSeparated[0].equals("00")) {
+            newTime = timeSeparated[1] + " minuto(s)";
+        } else {
+            newTime = timeSeparated[0] + " hora(s) y " + timeSeparated[1] + " minuto(s)";
         }
 
-        market.setText(offerItem.getMarket());
-        Tags.setText(tags);
-        Price.setText(offerItem.getPrice());
-        PriceUnity.setText("(" + offerItem.getPriceUnity() + ")");
-        user.setText(offerItem.getUsername());
+        recipeName.setText(RecipeItem.getName());
+        user.setText(RecipeItem.getUsername());
+        likes.setText(RecipeItem.getLikes() + "");
+        peopleText.setText(RecipeItem.getPeople() + "");
+        time.setText(newTime);
 
         //Image offerImage = new Image(offerItem.getImage());
         //if (offerItem.getImage().equals("")) {
@@ -77,12 +80,38 @@ public class OfferItemController implements Initializable {
 
         image.setImage(offerImage);
         
-        offerID = offerItem.getId();
-        usernameUpload = offerItem.getUsername();
+        usernmaeUpload = RecipeItem.getUsername();
+        recipeID = RecipeItem.getId();
         
         init();
     }
-    
+
+    @FXML
+    private void onClickReport(MouseEvent event) {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setHeaderText(null);
+        alert.setTitle("Reportar receta");
+        alert.setContentText("¿Está seguro de que desea reportar esta receta?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            reportRecipe();
+        }
+    }
+
+    @FXML
+    private void onClickDelete(MouseEvent event) {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setHeaderText(null);
+        alert.setTitle("Borrar receta");
+        alert.setContentText("¿Está seguro de que desea borrar esta receta?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            deleteRecipe();
+        }
+    }
+
     private void getUser() {
         ConnectionManager.out.println("CL:" + "getUser");
         String[] fromServer = null;
@@ -97,8 +126,8 @@ public class OfferItemController implements Initializable {
         }
     }
 
-    private void deleteOffer() {
-        ConnectionManager.out.println("CL:" + "deleteOffer:" + offerID);
+    private void deleteRecipe() {
+        ConnectionManager.out.println("CL:" + "deleteRecipe:" + recipeID);
         String fromServer = null;
         try {
             fromServer = ConnectionManager.in.readLine();
@@ -107,46 +136,20 @@ public class OfferItemController implements Initializable {
         }
     }
 
-    private void reportOffer() {
-        ConnectionManager.out.println("CL:" + "reportOffer:" + offerID);
+    private void reportRecipe() {
+        ConnectionManager.out.println("CL:" + "reportRecipe:" + recipeID);
         String fromServer = null;
         try {
             fromServer = ConnectionManager.in.readLine();
         } catch (IOException ex) {
             Logger.getLogger(RecipeItemController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    @FXML
-    private void onClickReport(MouseEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setHeaderText(null);
-        alert.setTitle("Reportar oferta");
-        alert.setContentText("¿Está seguro de que desea reportar esta oferta?");
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            reportOffer();
-        }
-    }
-
-    @FXML
-    private void onClickDelete(MouseEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setHeaderText(null);
-        alert.setTitle("Borrar oferta");
-        alert.setContentText("¿Está seguro de que desea borrar esta oferta?");
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            deleteOffer();
         }
     }
     
     private void init(){
-    getUser();
+        getUser();
         if (!username.equals("")) {
-            if (!usernameUpload.equals(username)) {
+            if (!usernmaeUpload.equals(username)) {
                 delete.setDisable(true);
                 delete.setOpacity(0);
                 report.setDisable(false);

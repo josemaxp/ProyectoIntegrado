@@ -15,7 +15,7 @@ public class ListOfferItem implements Comparable<ListOfferItem> {
     Double longitud;
     boolean approvedOffer;
 
-    public ListOfferItem(String market, List<String> tags, String distance, String price, String priceUnity, String username,String image, boolean approvedOffer, int id, double latitud, double longitud) {
+    public ListOfferItem(String market, List<String> tags, String distance, String price, String priceUnity, String username, String image, boolean approvedOffer, int id, double latitud, double longitud) {
         this.id = id;
         this.market = market;
         this.tags = tags;
@@ -29,7 +29,9 @@ public class ListOfferItem implements Comparable<ListOfferItem> {
         this.longitud = longitud;
     }
 
-    public int getID(){return id;}
+    public int getID() {
+        return id;
+    }
 
     public String getMarket() {
         return market;
@@ -59,9 +61,13 @@ public class ListOfferItem implements Comparable<ListOfferItem> {
         return username;
     }
 
-    public String getImage() {return image;}
+    public String getImage() {
+        return image;
+    }
 
-    public Boolean getApprovedOffer() {return approvedOffer;}
+    public Boolean getApprovedOffer() {
+        return approvedOffer;
+    }
 
     public Double getLatitud() {
         return latitud;

@@ -160,15 +160,19 @@ public class ShowAllRecipes extends RecyclerView.Adapter<ShowAllRecipes.RecipeVi
 
         this.recipeID = recipeID;
 
-        if (currentUSer.length > 2 && currentUSer[2].equals(username)) {
-            menu.getMenu().findItem(R.id.delete_recipe).setVisible(true);
-            menu.getMenu().findItem(R.id.report_recipe).setVisible(false);
-        } else {
-            menu.getMenu().findItem(R.id.delete_recipe).setVisible(false);
-            menu.getMenu().findItem(R.id.report_recipe).setVisible(true);
-        }
+        if (currentUSer.length > 2) {
+            if (currentUSer[2].equals(username)) {
+                menu.getMenu().findItem(R.id.delete_recipe).setVisible(true);
+                menu.getMenu().findItem(R.id.report_recipe).setVisible(false);
+            } else {
+                menu.getMenu().findItem(R.id.delete_recipe).setVisible(false);
+                menu.getMenu().findItem(R.id.report_recipe).setVisible(true);
+            }
 
-        menu.show();
+            menu.show();
+        }else{
+            Toast.makeText(context, "Inicia sesión para interactuar con la receta.", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

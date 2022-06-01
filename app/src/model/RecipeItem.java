@@ -6,7 +6,7 @@ import java.util.List;
  *
  * @author josem
  */
-public class RecipeItem {
+public class RecipeItem implements Comparable<RecipeItem>{
     int id;
     String username;
     String name;
@@ -69,5 +69,10 @@ public class RecipeItem {
 
     public String getTime() {
         return time;
+    }
+
+    @Override
+    public int compareTo(RecipeItem o) {
+        return String.valueOf(o.likes).compareTo(String.valueOf(likes));
     }
 }

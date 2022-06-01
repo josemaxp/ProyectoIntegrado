@@ -8,6 +8,7 @@ import java.util.List;
  */
 public class OfferItem {
 
+    int id;
     String market;
     List<String> tags;
     String price;
@@ -19,6 +20,7 @@ public class OfferItem {
     String comunidadAutonoma;
 
     public OfferItem(String market, List<String> tags, String price, String priceUnity, String username,String image, boolean approvedOffer, int id, String poblacion, String provincia, String comunidadAutonoma) {
+        this.id = id;
         this.market = market;
         this.tags = tags;
         this.price = price;
@@ -64,5 +66,9 @@ public class OfferItem {
 
     public String getImage() {
         return image;
+    }
+
+    public int getId() {
+        return id;
     }
 }

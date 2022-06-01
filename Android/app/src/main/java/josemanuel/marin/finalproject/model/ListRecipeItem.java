@@ -3,7 +3,7 @@ package josemanuel.marin.finalproject.model;
 import java.io.Serializable;
 import java.util.List;
 
-public class ListRecipeItem implements Serializable {
+public class ListRecipeItem implements Serializable, Comparable<ListRecipeItem> {
     int id;
     String username;
     String name;
@@ -15,7 +15,7 @@ public class ListRecipeItem implements Serializable {
     String image;
     String time;
 
-    public ListRecipeItem(int id,String username, String name, List<String> products, int people, String steps, int likes, String cookware, String image, String time) {
+    public ListRecipeItem(int id, String username, String name, List<String> products, int people, String steps, int likes, String cookware, String image, String time) {
         this.id = id;
         this.username = username;
         this.name = name;
@@ -66,5 +66,11 @@ public class ListRecipeItem implements Serializable {
 
     public String getTime() {
         return time;
+    }
+
+
+    @Override
+    public int compareTo(ListRecipeItem o) {
+        return String.valueOf(o.likes).compareTo(String.valueOf(likes));
     }
 }

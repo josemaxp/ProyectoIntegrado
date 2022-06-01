@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -13,7 +15,7 @@
          <font>
             <Font name="SansSerif Bold" size="14.0" />
          </font></Text>
-      <Text fx:id="Tags" fill="WHITE" layoutX="124.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-" wrappingWidth="263.7367477416992" />
+      <Text fx:id="Tags" fill="WHITE" layoutX="124.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-" wrappingWidth="235.73674774169922" />
       <Text fx:id="Price" fill="#fc447a" layoutX="135.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0.6" wrappingWidth="45.0">
          <font>
             <Font name="System Bold" size="20.0" />
@@ -29,5 +31,15 @@
             <Font name="SansSerif Bold" size="12.0" />
          </font>
       </Text>
+      <FontAwesomeIconView fx:id="report" fill="#fc447a" glyphName="FLAG" layoutX="364.0" layoutY="22.0" onMouseClicked="#onClickReport" opacity="0.0" size="20" text="">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </FontAwesomeIconView>
+      <FontAwesomeIconView fx:id="delete" fill="#fc447a" glyphName="TRASH" layoutX="366.0" layoutY="21.0" onMouseClicked="#onClickDelete" size="20">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </FontAwesomeIconView>
    </children>
 </AnchorPane>
