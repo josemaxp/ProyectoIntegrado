@@ -6,8 +6,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.animation.TranslateTransition;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -16,10 +14,9 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 import model.RecipeItem;
+import util.ConnectionManager;
 import view.WarnMaketApp;
 
 /**
@@ -49,10 +46,18 @@ public class RecipeViewController implements Initializable {
     private Text products;
     @FXML
     private Text cookware;
-
-    RecipeItem RecipeItem;
     @FXML
     private ImageView image;
+    @FXML
+    private FontAwesomeIconView giveLike;
+    @FXML
+    private FontAwesomeIconView giveDislike;
+
+    RecipeItem RecipeItem;
+    private int recipeID = -1;
+    private String currentUsername = "";
+    private String uploadUsername = "";
+    boolean recipeLiked = false;
 
     /**
      * Initializes the controller class.
@@ -86,14 +91,39 @@ public class RecipeViewController implements Initializable {
         cookware.setText(RecipeItem.getCookware().replace("|", "\n"));
         time.setText(newTime);
         this.products.setText(products);
-        
+
         //Image offerImage = new Image(offerItem.getImage());
         //if (offerItem.getImage().equals("")) {
         Image offerImage = new Image("/images/noImageFound.jpg");
         //} 
 
         image.setImage(offerImage);
-        
+
+        recipeID = RecipeItem.getId();
+        uploadUsername = RecipeItem.getUsername();
+
+        getUser();
+        getLikeRecipe();
+        if (!currentUsername.equals("")) {
+            if (recipeLiked) {
+                giveLike.setDisable(true);
+                giveLike.setOpacity(0);
+                giveDislike.setDisable(false);
+                giveDislike.setOpacity(1);
+            } else {
+                giveLike.setDisable(false);
+                giveLike.setOpacity(1);
+                giveDislike.setDisable(true);
+                giveDislike.setOpacity(0);
+            }
+
+        } else {
+            giveLike.setDisable(true);
+            giveLike.setOpacity(0);
+            giveDislike.setDisable(true);
+            giveDislike.setOpacity(0);
+        }
+
     }
 
     public void setRecipeItem(RecipeItem RecipeItem) {
@@ -120,5 +150,50 @@ public class RecipeViewController implements Initializable {
         }
     }
 
+    @FXML
+    private void onClickLike(MouseEvent event) {
+        ConnectionManager.out.println("CL:likeRecipe:" + recipeID + ":" + uploadUsername);
+        giveLike.setDisable(true);
+        giveLike.setOpacity(0);
+        giveDislike.setDisable(false);
+        giveDislike.setOpacity(1);
+    }
+
+    @FXML
+    private void onClickDislike(MouseEvent event) {
+        ConnectionManager.out.println("CL:dislikeRecipe:" + recipeID + ":" + uploadUsername);
+        giveLike.setDisable(false);
+        giveLike.setOpacity(1);
+        giveDislike.setDisable(true);
+        giveDislike.setOpacity(0);
+    }
+
+    private void getUser() {
+        ConnectionManager.out.println("CL:getUser");
+        String[] fromServer = null;
+        try {
+            fromServer = ConnectionManager.in.readLine().split(":");
+        } catch (IOException ex) {
+            Logger.getLogger(RecipeItemController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        if (fromServer.length > 2) {
+            currentUsername = fromServer[2];
+        }
+    }
+
+    private void getLikeRecipe() {
+        ConnectionManager.out.println("CL:getLikeRecipe:" + recipeID);
+        String[] fromServer = null;
+        try {
+            fromServer = ConnectionManager.in.readLine().split(":");
+        } catch (IOException ex) {
+            Logger.getLogger(RecipeItemController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        if (fromServer.length > 2 && fromServer[2].equals("true")) {
+            recipeLiked = true;
+        }
+    }
 
 }
