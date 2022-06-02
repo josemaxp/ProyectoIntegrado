@@ -100,6 +100,7 @@ public class LoginController implements Initializable {
     @FXML
     private void onClickGuest(MouseEvent event) {
         try {
+            ConnectionManager.out.println("CL:" + "guestUser");
             Parent root = FXMLLoader.load(getClass().getResource("/view/MainScreen.fxml"));
             WarnMaketApp.changeScene(root, "WarnMarket");
         } catch (IOException e) {

@@ -18,6 +18,7 @@ public class OfferItem {
     String poblacion;
     String provincia;
     String comunidadAutonoma;
+    boolean approvedOffer;
 
     public OfferItem(String market, List<String> tags, String price, String priceUnity, String username,String image, boolean approvedOffer, int id, String poblacion, String provincia, String comunidadAutonoma) {
         this.id = id;
@@ -30,6 +31,7 @@ public class OfferItem {
         this.poblacion = poblacion;
         this.provincia = provincia;
         this.comunidadAutonoma = comunidadAutonoma;
+        this.approvedOffer = approvedOffer;
     }
 
     public String getMarket() {
@@ -70,5 +72,9 @@ public class OfferItem {
 
     public int getId() {
         return id;
+    }
+
+    public boolean isApprovedOffer() {
+        return approvedOffer;
     }
 }

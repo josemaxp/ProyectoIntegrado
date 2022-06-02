@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #292A33;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RecipeViewController">
+   <children>
+      <Label fx:id="titleText" alignment="CENTER" contentDisplay="CENTER" layoutY="1.0" prefHeight="38.0" prefWidth="600.0" text="Nombre oferta" textAlignment="CENTER" textFill="#fc447a">
+         <font>
+            <Font name="SansSerif Bold" size="24.0" />
+         </font>
+      </Label>
+      <FontAwesomeIconView fx:id="iconLoginExit" fill="#fd93b2" glyphName="CLOSE" layoutX="578.0" layoutY="21.0" onMouseClicked="#onClickLoginExit" size="20">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </FontAwesomeIconView>
+      <FontAwesomeIconView fx:id="returnIcon" fill="#fd93b2" glyphName="ARROW_LEFT" layoutX="553.0" layoutY="21.0" onMouseClicked="#onClickReturn" size="20">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </FontAwesomeIconView>
+      <ImageView fx:id="image" fitHeight="200.0" fitWidth="200.0" layoutX="200.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true" />
+      <Text fx:id="username" fill="#fd93b2" layoutX="277.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Usuario">
+         <font>
+            <Font name="SansSerif Bold" size="12.0" />
+         </font>
+      </Text>
+      <FontAwesomeIconView fill="WHITE" glyphName="HEART" layoutX="289.0" layoutY="270.0" size="20" />
+      <Text fx:id="likes" fill="WHITE" layoutX="316.0" layoutY="267.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1000">
+         <font>
+            <Font name="SansSerif Regular" size="12.0" />
+         </font>
+      </Text>
+      <FontAwesomeIconView fill="WHITE" glyphName="USERS" layoutX="367.0" layoutY="270.0" size="20" />
+      <Text fx:id="people" fill="WHITE" layoutX="396.0" layoutY="266.0" strokeType="OUTSIDE" strokeWidth="0.0" text="100">
+         <font>
+            <Font name="SansSerif Regular" size="12.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="25.0" fitWidth="28.0" layoutX="183.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/timer.png" />
+         </image>
+      </ImageView>
+      <Text fx:id="time" fill="WHITE" layoutX="208.0" layoutY="266.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10 hora(s) y 10 minuto(s)" wrappingWidth="73.2293701171875">
+         <font>
+            <Font name="SansSerif Regular" size="12.0" />
+         </font>
+      </Text>
+      <MFXScrollPane layoutX="25.0" layoutY="292.0" prefHeight="94.0" prefWidth="562.0" style="-fx-background-color: #292A33;">
+         <content>
+            <Text fx:id="steps" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Pasos" wrappingWidth="556.5367774963379" />
+         </content>
+      </MFXScrollPane>
+      <MFXScrollPane layoutX="25.0" layoutY="36.0" prefHeight="249.0" prefWidth="143.0" style="-fx-background-color: #292A33;">
+         <content>
+            <Text fx:id="products" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Productos" wrappingWidth="133.33671951293945" />
+         </content>
+      </MFXScrollPane>
+      <MFXScrollPane layoutX="442.0" layoutY="36.0" prefHeight="250.0" prefWidth="143.0" style="-fx-background-color: #292A33;">
+         <content>
+            <Text fx:id="cookware" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Utensilios" wrappingWidth="134.9366340637207" />
+         </content>
+      </MFXScrollPane>
+   </children>
+</AnchorPane>

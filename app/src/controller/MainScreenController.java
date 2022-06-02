@@ -15,13 +15,12 @@ import java.util.logging.Logger;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -33,6 +32,7 @@ import javafx.util.Duration;
 import model.OfferItem;
 import model.RecipeItem;
 import util.ConnectionManager;
+import view.WarnMaketApp;
 
 /**
  * FXML Controller class
@@ -70,6 +70,8 @@ public class MainScreenController implements Initializable {
     private ObservableList<String> provincias = FXCollections.observableArrayList();
     private ObservableList<String> poblaciones = FXCollections.observableArrayList();
     private boolean activePane = false; //false = offers // true = recipes
+    @FXML
+    private FontAwesomeIconView returnIcon;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -188,7 +190,7 @@ public class MainScreenController implements Initializable {
         gridPane.getChildren().clear();
         totalRecetas = getRecipeData();
         int row = 0;
-        
+
         Collections.sort(totalRecetas);
 
         try {
@@ -475,5 +477,16 @@ public class MainScreenController implements Initializable {
     @FXML
     private void onClickMyAccountButton(ActionEvent event) {
         this.resetMenuProperties();
+    }
+
+    @FXML
+    private void onClickReturn(MouseEvent event) {
+        Parent root;
+        try {
+            root = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
+            WarnMaketApp.changeScene(root, "Login");
+        } catch (IOException ex) {
+            Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

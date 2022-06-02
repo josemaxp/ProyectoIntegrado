@@ -128,6 +128,10 @@ public class Server {
                             out.println("S:register:true");
                         }
                     }
+                    
+                    if (inputLine.split(":")[1].equals("guestUser")) {
+                        username = "";
+                    }
 
                     if (inputLine.split(":")[1].equals("updateUser")) {
                         String updateUsername = inputLine.split(":")[2];

@@ -80,6 +80,11 @@ public class OfferItemController implements Initializable {
         offerID = offerItem.getId();
         usernameUpload = offerItem.getUsername();
         
+        Image approvedOffer = new Image("/images/pulgar_arriba.png");
+        if(offerItem.isApprovedOffer()){
+            imageApproved.setImage(approvedOffer);
+        }
+        
         init();
     }
     

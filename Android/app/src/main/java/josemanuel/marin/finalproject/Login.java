@@ -43,6 +43,7 @@ public class Login extends AppCompatActivity implements LocationListener {
     public static Double latitud, longitud;
     public static String direccion, poblacion, comunidadAutonoma, provincia;
     login login;
+    guestUser guestUser;
     connectServer Con;
     LocationManager locationManager;
     PrintWriter out;
@@ -99,6 +100,8 @@ public class Login extends AppCompatActivity implements LocationListener {
 
         guestButton.setOnClickListener(view -> {
             if (!Connection.IP.equals("")) {
+                guestUser = new guestUser();
+                guestUser.execute();
                 Intent intent = new Intent(Login.this, WarnMarketActivity.class);
                 startActivity(intent);
             }
@@ -137,7 +140,7 @@ public class Login extends AppCompatActivity implements LocationListener {
                 if (params[0].equals("") || params[1].equals("")) {
                     result = "Error, los campos no pueden estar vacíos.";
                 } else {
-                    out.println("CL:" + "login:" + username.getText().toString() + ":" + password.getText().toString());
+                    out.println("CL:login:" + username.getText().toString() + ":" + password.getText().toString());
                     String fromServer = in.readLine();
 
                     if (fromServer.split(":")[2].equals("true")) {
@@ -165,6 +168,32 @@ public class Login extends AppCompatActivity implements LocationListener {
 
         @Override
         protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+        }
+    }
+
+    class guestUser extends AsyncTask<Void, Void, Void> {
+        Socket s;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            s = Connection.getSocket();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                out = new PrintWriter(s.getOutputStream(), true);
+                out.println("CL:guestUser");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
             super.onPostExecute(result);
         }
     }
