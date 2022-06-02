@@ -113,7 +113,7 @@ public class MyAccount extends AppCompatActivity {
                 out = new PrintWriter(s.getOutputStream(), true);
                 in = new BufferedReader(new InputStreamReader(s.getInputStream()));
 
-                out.println("CL:" + "userInfo");
+                out.println("CL:userInfo");
                 fromServer = in.readLine();
 
             } catch (IOException e) {

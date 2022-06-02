@@ -63,15 +63,16 @@ public class MainScreenController implements Initializable {
     private FontAwesomeIconView iconMenu;
     @FXML
     private VBox vboxMenu;
+    @FXML
+    private FontAwesomeIconView returnIcon;
 
     private List<OfferItem> totalOfertas;
     private List<RecipeItem> totalRecetas;
-    private ObservableList<String> comunidadesAutonomas = FXCollections.observableArrayList();
-    private ObservableList<String> provincias = FXCollections.observableArrayList();
-    private ObservableList<String> poblaciones = FXCollections.observableArrayList();
+    private final ObservableList<String> comunidadesAutonomas = FXCollections.observableArrayList();
+    private final ObservableList<String> provincias = FXCollections.observableArrayList();
+    private final ObservableList<String> poblaciones = FXCollections.observableArrayList();
     private boolean activePane = false; //false = offers // true = recipes
-    @FXML
-    private FontAwesomeIconView returnIcon;
+    private String username = "";
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -136,24 +137,26 @@ public class MainScreenController implements Initializable {
     private void showOffer() {
         gridPane.getChildren().clear();
         totalOfertas = getOfferData();
-        int row = 0;
+        if (!totalOfertas.isEmpty()) {
+            int row = 0;
 
-        try {
-            for (int i = 0; i < totalOfertas.size(); i++) {
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("/view/OfferItem.fxml"));
-                AnchorPane anchorPane = fxmlLoader.load();
+            try {
+                for (int i = 0; i < totalOfertas.size(); i++) {
+                    FXMLLoader fxmlLoader = new FXMLLoader();
+                    fxmlLoader.setLocation(getClass().getResource("/view/OfferItem.fxml"));
+                    AnchorPane anchorPane = fxmlLoader.load();
 
-                OfferItemController offerItemController = fxmlLoader.getController();
-                offerItemController.setData(totalOfertas.get(i));
+                    OfferItemController offerItemController = fxmlLoader.getController();
+                    offerItemController.setData(totalOfertas.get(i));
 
-                row++;
+                    row++;
 
-                gridPane.add(anchorPane, 0, i);
-                gridPane.setMargin(anchorPane, new Insets(10));
+                    gridPane.add(anchorPane, 0, i);
+                    gridPane.setMargin(anchorPane, new Insets(10));
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (IOException ex) {
-            Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -189,26 +192,28 @@ public class MainScreenController implements Initializable {
     private void showRecipe() {
         gridPane.getChildren().clear();
         totalRecetas = getRecipeData();
-        int row = 0;
+        if (!totalRecetas.isEmpty()) {
+            int row = 0;
 
-        Collections.sort(totalRecetas);
+            Collections.sort(totalRecetas);
 
-        try {
-            for (int i = 0; i < totalRecetas.size(); i++) {
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("/view/RecipeItem.fxml"));
-                AnchorPane anchorPane = fxmlLoader.load();
+            try {
+                for (int i = 0; i < totalRecetas.size(); i++) {
+                    FXMLLoader fxmlLoader = new FXMLLoader();
+                    fxmlLoader.setLocation(getClass().getResource("/view/RecipeItem.fxml"));
+                    AnchorPane anchorPane = fxmlLoader.load();
 
-                RecipeItemController recipeItemController = fxmlLoader.getController();
-                recipeItemController.setData(totalRecetas.get(i));
+                    RecipeItemController recipeItemController = fxmlLoader.getController();
+                    recipeItemController.setData(totalRecetas.get(i));
 
-                row++;
+                    row++;
 
-                gridPane.add(anchorPane, 0, i);
-                gridPane.setMargin(anchorPane, new Insets(10));
+                    gridPane.add(anchorPane, 0, i);
+                    gridPane.setMargin(anchorPane, new Insets(10));
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (IOException ex) {
-            Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -344,7 +349,7 @@ public class MainScreenController implements Initializable {
         filterData();
     }
 
-    public void filterData() {
+    private void filterData() {
         int row = 0;
         gridPane.getChildren().clear();
         String[] quitarEspacio = textFieldSearch.getText().trim().replaceAll(" +", " ").split(" ");
@@ -476,17 +481,39 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private void onClickMyAccountButton(ActionEvent event) {
+        getUser();
         this.resetMenuProperties();
+        if (!username.equals("")) {
+            try {
+                Parent root = FXMLLoader.load(getClass().getResource("/view/MyAccount.fxml"));
+                WarnMaketApp.changeScene(root, "Mi cuenta");
+            } catch (IOException ex) {
+                Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     @FXML
     private void onClickReturn(MouseEvent event) {
-        Parent root;
         try {
-            root = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
             WarnMaketApp.changeScene(root, "Login");
         } catch (IOException ex) {
             Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void getUser() {
+        ConnectionManager.out.println("CL:" + "getUser");
+        String[] fromServer = null;
+        try {
+            fromServer = ConnectionManager.in.readLine().split(":");
+        } catch (IOException ex) {
+            Logger.getLogger(RecipeItemController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        if (fromServer.length > 2) {
+            username = fromServer[2];
         }
     }
 }

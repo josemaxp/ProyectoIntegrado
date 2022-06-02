@@ -11,16 +11,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import model.RecipeItem;
 import util.ConnectionManager;
 import view.WarnMaketApp;
@@ -200,7 +197,6 @@ public class RecipeItemController implements Initializable {
             } catch (IOException ex) {
                 Logger.getLogger(RecipeItemController.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
     }
 
