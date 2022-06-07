@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#292A33">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textViewTitleEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Editar oferta"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewEditTagsTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:text="Etiquetas:"
+                android:textColor="#ACB0CC"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewTitleEdit" />
+
+            <AutoCompleteTextView
+                android:id="@+id/editTextTextAddTagEdit"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/et_style"
+                android:completionThreshold="1"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:padding="10dp"
+                app:layout_constraintEnd_toStartOf="@+id/buttonAddTagEdit"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewEditTagsTitle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonAddTagEdit"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/button_style"
+                android:backgroundTint="#3F414E"
+                android:text="@string/add"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/editTextTextAddTagEdit"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/editTextTextAddTagEdit"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <ScrollView
+                android:id="@+id/scrollViewEditTags"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextTextAddTagEdit">
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:alignContent="stretch"
+                    app:flexWrap="wrap"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintVertical_bias="0.0">
+
+                    <Button
+                        android:id="@+id/buttonTag1Edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:backgroundTint="#FD93B2"
+                        android:textColor="#292A33"
+                        android:visibility="gone"
+                        app:cornerRadius="10dp" />
+
+                    <Button
+                        android:id="@+id/buttonTag2Edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:backgroundTint="#FD93B2"
+                        android:textColor="#292A33"
+                        android:visibility="gone"
+                        app:cornerRadius="10dp" />
+
+                    <Button
+                        android:id="@+id/buttonTag3Edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:backgroundTint="#FD93B2"
+                        android:textColor="#292A33"
+                        android:visibility="gone"
+                        app:cornerRadius="10dp" />
+
+                    <Button
+                        android:id="@+id/buttonTag4Edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:backgroundTint="#FD93B2"
+                        android:textColor="#292A33"
+                        android:visibility="gone"
+                        app:cornerRadius="10dp" />
+
+                    <Button
+                        android:id="@+id/buttonTag5Edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:backgroundTint="#FD93B2"
+                        android:textColor="#292A33"
+                        android:visibility="gone"
+                        app:cornerRadius="10dp" />
+
+                    <Button
+                        android:id="@+id/buttonTag6Edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:backgroundTint="#FD93B2"
+                        android:textColor="#292A33"
+                        android:visibility="gone"
+                        app:cornerRadius="10dp" />
+
+                    <Button
+                        android:id="@+id/buttonTag7Edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:backgroundTint="#FD93B2"
+                        android:textColor="#292A33"
+                        android:visibility="gone"
+                        app:cornerRadius="10dp" />
+
+                    <Button
+                        android:id="@+id/buttonTag8Edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:backgroundTint="#FD93B2"
+                        android:textColor="#292A33"
+                        android:visibility="gone"
+                        app:cornerRadius="10dp" />
+
+                    <Button
+                        android:id="@+id/buttonTag9Edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:backgroundTint="#FD93B2"
+                        android:textColor="#292A33"
+                        android:visibility="gone"
+                        app:cornerRadius="10dp" />
+
+                    <Button
+                        android:id="@+id/buttonTag10Edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:backgroundTint="#FD93B2"
+                        android:textColor="#292A33"
+                        android:visibility="gone"
+                        app:cornerRadius="10dp" />
+                </com.google.android.flexbox.FlexboxLayout>
+            </ScrollView>
+
+            <TextView
+                android:id="@+id/textViewErrorEdit"
+                android:layout_width="0dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:textColor="#FC447A"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewAddImageEdit" />
+
+            <TextView
+                android:id="@+id/textViewPriceTitleEdit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:text="@string/price"
+                android:textColor="#ACB0CC"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/scrollViewEditTags" />
+
+            <EditText
+                android:id="@+id/editTextPriceEdit"
+                android:layout_width="175dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/et_style"
+                android:ems="10"
+                android:inputType="numberDecimal|numberSigned"
+                android:padding="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewPriceTitleEdit" />
+
+            <TextView
+                android:id="@+id/textViewEuroEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="€"
+                android:textColor="#ACB0CC"
+                android:textSize="34sp"
+                app:layout_constraintBottom_toBottomOf="@+id/editTextPriceEdit"
+                app:layout_constraintStart_toEndOf="@+id/editTextPriceEdit"
+                app:layout_constraintTop_toTopOf="@+id/editTextPriceEdit" />
+
+            <TextView
+                android:id="@+id/textViewPriceUnityTitleEdit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:text="@string/price_unity"
+                android:textColor="#ACB0CC"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextPriceEdit" />
+
+            <EditText
+                android:id="@+id/editTextPriceUnityEdit"
+                android:layout_width="175dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/et_style"
+                android:ems="10"
+                android:inputType="numberDecimal|numberSigned"
+                android:padding="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewPriceUnityTitleEdit" />
+
+            <TextView
+                android:id="@+id/textViewEuroUnityEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="€  /"
+                android:textColor="#ACB0CC"
+                android:textSize="34sp"
+                app:layout_constraintBottom_toBottomOf="@+id/editTextPriceUnityEdit"
+                app:layout_constraintStart_toEndOf="@+id/editTextPriceUnityEdit"
+                app:layout_constraintTop_toTopOf="@+id/editTextPriceUnityEdit" />
+
+            <Spinner
+                android:id="@+id/spinnerUnityEdit"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:entries="@array/unidades"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewEuroUnityEdit"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textViewEuroUnityEdit"
+                app:layout_constraintTop_toTopOf="@+id/textViewEuroUnityEdit" />
+
+            <TextView
+                android:id="@+id/textViewAddImageTitleEdit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="32dp"
+                android:text="Imagen: "
+                android:textColor="#ACB0CC"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextPriceUnityEdit" />
+
+            <ImageView
+                android:id="@+id/imageViewAddImageEdit"
+                android:layout_width="0dp"
+                android:layout_height="300dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/imageview_style"
+                android:contentDescription="@string/imageview_contentdescription"
+                android:src="@drawable/ic_add_image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewAddImageTitleEdit" />
+
+            <Button
+                android:id="@+id/buttonEditOffer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="#FD93B2"
+                android:text="Publicar oferta"
+                android:textColor="#252850"
+                app:cornerRadius="25dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewErrorEdit" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

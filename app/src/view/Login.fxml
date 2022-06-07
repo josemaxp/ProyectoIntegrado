@@ -56,10 +56,13 @@
             <Font name="SansSerif Regular" size="14.0" />
          </font>
       </Text>
-      <MFXButton fx:id="buttonLogin" buttonType="RAISED" depthLevel="LEVEL5" layoutX="170.0" layoutY="249.0" onAction="#onActionLogin" prefHeight="26.0" prefWidth="260.0" rippleColor="#252850" style="-fx-background-color: #fd93b2;" text="Login" textFill="#252850">
+      <MFXButton fx:id="buttonLogin" buttonType="RAISED" depthLevel="LEVEL5" layoutX="170.0" layoutY="249.0" onAction="#onActionLogin" prefHeight="26.0" prefWidth="260.0" rippleColor="#252850" style="-fx-background-color: #fd93b2;" text="Iniciar sesión" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
-         </cursor></MFXButton>
+         </cursor>
+         <font>
+            <Font name="SansSerif Bold" size="12.0" />
+         </font></MFXButton>
       <Label fx:id="textFieldLoginRegister" layoutX="170.0" layoutY="284.0" onMouseClicked="#onClickLoginRegister" text="Registro" textFill="#fd93b2">
          <font>
             <Font size="14.0" />

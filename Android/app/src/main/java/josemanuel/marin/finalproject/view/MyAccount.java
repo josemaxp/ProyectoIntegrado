@@ -1,4 +1,4 @@
-package josemanuel.marin.finalproject;
+package josemanuel.marin.finalproject.view;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -17,12 +17,13 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.concurrent.ExecutionException;
 
+import josemanuel.marin.finalproject.R;
 import josemanuel.marin.finalproject.controller.Connection;
 
 public class MyAccount extends AppCompatActivity {
     EditText username, email, password, repeatPassword;
     TextView error, points;
-    Button update, myOffers, redeem, myRecipes;
+    Button update, myOffers, redeem, myRecipes,buttonFavRecipes;
     PrintWriter out;
     BufferedReader in;
     updateUser updateUser;
@@ -41,6 +42,7 @@ public class MyAccount extends AppCompatActivity {
         update = findViewById(R.id.buttonUpdate);
         myOffers = findViewById(R.id.buttonMyOffers);
         myRecipes = findViewById(R.id.buttonMyRecipes);
+        buttonFavRecipes = findViewById(R.id.buttonFavRecipes);
         redeem = findViewById(R.id.buttonRedeem);
 
         initData = new initData();
@@ -87,6 +89,11 @@ public class MyAccount extends AppCompatActivity {
 
         myRecipes.setOnClickListener(v -> {
             Intent intent = new Intent(MyAccount.this, MyRecipes.class);
+            startActivity(intent);
+        });
+
+        buttonFavRecipes.setOnClickListener(v -> {
+            Intent intent = new Intent(MyAccount.this, FavRecipes.class);
             startActivity(intent);
         });
 

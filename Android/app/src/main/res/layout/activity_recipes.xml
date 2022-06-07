@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#292A33"
-    tools:context=".WarnMarketActivity">
+    tools:context=".view.WarnMarketActivity">
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/addRecipeButton"

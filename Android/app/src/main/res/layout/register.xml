@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/wave"
-    tools:context=".Login">
+    tools:context=".view.Login">
 
     <TextView
         android:id="@+id/AppTitleRegister"
@@ -141,7 +141,7 @@
             android:ems="10"
             android:fontFamily="sans-serif"
             android:hint="Email"
-            android:inputType="textPersonName"
+            android:inputType="textEmailAddress"
             android:padding="10dp"
             android:textAlignment="textStart"
             app:layout_constraintEnd_toEndOf="parent"

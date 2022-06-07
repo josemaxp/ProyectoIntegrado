@@ -1,4 +1,4 @@
-package josemanuel.marin.finalproject;
+package josemanuel.marin.finalproject.view;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import josemanuel.marin.finalproject.R;
 import josemanuel.marin.finalproject.controller.Connection;
 import josemanuel.marin.finalproject.model.ListOfferItem;
 import josemanuel.marin.finalproject.recyclerview.ShowOffer;
@@ -37,6 +38,12 @@ public class MyOffers extends AppCompatActivity implements SearchView.OnQueryTex
 
         searchView = findViewById(R.id.searchViewMyOffers);
 
+        showOffers();
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
         showOffers();
     }
 

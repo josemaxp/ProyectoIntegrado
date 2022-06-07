@@ -58,6 +58,7 @@ public class RecipeViewController implements Initializable {
     private String currentUsername = "";
     private String uploadUsername = "";
     boolean recipeLiked = false;
+    private int currentLikes;
 
     /**
      * Initializes the controller class.
@@ -80,7 +81,6 @@ public class RecipeViewController implements Initializable {
         for (int i = 0; i < RecipeItem.getProducts().size(); i++) {
             String[] product = RecipeItem.getProducts().get(i).split("\\|");
             products += "- " + product[0].substring(0, 1).toUpperCase() + product[0].substring(1) + ": " + product[1] + " " + product[2] + "\n";
-
         }
 
         titleText.setText(RecipeItem.getName());
@@ -92,19 +92,29 @@ public class RecipeViewController implements Initializable {
         time.setText(newTime);
         this.products.setText(products);
 
-        //Image offerImage = new Image(offerItem.getImage());
-        //if (offerItem.getImage().equals("")) {
-        Image offerImage = new Image("/images/noImageFound.jpg");
-        //} 
+        
+        Image recipeImage;
+        
+        if (RecipeItem.getImage().equals("") || RecipeItem.getImage().equals("null")) {
+            recipeImage = new Image("/images/noImageFound.jpg");
+        } else {
+            recipeImage = new Image("http://"+RecipeItem.getImage().substring(2).replace("\\", "/"));
+        }
+        
+        if (recipeImage.isError()) {
+            recipeImage = new Image("/images/noImageFound.jpg");
+        }
 
-        image.setImage(offerImage);
+
+        image.setImage(recipeImage);
 
         recipeID = RecipeItem.getId();
         uploadUsername = RecipeItem.getUsername();
+        currentLikes = RecipeItem.getLikes();
 
         getUser();
-        getLikeRecipe();
         if (!currentUsername.equals("")) {
+            getLikeRecipe();
             if (recipeLiked) {
                 giveLike.setDisable(true);
                 giveLike.setOpacity(0);
@@ -152,6 +162,8 @@ public class RecipeViewController implements Initializable {
 
     @FXML
     private void onClickLike(MouseEvent event) {
+        currentLikes += 1;
+        likes.setText(currentLikes + "");
         ConnectionManager.out.println("CL:likeRecipe:" + recipeID + ":" + uploadUsername);
         giveLike.setDisable(true);
         giveLike.setOpacity(0);
@@ -161,6 +173,8 @@ public class RecipeViewController implements Initializable {
 
     @FXML
     private void onClickDislike(MouseEvent event) {
+        currentLikes -= 1;
+        likes.setText(currentLikes + "");
         ConnectionManager.out.println("CL:dislikeRecipe:" + recipeID + ":" + uploadUsername);
         giveLike.setDisable(false);
         giveLike.setOpacity(1);

@@ -1,4 +1,4 @@
-package josemanuel.marin.finalproject;
+package josemanuel.marin.finalproject.view;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -36,47 +36,72 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import josemanuel.marin.finalproject.R;
 import josemanuel.marin.finalproject.controller.Connection;
-import josemanuel.marin.finalproject.fragments.ImageFragment;
+import josemanuel.marin.finalproject.model.ListRecipeItem;
 
-public class AddRecipe extends AppCompatActivity {
+public class EditRecipe extends AppCompatActivity {
     AutoCompleteTextView editTextProductName;
     EditText editTextRecipeName, editTextProductQuantity, editTextSteps, editTextCookware, editTextProductPeople,
             editTextProductTime;
     TextView textViewProducts, textViewAddRecipeError;
     Spinner spinnerProductUnity;
-    Button buttonAddProduct, buttonAddRecipe;
+    Button buttonAddProduct, buttonEditRecipe;
     ImageView imageViewAddImage;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     Bitmap imageBitmap = null;
     String products = "", imageName = "";
     PrintWriter out = null;
     BufferedReader in = null;
-    addRecipe addRecipe;
+    updateRecipe updateRecipe;
     getUser getUser;
-    uploadImage uploadImage;
+    updateImage updateImage;
     getProductsName getProductsName;
+    int recipeID;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_recipe);
+        setContentView(R.layout.activity_edit_recipe);
 
-        editTextRecipeName = findViewById(R.id.editTextRecipeName);
-        editTextProductName = findViewById(R.id.editTextProductName);
-        editTextProductQuantity = findViewById(R.id.editTextProductQuantity);
-        editTextSteps = findViewById(R.id.editTextSteps);
-        editTextCookware = findViewById(R.id.editTextCookware);
-        editTextProductPeople = findViewById(R.id.editTextProductPeople);
-        editTextProductTime = findViewById(R.id.editTextProductTime);
-        textViewProducts = findViewById(R.id.textViewProducts);
-        textViewAddRecipeError = findViewById(R.id.textViewAddRecipeError);
-        spinnerProductUnity = findViewById(R.id.spinnerProductUnity);
-        buttonAddProduct = findViewById(R.id.buttonAddProduct);
-        buttonAddRecipe = findViewById(R.id.buttonAddRecipe);
-        imageViewAddImage = findViewById(R.id.imageViewAddImage);
+        ListRecipeItem recipe = (ListRecipeItem) getIntent().getSerializableExtra("EditRecipe");
+
+        recipeID = recipe.getId();
+
+        editTextRecipeName = findViewById(R.id.editTextRecipeNameEdit);
+        editTextProductName = findViewById(R.id.editTextProductNameEdit);
+        editTextProductQuantity = findViewById(R.id.editTextProductQuantityEdit);
+        editTextSteps = findViewById(R.id.editTextStepsEdit);
+        editTextCookware = findViewById(R.id.editTextCookwareEdit);
+        editTextProductPeople = findViewById(R.id.editTextProductPeopleEdit);
+        editTextProductTime = findViewById(R.id.editTextProductTimeEdit);
+        textViewProducts = findViewById(R.id.textViewProductsEdit);
+        textViewAddRecipeError = findViewById(R.id.textViewAddRecipeErrorEdit);
+        spinnerProductUnity = findViewById(R.id.spinnerProductUnityEdit);
+        buttonAddProduct = findViewById(R.id.buttonAddProductEdit);
+        buttonEditRecipe = findViewById(R.id.buttonEditRecipe);
+        imageViewAddImage = findViewById(R.id.imageViewAddImageEdit);
         textViewProducts.setText("");
 
         setProductsAdapter();
+
+        editTextRecipeName.setText(recipe.getName());
+        String currentProducts = "";
+
+        for (int i = 0; i < recipe.getProducts().size(); i++) {
+            String[] productsFromServer = recipe.getProducts().get(i).split("\\|");
+            if (i == 0) {
+                currentProducts += "-" + productsFromServer[0] + ": " + productsFromServer[1] + " " + productsFromServer[2];
+            } else {
+                currentProducts += "\n-" + productsFromServer[0] + ": " + productsFromServer[1] + " " + productsFromServer[2];
+            }
+            products += productsFromServer[0] + "_" + productsFromServer[1] + "_" + productsFromServer[2] + ":";
+        }
+
+        textViewProducts.setText(currentProducts);
+        editTextSteps.setText(recipe.getSteps().replace("|", "\n"));
+        editTextCookware.setText(recipe.getCookware().replace("|", "\n"));
+        editTextProductPeople.setText(String.valueOf(recipe.getPeople()));
+        editTextProductTime.setText(recipe.getTime());
 
         buttonAddProduct.setOnClickListener(v -> {
             if (!editTextProductName.getText().toString().equals("") && !editTextProductQuantity.getText().toString().equals("") && !spinnerProductUnity.getSelectedItem().equals("-")) {
@@ -90,26 +115,28 @@ public class AddRecipe extends AppCompatActivity {
             }
         });
 
-        buttonAddRecipe.setOnClickListener(v -> {
+        buttonEditRecipe.setOnClickListener(v -> {
             if (products.equals("")) {
-                textViewAddRecipeError.setText("Error, añade algún producto.");
+                textViewAddRecipeError.setText("Añade algún producto.");
             } else if (editTextRecipeName.getText().toString().equals("")) {
-                textViewAddRecipeError.setText("Error, escribe el nombre de la receta.");
+                textViewAddRecipeError.setText("Escribe el nombre de la receta.");
             } else if (editTextSteps.getText().toString().equals("")) {
-                textViewAddRecipeError.setText("Error, escribe los pasos de la receta.");
+                textViewAddRecipeError.setText("Escribe los pasos de la receta.");
             } else if (editTextCookware.getText().toString().equals("")) {
-                textViewAddRecipeError.setText("Error, escribe los utensilios necesarios para la receta.");
+                textViewAddRecipeError.setText("Escribe los utensilios necesarios para la receta.");
             } else if (editTextProductPeople.getText().toString().equals("")) {
-                textViewAddRecipeError.setText("Error, escribe el número de comensales.");
+                textViewAddRecipeError.setText("Escribe el número de comensales.");
             } else if (editTextProductTime.getText().toString().equals("")) {
-                textViewAddRecipeError.setText("Error, escribe el tiempo de duración total.");
-            } else if (imageBitmap == null) {
-                textViewAddRecipeError.setText("Error, la receta debe tener una imagen.");
+                textViewAddRecipeError.setText("Escribe el tiempo de duración total.");
             } else {
                 textViewAddRecipeError.setText("");
-                addRecipe = new addRecipe();
+                updateRecipe = new updateRecipe();
                 //Sustituyo los saltos de línea por | y los : por .
-                addRecipe.execute(editTextRecipeName.getText().toString(), editTextSteps.getText().toString().replace("\n","|").replace(":","."), editTextCookware.getText().toString().replace("\n","|").replace(":","."), editTextProductPeople.getText().toString(), editTextProductTime.getText().toString().replace(":","."), products);
+                updateRecipe.execute(String.valueOf(recipeID), editTextRecipeName.getText().toString(), editTextSteps.getText().toString().replace("\n", "|").replace(":", "."), editTextCookware.getText().toString().replace("\n", "|").replace(":", "."), editTextProductPeople.getText().toString(), editTextProductTime.getText().toString().replace(":", "."), products);
+
+                if (imageBitmap != null) {
+                    transformImage();
+                }
             }
         });
 
@@ -138,7 +165,7 @@ public class AddRecipe extends AppCompatActivity {
         try {
             username = getUser.execute().get().split(":");
 
-            imageName = "D" + LocalDate.now() + "%H" + LocalDateTime.now().getHour() + "%M" + LocalDateTime.now().getMinute() + "%S" + LocalDateTime.now().getSecond() + "%" + username[2];
+            imageName = "D" + LocalDate.now() + "H" + LocalDateTime.now().getHour() + "M" + LocalDateTime.now().getMinute() + "S" + LocalDateTime.now().getSecond() + username[2];
 
             File f = new File(getCacheDir(), imageName);
             try {
@@ -153,8 +180,8 @@ public class AddRecipe extends AppCompatActivity {
                 fos.flush();
                 fos.close();
 
-                uploadImage = new uploadImage();
-                uploadImage.execute(f);
+                updateImage = new updateImage();
+                updateImage.execute(f);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -163,7 +190,7 @@ public class AddRecipe extends AppCompatActivity {
         }
     }
 
-    class addRecipe extends AsyncTask<String, Void, String> {
+    class updateRecipe extends AsyncTask<String, Void, String> {
         Socket s;
 
         @Override
@@ -176,27 +203,28 @@ public class AddRecipe extends AppCompatActivity {
         protected String doInBackground(String... params) {
             try {
                 out = new PrintWriter(s.getOutputStream(), true);
-                in = new BufferedReader(new InputStreamReader(s.getInputStream()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            for (int i = 0; i < params.length; i++){
+
+            for (int i = 0; i < params.length; i++) {
                 System.out.println(params[i]);
 
             }
-
-            out.println("CL:" + "addRecipe:" + params[0] + ":" + params[1] + ":" + params[2] + ":" + params[3] + ":" + params[4] + ":" + params[5]);
+            out.println("CL:" + "updateRecipe:" + params[0] + ":" + params[1] + ":" + params[2] + ":" + params[3] + ":" + params[4] + ":" + params[5] + ":" + params[6]);
 
             return null;
         }
 
         @Override
         protected void onPostExecute(String result) {
-            transformImage();
+            Intent intent = new Intent(getApplicationContext(), RecipesActivity.class);
+            startActivity(intent);
+            Toast.makeText(getApplicationContext(), "Receta actualizada", Toast.LENGTH_LONG).show();
         }
     }
 
-    class uploadImage extends AsyncTask<File, Void, File> {
+    class updateImage extends AsyncTask<File, Void, File> {
         Socket s;
 
         @Override
@@ -207,7 +235,7 @@ public class AddRecipe extends AppCompatActivity {
 
         @Override
         protected File doInBackground(File... params) {
-            out.println("CL:imgRecipe:" + params[0].getName() + ":" + params[0].length());
+            out.println("CL:updateImgRecipe:" + params[0].getName() + ":" + params[0].length() + ":" + recipeID);
             OutputStream os = null;
             try {
 
@@ -229,9 +257,9 @@ public class AddRecipe extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(File result) {
-            Intent intent = new Intent(AddRecipe.this, RecipesActivity.class);
+            Intent intent = new Intent(getApplicationContext(), RecipesActivity.class);
             startActivity(intent);
-            Toast.makeText(AddRecipe.this, "Receta creada", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Receta actualizada", Toast.LENGTH_LONG).show();
         }
     }
 

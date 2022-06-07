@@ -1,8 +1,9 @@
 package josemanuel.marin.finalproject.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ListOfferItem implements Comparable<ListOfferItem> {
+public class ListOfferItem implements Comparable<ListOfferItem>, Serializable {
     int id;
     String market;
     List<String> tags;

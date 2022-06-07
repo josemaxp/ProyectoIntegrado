@@ -28,10 +28,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.OfferItem;
 import model.RecipeItem;
 import util.ConnectionManager;
+import view.Toast;
 import view.WarnMaketApp;
 
 /**
@@ -65,6 +68,12 @@ public class MainScreenController implements Initializable {
     private VBox vboxMenu;
     @FXML
     private FontAwesomeIconView returnIcon;
+    @FXML
+    private AnchorPane ap;
+    @FXML
+    private FontAwesomeIconView fav;
+    @FXML
+    private Text favRecipes;
 
     private List<OfferItem> totalOfertas;
     private List<RecipeItem> totalRecetas;
@@ -78,6 +87,10 @@ public class MainScreenController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         showOffer();
         initComboBox();
+        fav.setDisable(true);
+        fav.setOpacity(0);
+        favRecipes.setDisable(true);
+        favRecipes.setOpacity(0);
     }
 
     private void initComboBox() {
@@ -451,6 +464,10 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private void onClickOfferButton(ActionEvent event) {
+        fav.setDisable(true);
+        fav.setOpacity(0);
+        favRecipes.setDisable(true);
+        favRecipes.setOpacity(0);
         this.resetMenuProperties();
 
         titleText.setText("Ofertas");
@@ -464,11 +481,14 @@ public class MainScreenController implements Initializable {
         if (!comboBoxPoblacion.getItems().isEmpty()) {
             comboBoxProvincia.setDisable(false);
         }
-
     }
 
     @FXML
     private void onClickRecipeButton(ActionEvent event) {
+        fav.setDisable(false);
+        fav.setOpacity(1);
+        favRecipes.setDisable(false);
+        favRecipes.setOpacity(1);
         this.resetMenuProperties();
 
         titleText.setText("Recetas");
@@ -482,6 +502,7 @@ public class MainScreenController implements Initializable {
     @FXML
     private void onClickMyAccountButton(ActionEvent event) {
         getUser();
+
         this.resetMenuProperties();
         if (!username.equals("")) {
             try {
@@ -490,6 +511,14 @@ public class MainScreenController implements Initializable {
             } catch (IOException ex) {
                 Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } else {
+            Stage stage = (Stage) ap.getScene().getWindow();
+
+            String toastMsg = "Debes iniciar sesión para acceder a tu cuenta.";
+            int toastMsgTime = 1500; //1.5 seconds
+            int fadeInTime = 500; //0.5 seconds
+            int fadeOutTime = 500; //0.5 seconds
+            Toast.makeText(stage, toastMsg, toastMsgTime, fadeInTime, fadeOutTime);
         }
     }
 
@@ -514,6 +543,36 @@ public class MainScreenController implements Initializable {
 
         if (fromServer.length > 2) {
             username = fromServer[2];
+        }
+    }
+
+    @FXML
+    private void onClickFav(MouseEvent event) {
+        getUser();
+        if (!username.equals("")) {
+            try {
+
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("/view/MyFavRecipes.fxml"));
+                fxmlLoader.load();
+
+                Parent root = fxmlLoader.getRoot();
+                WarnMaketApp.changeScene(root, "Recetas guardadas");
+
+                MyFavRecipesController controller = fxmlLoader.getController();
+                controller.showRecipe();
+
+            } catch (IOException ex) {
+                Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            Stage stage = (Stage) ap.getScene().getWindow();
+
+            String toastMsg = "Debes iniciar sesión para ver tus recetas guardadas.";
+            int toastMsgTime = 1500; //1.5 seconds
+            int fadeInTime = 500; //0.5 seconds
+            int fadeOutTime = 500; //0.5 seconds
+            Toast.makeText(stage, toastMsg, toastMsgTime, fadeInTime, fadeOutTime);
         }
     }
 }

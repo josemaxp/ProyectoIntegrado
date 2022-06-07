@@ -6,6 +6,7 @@ import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -56,31 +57,35 @@ public class LoginController implements Initializable {
     }
 
     @FXML
-    private void onActionLogin(ActionEvent event) {
-        try {
-            if (textFieldLoginUsername.getText().equals("") || textFieldLoginPassword.getText().equals("")) {
-                textFieldLoginError.setText("Los campos no pueden estar vacíos.");
+    private void onActionLogin(ActionEvent event) throws SQLException {
+        if (new ConnectionManager().getConnection()) {
+            try {
+                if (textFieldLoginUsername.getText().equals("") || textFieldLoginPassword.getText().equals("")) {
+                    textFieldLoginError.setText("Los campos no pueden estar vacíos.");
 
-            } else {
-                ConnectionManager.out.println("CL:" + "login:" + textFieldLoginUsername.getText() + ":" + textFieldLoginPassword.getText());
-
-                String fromServer = ConnectionManager.in.readLine();
-
-                if (fromServer.split(":")[2].equals("true")) {
-                    textFieldLoginError.setText("Correct login.");
-
-                    try {
-                        Parent root = FXMLLoader.load(getClass().getResource("/view/MainScreen.fxml"));
-                        WarnMaketApp.changeScene(root, "WarnMarket");
-                    } catch (IOException e) {
-                        System.out.println(e.getMessage());
-                    }
                 } else {
-                    textFieldLoginError.setText("Error, comprueba tu usuario o contraseña.");
+                    ConnectionManager.out.println("CL:" + "login:" + textFieldLoginUsername.getText() + ":" + textFieldLoginPassword.getText());
+
+                    String fromServer = ConnectionManager.in.readLine();
+
+                    if (fromServer.split(":")[2].equals("true")) {
+                        textFieldLoginError.setText("Correct login.");
+
+                        try {
+                            Parent root = FXMLLoader.load(getClass().getResource("/view/MainScreen.fxml"));
+                            WarnMaketApp.changeScene(root, "WarnMarket");
+                        } catch (IOException e) {
+                            System.out.println(e.getMessage());
+                        }
+                    } else {
+                        textFieldLoginError.setText("Error, comprueba tu usuario o contraseña.");
+                    }
                 }
+            } catch (IOException ex) {
+                Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (IOException ex) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        } else {
+            dialogIP();
         }
     }
 
@@ -89,27 +94,39 @@ public class LoginController implements Initializable {
      */
     @FXML
     private void onClickLoginRegister(MouseEvent event) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/view/Register.fxml"));
-            WarnMaketApp.changeScene(root, "Register");
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+        if (new ConnectionManager().getConnection()) {
+            try {
+                Parent root = FXMLLoader.load(getClass().getResource("/view/Register.fxml"));
+                WarnMaketApp.changeScene(root, "Register");
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        } else {
+            dialogIP();
         }
     }
 
     @FXML
     private void onClickGuest(MouseEvent event) {
-        try {
-            ConnectionManager.out.println("CL:" + "guestUser");
-            Parent root = FXMLLoader.load(getClass().getResource("/view/MainScreen.fxml"));
-            WarnMaketApp.changeScene(root, "WarnMarket");
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+        if (new ConnectionManager().getConnection()) {
+            try {
+                ConnectionManager.out.println("CL:" + "guestUser");
+                Parent root = FXMLLoader.load(getClass().getResource("/view/MainScreen.fxml"));
+                WarnMaketApp.changeScene(root, "WarnMarket");
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        } else {
+            dialogIP();
         }
     }
 
     @FXML
     private void onClickIP(MouseEvent event) {
+        dialogIP();
+    }
+
+    private void dialogIP() {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("IP");
         dialog.setHeaderText("Introduce la IP del servidor");
@@ -117,7 +134,7 @@ public class LoginController implements Initializable {
         Optional<String> result = dialog.showAndWait();
 
         if (result.isPresent() && !result.get().equals("")) {
-            ConnectionManager.setProperty(result.get());
+            ConnectionManager.setIP(result.get());
         }
     }
 }

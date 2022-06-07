@@ -69,11 +69,21 @@ public class OfferItemController implements Initializable {
         Price.setText(offerItem.getPrice());
         PriceUnity.setText("(" + offerItem.getPriceUnity() + ")");
         user.setText(offerItem.getUsername());
+        
+        Image offerImage;
+        
+        if (offerItem.getImage().equals("") || offerItem.getImage().equals("null")) {
+            offerImage = new Image("/images/noImageFound.jpg");
+        } else {
+            offerImage = new Image("http://"+offerItem.getImage().substring(2).replace("\\", "/"));
+            System.out.println("http://"+offerItem.getImage().substring(2).replace("\\", "/"));
+        }
+        
+        if (offerImage.isError()) {
+            offerImage = new Image("/images/noImageFound.jpg");
+        }
 
-        //Image offerImage = new Image(offerItem.getImage());
-        //if (offerItem.getImage().equals("")) {
-        Image offerImage = new Image("/images/noImageFound.jpg");
-        //} 
+        
 
         image.setImage(offerImage);
         

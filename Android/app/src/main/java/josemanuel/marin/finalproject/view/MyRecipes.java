@@ -1,11 +1,8 @@
-package josemanuel.marin.finalproject;
+package josemanuel.marin.finalproject.view;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,12 +18,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import josemanuel.marin.finalproject.R;
 import josemanuel.marin.finalproject.controller.Connection;
 import josemanuel.marin.finalproject.model.ListRecipeItem;
 import josemanuel.marin.finalproject.recyclerview.ShowAllRecipes;
 
-public class RecipesActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
-    Button addRecipeButton, profileButton2, offersButton;
+public class MyRecipes extends AppCompatActivity implements SearchView.OnQueryTextListener {
     SearchView searchViewRecipes;
     List<ListRecipeItem> recipeItems;
     getUser getUser;
@@ -39,13 +36,20 @@ public class RecipesActivity extends AppCompatActivity implements SearchView.OnQ
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recipes);
+        setContentView(R.layout.my_recipes);
 
-        addRecipeButton = findViewById(R.id.addRecipeButton);
-        searchViewRecipes = findViewById(R.id.searchViewRecipes);
-        profileButton2 = findViewById(R.id.profileButton2);
-        offersButton = findViewById(R.id.offersButton);
+        searchViewRecipes = findViewById(R.id.searchViewMyRecipes);
 
+        showRecipes();
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        showRecipes();
+    }
+
+    public void showRecipes() {
         getUser = new getUser();
         String[] username = null;
         try {
@@ -54,39 +58,11 @@ public class RecipesActivity extends AppCompatActivity implements SearchView.OnQ
             e.printStackTrace();
         }
 
-        showRecipes();
-
-        String[] finalUsername = username;
-        addRecipeButton.setOnClickListener(view -> {
-            if (finalUsername.length == 2) {
-                Toast.makeText(this, "Error, debes iniciar sesión para poder crear una receta.", Toast.LENGTH_LONG).show();
-            } else {
-                Intent intent = new Intent(RecipesActivity.this, AddRecipe.class);
-                startActivity(intent);
-            }
-        });
-
-        profileButton2.setOnClickListener(view -> {
-            if (finalUsername.length == 2) {
-                Toast.makeText(this, "Error, debes iniciar sesión para poder acceder a los ajustes de usuario.", Toast.LENGTH_LONG).show();
-            } else {
-                Intent intent = new Intent(RecipesActivity.this, MyAccount.class);
-                startActivity(intent);
-            }
-        });
-
-        offersButton.setOnClickListener(v -> {
-            Intent intent = new Intent(RecipesActivity.this, WarnMarketActivity.class);
-            startActivity(intent);
-        });
-    }
-
-    public void showRecipes() {
         recipeItems = new ArrayList<>();
         getRecipes = new getRecipes();
         List<ListRecipeItem> totalRecetas = new ArrayList<>();
         try {
-            String fromServer = getRecipes.execute().get();
+            String fromServer = getRecipes.execute(username[2]).get();
             //Separo la información usando ':'. Así se quedaría dividido en todas las recetas existentes.
             String[] allRecipes = fromServer.split(":");
 
@@ -99,8 +75,8 @@ public class RecipesActivity extends AppCompatActivity implements SearchView.OnQ
                     products.add(recipeFromServer[j].toLowerCase());
                 }
 
-                ListRecipeItem oferta = new ListRecipeItem(Integer.parseInt(recipeFromServer[0]), recipeFromServer[1], recipeFromServer[2], products, Integer.parseInt(recipeFromServer[3]), recipeFromServer[4],Integer.parseInt(recipeFromServer[5]),recipeFromServer[6],"\\\\"+Connection.IP+"\\"+recipeFromServer[7],recipeFromServer[8]);
-                totalRecetas.add(oferta);
+                ListRecipeItem recipe = new ListRecipeItem(Integer.parseInt(recipeFromServer[0]), recipeFromServer[1], recipeFromServer[2], products, Integer.parseInt(recipeFromServer[3]), recipeFromServer[4], Integer.parseInt(recipeFromServer[5]), recipeFromServer[6], "\\\\" + Connection.IP + "\\" + recipeFromServer[7], recipeFromServer[8]);
+                totalRecetas.add(recipe);
             }
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
@@ -109,7 +85,7 @@ public class RecipesActivity extends AppCompatActivity implements SearchView.OnQ
         Collections.sort(totalRecetas);
 
         adapter = new ShowAllRecipes(totalRecetas, this);
-        RecyclerView recyclerView = findViewById(R.id.recyclerViewRecipes);
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewMyRecipes);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -117,7 +93,7 @@ public class RecipesActivity extends AppCompatActivity implements SearchView.OnQ
         searchViewRecipes.setOnQueryTextListener(this);
     }
 
-    class getRecipes extends AsyncTask<Void, Void, String> {
+    class getRecipes extends AsyncTask<String, Void, String> {
         Socket s;
 
         @Override
@@ -127,7 +103,7 @@ public class RecipesActivity extends AppCompatActivity implements SearchView.OnQ
         }
 
         @Override
-        protected String doInBackground(Void... params) {
+        protected String doInBackground(String... params) {
             try {
                 out = new PrintWriter(s.getOutputStream(), true);
                 in = new BufferedReader(new InputStreamReader(s.getInputStream()));
@@ -135,7 +111,7 @@ public class RecipesActivity extends AppCompatActivity implements SearchView.OnQ
                 e.printStackTrace();
             }
 
-            out.println("CL:getRecipes");
+            out.println("CL:myRecipes:" + params[0]);
             String recipes = "";
             try {
                 recipes = in.readLine();

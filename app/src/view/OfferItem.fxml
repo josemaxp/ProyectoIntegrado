@@ -9,19 +9,19 @@
 
 <AnchorPane id="AnchorPane" maxWidth="400.0" minHeight="150.0" minWidth="400.0" prefHeight="150.0" prefWidth="400.0" style="-fx-background-color: #3F414E; -fx-background-radius: 25;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.OfferItemController">
    <children>
-      <ImageView fx:id="image" fitHeight="110.0" fitWidth="110.0" layoutX="7.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="image" fitHeight="110.0" fitWidth="110.0" layoutX="7.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" styleClass="-fx-background-radius: 5;" />
       <ImageView fx:id="imageApproved" fitHeight="43.0" fitWidth="45.0" layoutX="341.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true" />
       <Text fx:id="market" fill="#fd93b2" layoutX="124.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Supermercado" textAlignment="CENTER" wrappingWidth="263.7367477416992">
          <font>
             <Font name="SansSerif Bold" size="14.0" />
          </font></Text>
       <Text fx:id="Tags" fill="WHITE" layoutX="124.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-Etiqueta 1-" wrappingWidth="235.73674774169922" />
-      <Text fx:id="Price" fill="#fc447a" layoutX="135.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0.6" wrappingWidth="45.0">
+      <Text fx:id="Price" fill="#fc447a" layoutX="135.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0.6" wrappingWidth="59.39996337890625">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
       </Text>
-      <Text fx:id="PriceUnity" fill="WHITE" layoutX="180.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0.6€/L" wrappingWidth="95.7366943359375">
+      <Text fx:id="PriceUnity" fill="WHITE" layoutX="192.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0.6€/L" wrappingWidth="186.13671875">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>

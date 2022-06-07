@@ -2,8 +2,7 @@ package josemanuel.marin.finalproject.recyclerview;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
@@ -18,8 +17,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -31,10 +31,13 @@ import java.util.concurrent.ExecutionException;
 import josemanuel.marin.finalproject.R;
 import josemanuel.marin.finalproject.controller.Connection;
 import josemanuel.marin.finalproject.model.ListOfferItem;
+import josemanuel.marin.finalproject.view.EditOffer;
+import josemanuel.marin.finalproject.view.RecipeClicked;
 
 public class ShowOffer extends RecyclerView.Adapter<ShowOffer.OfferViewHolder> implements PopupMenu.OnMenuItemClickListener {
     List<ListOfferItem> mData;
     List<ListOfferItem> listaOriginal;
+    ListOfferItem offer;
     private LayoutInflater mInflater;
     private Context context;
     PrintWriter out = null;
@@ -114,12 +117,21 @@ public class ShowOffer extends RecyclerView.Adapter<ShowOffer.OfferViewHolder> i
                 imageViewApprovedOffer.setVisibility(View.GONE);
             }
 
-            File file = new File(item.getImage());
-            Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
-            imageViewOffer.setImageBitmap(bitmap);
+            imageViewOffer.setClipToOutline(true);
+            if(item.getImage().equals("")){
+                imageViewOffer.setImageResource(R.drawable.no_image_found);
+            }else {
+                String url = "http://"+item.getImage().substring(2).replace("\\", "/");
+                Picasso.get().load(url).into(imageViewOffer);
+                imageViewOffer.setBackgroundColor(Color.parseColor("#3F414E"));
+            }
+
+            if(imageViewOffer.getDrawable() == null){
+                imageViewOffer.setImageResource(R.drawable.no_image_found);
+            }
 
             imageViewOptionsMenu.setOnClickListener(v -> {
-                showMenu(v, item.getUsername(), item.getID());
+                showMenu(v, item.getUsername(), item.getID(), item);
             });
 
             itemView.setOnClickListener(v -> {
@@ -158,7 +170,7 @@ public class ShowOffer extends RecyclerView.Adapter<ShowOffer.OfferViewHolder> i
         notifyDataSetChanged();
     }
 
-    public void showMenu(View v, String username, int offerID) {
+    public void showMenu(View v, String username, int offerID, ListOfferItem offer) {
         getUser = new getUser();
         String[] currentUSer = null;
         try {
@@ -172,13 +184,15 @@ public class ShowOffer extends RecyclerView.Adapter<ShowOffer.OfferViewHolder> i
         menu.inflate(R.menu.offer_menu);
 
         this.offerID = offerID;
+        this.offer = offer;
 
-        System.out.println(offerID);
         if (currentUSer.length > 2) {
             if (currentUSer[2].equals(username)) {
+                menu.getMenu().findItem(R.id.update_offer).setVisible(true);
                 menu.getMenu().findItem(R.id.delete_offer).setVisible(true);
                 menu.getMenu().findItem(R.id.report_offer).setVisible(false);
             } else {
+                menu.getMenu().findItem(R.id.update_offer).setVisible(false);
                 menu.getMenu().findItem(R.id.delete_offer).setVisible(false);
                 menu.getMenu().findItem(R.id.report_offer).setVisible(true);
             }
@@ -199,6 +213,11 @@ public class ShowOffer extends RecyclerView.Adapter<ShowOffer.OfferViewHolder> i
             case R.id.delete_offer:
                 deleteOffer = new deleteOffer();
                 deleteOffer.execute();
+                return true;
+            case R.id.update_offer:
+                Intent intent = new Intent(context, EditOffer.class);
+                intent.putExtra("EditOffer", offer);
+                context.startActivity(intent);
                 return true;
             default:
                 return false;
@@ -306,6 +325,40 @@ public class ShowOffer extends RecyclerView.Adapter<ShowOffer.OfferViewHolder> i
         @Override
         protected void onPostExecute(String result) {
             Toast.makeText(context, "Oferta denunciada", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    class getOfferInfo extends AsyncTask<Void, Void, String> {
+        Socket s;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            s = Connection.getSocket();
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            try {
+                out = new PrintWriter(s.getOutputStream(), true);
+                in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String result = "";
+            out.println("CL:getOfferInfo:" + offerID);
+            try {
+                result = in.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
         }
     }
 }

@@ -11,6 +11,7 @@ import dao.ProductoDAO;
 import dao.RecetaDAO;
 import dao.SupermercadoDAO;
 import dao.UsuarioDAO;
+import entity.Supermercado;
 import entity.Usuario;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -128,7 +129,7 @@ public class Server {
                             out.println("S:register:true");
                         }
                     }
-                    
+
                     if (inputLine.split(":")[1].equals("guestUser")) {
                         username = "";
                     }
@@ -156,6 +157,16 @@ public class Server {
                         }
 
                         out.println("S:Markets:" + markets);
+                    }
+
+                    if (inputLine.split(":")[1].equals("getMarket")) {
+                        String nombre = inputLine.split(":")[2];
+                        Float latitud = Float.parseFloat(inputLine.split(":")[3]);
+                        Float longitud = Float.parseFloat(inputLine.split(":")[4]);
+
+                        Supermercado market = marketDAO.getMarket(session, nombre, latitud, longitud);
+
+                        out.println("S:getMarket:" + market.getDireccion());
                     }
 
                     if (inputLine.split(":")[1].equals("popularTags")) {
@@ -198,7 +209,7 @@ public class Server {
                         Double latitud = Double.parseDouble(inputLine.split(":")[2]);
                         Double longitud = Double.parseDouble(inputLine.split(":")[3]);
                         String offers = "";
-                        List<String> allOffers = ofertaDAO.showOffer(session, latitud, longitud);
+                        List<String> allOffers = ofertaDAO.showOffer(latitud, longitud);
 
                         for (int i = 0; i < allOffers.size(); i++) {
                             offers += allOffers.get(i);
@@ -209,7 +220,7 @@ public class Server {
 
                     if (inputLine.split(":")[1].equals("getRecipes")) {
                         String recipes = "";
-                        List<String> allRecipes = recetaDAO.showRecipe(session);
+                        List<String> allRecipes = recetaDAO.showRecipe();
 
                         for (int i = 0; i < allRecipes.size(); i++) {
                             recipes += allRecipes.get(i);
@@ -263,7 +274,7 @@ public class Server {
                         Double longitud = Double.parseDouble(inputLine.split(":")[4]);
 
                         String offers = "";
-                        List<String> allOffers = ofertaDAO.myOffers(session, username, latitud, longitud);
+                        List<String> allOffers = ofertaDAO.myOffers(username, latitud, longitud);
 
                         for (int i = 0; i < allOffers.size(); i++) {
                             offers += allOffers.get(i);
@@ -276,7 +287,7 @@ public class Server {
                         String usermane = inputLine.split(":")[2];
 
                         String recipes = "";
-                        List<String> allRecipes = recetaDAO.myRecipes(session, username);
+                        List<String> allRecipes = recetaDAO.myRecipes(username);
 
                         for (int i = 0; i < allRecipes.size(); i++) {
                             recipes += allRecipes.get(i);
@@ -294,9 +305,40 @@ public class Server {
                             userImages.mkdirs();
                         }
 
-                        String path = "images\\" + username + "\\" + fileName + ".png";
-                        FileOutputStream fos = new FileOutputStream(path);
+                        String path = "images/" + username + "/" + fileName + ".png";
+                        FileOutputStream fos = new FileOutputStream("C:\\xampp\\htdocs\\"+path);
                         ofertaDAO.imageInformation(session, path);
+
+                        InputStream is = clientSocket.getInputStream();
+
+                        BufferedOutputStream bos = new BufferedOutputStream(fos);
+                        int numeroBytesLeidos = 0;
+
+                        while (numeroBytesLeidos != filebyte.length) {
+
+                            numeroBytesLeidos += is.read(filebyte, 0, filebyte.length);
+                            bos.write(filebyte, 0, numeroBytesLeidos);
+                        }
+
+                        bos.close();
+                        fos.close();
+
+                        out.println("");
+                    }
+
+                    if (inputLine.split(":")[1].equals("updateImgOffer")) {
+                        String fileName = inputLine.split(":")[2];
+                        byte[] filebyte = new byte[Integer.valueOf(inputLine.split(":")[3])];
+                        int offerID = Integer.valueOf(inputLine.split(":")[4]);
+
+                        File userImages = new File("images/" + username);
+                        if (!userImages.exists()) {
+                            userImages.mkdirs();
+                        }
+
+                        String path = "images/" + username + "/" + fileName + ".png";
+                        FileOutputStream fos = new FileOutputStream("C:\\xampp\\htdocs\\"+path);
+                        ofertaDAO.updateImageInformation(session, path, offerID);
 
                         InputStream is = clientSocket.getInputStream();
 
@@ -324,8 +366,8 @@ public class Server {
                             userImages.mkdirs();
                         }
 
-                        String path = "images\\" + username + "\\" + fileName + ".png";
-                        FileOutputStream fos = new FileOutputStream(path);
+                        String path = "images/" + username + "/" + fileName + ".png";
+                        FileOutputStream fos = new FileOutputStream("C:\\xampp\\htdocs\\"+path);
                         recetaDAO.imageInformation(session, path);
 
                         InputStream is = clientSocket.getInputStream();
@@ -335,6 +377,36 @@ public class Server {
 
                         while (numeroBytesLeidos != filebyte.length) {
 
+                            numeroBytesLeidos += is.read(filebyte, 0, filebyte.length);
+                            bos.write(filebyte, 0, numeroBytesLeidos);
+                        }
+
+                        bos.close();
+                        fos.close();
+
+                        out.println("");
+                    }
+
+                    if (inputLine.split(":")[1].equals("updateImgRecipe")) {
+                        String fileName = inputLine.split(":")[2];
+                        byte[] filebyte = new byte[Integer.valueOf(inputLine.split(":")[3])];
+                        int recipeID = Integer.valueOf(inputLine.split(":")[4]);
+
+                        File userImages = new File("images/" + username);
+                        if (!userImages.exists()) {
+                            userImages.mkdirs();
+                        }
+
+                        String path = "images/" + username + "/" + fileName + ".png";
+                        FileOutputStream fos = new FileOutputStream("C:\\xampp\\htdocs\\"+path);
+                        recetaDAO.updateImageInformation(session, path, recipeID);
+
+                        InputStream is = clientSocket.getInputStream();
+
+                        BufferedOutputStream bos = new BufferedOutputStream(fos);
+                        int numeroBytesLeidos = 0;
+
+                        while (numeroBytesLeidos != filebyte.length) {
                             numeroBytesLeidos += is.read(filebyte, 0, filebyte.length);
                             bos.write(filebyte, 0, numeroBytesLeidos);
                         }
@@ -428,6 +500,33 @@ public class Server {
                         out.println("S:reportRecipe");
                     }
 
+                    if (inputLine.split(":")[1].equals("updateOffer")) {
+                        String[] tagsList = inputLine.split(":")[2].split(",");
+                        Float precio = Float.parseFloat(inputLine.split(":")[3]);
+                        String precioUnidad = inputLine.split(":")[4];
+                        String unidad = inputLine.split(":")[5];
+                        String imagen = inputLine.split(":")[6];
+                        int offerID = Integer.parseInt(inputLine.split(":")[7]);
+
+                        ofertaDAO.updateOffer(tagsList, precio, precioUnidad, unidad, imagen, offerID);
+                    }
+
+                    if (inputLine.split(":")[1].equals("updateRecipe")) {
+                        int recipeID = Integer.parseInt(inputLine.split(":")[2]);
+                        String recipeName = inputLine.split(":")[3];
+                        String steps = inputLine.split(":")[4];
+                        String cookware = inputLine.split(":")[5];
+                        int people = Integer.parseInt(inputLine.split(":")[6]);
+                        String time = inputLine.split(":")[7];
+
+                        List<String> products = new ArrayList();
+                        for (int i = 8; i < inputLine.split(":").length; i++) {
+                            products.add(inputLine.split(":")[i]);
+                        }
+
+                        recetaDAO.updateRecipe(recipeID, recipeName, steps, cookware, people, time, products);
+                    }
+
                     if (inputLine.split(":")[1].equals("likeRecipe")) {
                         int recipeID = Integer.parseInt(inputLine.split(":")[2]);
                         String usernameUpload = inputLine.split(":")[3];
@@ -446,6 +545,18 @@ public class Server {
                         boolean result = recetaDAO.getLikeRecipe(session, username, recipeID);
 
                         out.println("S:getLikeRecipe:" + result);
+
+                    }
+                    if (inputLine.split(":")[1].equals("getAllLikeRecipe")) {
+
+                        String recipes = "";
+                        List<String> allRecipes = recetaDAO.getAllLikeRecipe(username);
+
+                        for (int i = 0; i < allRecipes.size(); i++) {
+                            recipes += allRecipes.get(i);
+                        }
+
+                        out.println("S:getAllLikeRecipe:" + recipes);
 
                     }
                 }

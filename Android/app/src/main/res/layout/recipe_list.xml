@@ -22,17 +22,16 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="#3F414E">
 
             <ImageView
                 android:id="@+id/imageViewRecipe"
-                android:layout_width="131dp"
-                android:layout_height="160dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="@drawable/imageview_style"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_add_image" />
@@ -42,26 +41,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:text="Nombre usuario"
                 android:textColor="#FD93B2"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/imageViewRecipe"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
             <TextView
                 android:id="@+id/textViewRecipeName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:text="Nombre receta"
                 android:textAlignment="center"
                 android:textColor="#FD93B2"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewRecipe"
-                app:layout_constraintStart_toEndOf="@+id/imageViewRecipe" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewRecipe" />
 
             <ImageView
                 android:id="@+id/imageViewOptionsMenuRecipe"
@@ -78,9 +80,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
                 app:layout_constraintStart_toEndOf="@+id/imageViewRecipe"
-                app:layout_constraintTop_toBottomOf="@+id/textViewRecipeUsername"
+                app:layout_constraintTop_toTopOf="@+id/imageViewRecipe"
                 app:srcCompat="@drawable/ic_baseline_favorite_24" />
 
             <TextView

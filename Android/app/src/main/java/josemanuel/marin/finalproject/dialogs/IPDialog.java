@@ -22,7 +22,6 @@ import josemanuel.marin.finalproject.R;
 import josemanuel.marin.finalproject.controller.Connection;
 
 public class IPDialog extends DialogFragment {
-    connectServer Con;
     EditText editTextIP;
 
     @Override
@@ -50,9 +49,6 @@ public class IPDialog extends DialogFragment {
                         if (!ip.equals("")) {
                             Connection.setIP(ip);
 
-                            Con = new connectServer();
-                            Con.execute();
-
                             SharedPreferences preferences = getActivity().getSharedPreferences("IP", Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.putString("IP", ip);
@@ -69,21 +65,4 @@ public class IPDialog extends DialogFragment {
         return builder.create();
     }
 
-    class connectServer extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            new Connection();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-        }
-    }
 }

@@ -5,7 +5,9 @@
  */
 package dao;
 
+import entity.Supermercado;
 import java.util.List;
+import java.util.Objects;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -51,5 +53,22 @@ public class SupermercadoDAO {
         List<String> listPoblaciones = query.list();
 
         return listPoblaciones;
+    }
+
+    public Supermercado getMarket(Session session, String nombre, Float latitud, Float longitud) {
+        String hql = "from Supermercado where nombre = :nombre";
+        Query query = session.createQuery(hql);
+        query.setParameter("nombre", nombre);
+
+        List<Supermercado> allMarkets = query.list();
+        Supermercado market = null;
+
+        for (Supermercado aMarket : allMarkets) {
+            if (Objects.equals(aMarket.getLatitud(), latitud) && Objects.equals(aMarket.getLongitud(), longitud)) {                
+                market = aMarket;
+            }
+        }
+
+        return market;
     }
 }

@@ -1,4 +1,4 @@
-package josemanuel.marin.finalproject;
+package josemanuel.marin.finalproject.view;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
+import josemanuel.marin.finalproject.R;
 import josemanuel.marin.finalproject.controller.Connection;
 import josemanuel.marin.finalproject.dialogs.IPDialog;
 
@@ -41,7 +42,7 @@ public class Login extends AppCompatActivity implements LocationListener {
     TextView error;
     ImageView imageViewIP;
     public static Double latitud, longitud;
-    public static String direccion, poblacion, comunidadAutonoma, provincia;
+    public static String direccion, direccionCompleta, poblacion, comunidadAutonoma, provincia;
     login login;
     guestUser guestUser;
     connectServer Con;
@@ -77,9 +78,6 @@ public class Login extends AppCompatActivity implements LocationListener {
 
         if (!ip.equals("")) {
             Connection.setIP(ip);
-
-            Con = new connectServer();
-            Con.execute();
         }
 
         if (!usernameSaved.equals("") && !passwordSaved.equals("")) {
@@ -87,30 +85,67 @@ public class Login extends AppCompatActivity implements LocationListener {
             password.setText(passwordSaved);
         }
 
+
         loginButton.setOnClickListener(view -> {
-            if (!Connection.IP.equals("")) {
+            boolean result = false;
+            Con = new connectServer();
+
+            try {
+                result = Con.execute().get();
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (result) {
                 login = new login();
                 try {
                     error.setText(login.execute(username.getText().toString(), password.getText().toString()).get());
                 } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }
+            } else {
+                IPDialog dialogo = new IPDialog();
+                dialogo.show(getSupportFragmentManager(), "IP");
             }
         });
 
         guestButton.setOnClickListener(view -> {
-            if (!Connection.IP.equals("")) {
+            boolean result = false;
+            Con = new connectServer();
+
+            try {
+                result = Con.execute().get();
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (result) {
                 guestUser = new guestUser();
                 guestUser.execute();
                 Intent intent = new Intent(Login.this, WarnMarketActivity.class);
                 startActivity(intent);
+
+            } else {
+                IPDialog dialogo = new IPDialog();
+                dialogo.show(getSupportFragmentManager(), "IP");
             }
         });
 
         registerButton.setOnClickListener(view -> {
-            if (!Connection.IP.equals("")) {
+            boolean result = false;
+            Con = new connectServer();
+
+            try {
+                result = Con.execute().get();
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (result) {
                 Intent intent = new Intent(Login.this, Register.class);
                 startActivity(intent);
+
+            } else {
+                IPDialog dialogo = new IPDialog();
+                dialogo.show(getSupportFragmentManager(), "IP");
             }
         });
 
@@ -220,7 +255,8 @@ public class Login extends AppCompatActivity implements LocationListener {
             poblacion = addresses.get(0).getLocality();
             provincia = addresses.get(0).getSubAdminArea();
             comunidadAutonoma = addresses.get(0).getAdminArea();
-            direccion = addresses.get(0).getAddressLine(0) + "|" + poblacion + "|" + provincia + "|" + comunidadAutonoma;
+            direccion = addresses.get(0).getAddressLine(0);
+            direccionCompleta = addresses.get(0).getAddressLine(0) + "%" + poblacion + "%" + provincia + "%" + comunidadAutonoma;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -261,20 +297,19 @@ public class Login extends AppCompatActivity implements LocationListener {
         }
     }
 
-    class connectServer extends AsyncTask<Void, Void, Void> {
+    class connectServer extends AsyncTask<Void, Void, Boolean> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
-            new Connection();
-            return null;
+        protected Boolean doInBackground(Void... params) {
+            return new Connection().getConnection();
         }
 
         @Override
-        protected void onPostExecute(Void result) {
+        protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
         }
     }

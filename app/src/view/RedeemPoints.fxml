@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #292A33;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RedeemPointsController">
+   <children>
+      <ImageView fitHeight="400.0" fitWidth="663.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/wave-haikei.jpg" />
+         </image>
+      </ImageView>
+      <Text fill="#fd93b2" layoutX="244.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Canjear puntos">
+         <font>
+            <Font name="SansSerif Regular" size="18.0" />
+         </font>
+      </Text>
+      <MFXButton buttonType="RAISED" depthLevel="LEVEL5" layoutX="42.0" layoutY="145.0" prefHeight="26.0" prefWidth="166.0" rippleColor="#252850" style="-fx-background-color: #fd93b2;" text="10€ (10.000)" textFill="#252850">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></MFXButton>
+      <FontAwesomeIconView fx:id="iconExit" fill="#fd93b2" glyphName="CLOSE" layoutX="553.0" layoutY="38.0" onMouseClicked="#onClickExit" size="20" text="">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </FontAwesomeIconView>
+      <Text fx:id="textFieldError" fill="#fc447a" layoutX="171.0" layoutY="374.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="260.0">
+         <font>
+            <Font name="SansSerif Regular" size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+      </Text>
+      <FontAwesomeIconView fx:id="iconBack" fill="#fd93b2" glyphName="ARROW_LEFT" layoutX="519.0" layoutY="39.0" onMouseClicked="#onClickBack" size="20" text="">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </FontAwesomeIconView>
+      <Text fx:id="textFieldPoints" fill="WHITE" layoutX="254.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Puntos:">
+         <font>
+            <Font name="SansSerif Bold" size="16.0" />
+         </font>
+      </Text>
+      <MFXButton buttonType="RAISED" depthLevel="LEVEL5" layoutX="42.0" layoutY="189.0" prefHeight="26.0" prefWidth="166.0" rippleColor="#252850" style="-fx-background-color: #fd93b2;" text="20€ (20.000)" textFill="#252850">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </MFXButton>
+      <MFXButton buttonType="RAISED" depthLevel="LEVEL5" layoutX="42.0" layoutY="233.0" prefHeight="26.0" prefWidth="166.0" rippleColor="#252850" style="-fx-background-color: #fd93b2;" text="50€ (50.000)" textFill="#252850">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </MFXButton>
+      <Text fill="WHITE" layoutX="42.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mercadona" textAlignment="CENTER" wrappingWidth="166.39999999999986">
+         <font>
+            <Font name="SansSerif Bold" size="14.0" />
+         </font>
+      </Text>
+      <MFXButton buttonType="RAISED" depthLevel="LEVEL5" layoutX="222.0" layoutY="145.0" prefHeight="26.0" prefWidth="166.0" rippleColor="#252850" style="-fx-background-color: #fd93b2;" text="10€ (10.000)" textFill="#252850">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </MFXButton>
+      <MFXButton buttonType="RAISED" depthLevel="LEVEL5" layoutX="222.0" layoutY="189.0" prefHeight="26.0" prefWidth="166.0" rippleColor="#252850" style="-fx-background-color: #fd93b2;" text="20€ (20.000)" textFill="#252850">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </MFXButton>
+      <MFXButton buttonType="RAISED" depthLevel="LEVEL5" layoutX="222.0" layoutY="233.0" prefHeight="26.0" prefWidth="166.0" rippleColor="#252850" style="-fx-background-color: #fd93b2;" text="50€ (50.000)" textFill="#252850">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </MFXButton>
+      <Text fill="WHITE" layoutX="222.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lidl" textAlignment="CENTER" wrappingWidth="166.39999999999986">
+         <font>
+            <Font name="SansSerif Bold" size="14.0" />
+         </font>
+      </Text>
+      <MFXButton buttonType="RAISED" depthLevel="LEVEL5" layoutX="402.0" layoutY="145.0" prefHeight="26.0" prefWidth="166.0" rippleColor="#252850" style="-fx-background-color: #fd93b2;" text="10€ (10.000)" textFill="#252850">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </MFXButton>
+      <MFXButton buttonType="RAISED" depthLevel="LEVEL5" layoutX="402.0" layoutY="189.0" prefHeight="26.0" prefWidth="166.0" rippleColor="#252850" style="-fx-background-color: #fd93b2;" text="20€ (20.000)" textFill="#252850">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </MFXButton>
+      <MFXButton buttonType="RAISED" depthLevel="LEVEL5" layoutX="402.0" layoutY="233.0" prefHeight="26.0" prefWidth="166.0" rippleColor="#252850" style="-fx-background-color: #fd93b2;" text="50€ (50.000)" textFill="#252850">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </MFXButton>
+      <Text fill="WHITE" layoutX="402.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dia" textAlignment="CENTER" wrappingWidth="166.39999999999986">
+         <font>
+            <Font name="SansSerif Bold" size="14.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>

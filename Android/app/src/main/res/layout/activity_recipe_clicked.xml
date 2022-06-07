@@ -26,7 +26,8 @@
                 android:layout_marginTop="32dp"
                 android:text="Pasos"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewCookwareFromServer" />
 
@@ -65,6 +66,7 @@
                 android:text="5"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/imageViewPeople"
                 app:layout_constraintStart_toEndOf="@+id/imageViewPeople"
                 app:layout_constraintTop_toTopOf="@+id/imageViewPeople" />
@@ -87,7 +89,8 @@
                 android:layout_marginTop="32dp"
                 android:text="Productos"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageViewRecipeFromServer" />
 
@@ -155,7 +158,8 @@
                 android:layout_marginTop="32dp"
                 android:text="Utensilios"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewProductsFromServer" />
 
@@ -167,6 +171,7 @@
                 android:text="00:30"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/imageViewTime"
                 app:layout_constraintStart_toEndOf="@+id/imageViewTime"
                 app:layout_constraintTop_toTopOf="@+id/imageViewTime" />

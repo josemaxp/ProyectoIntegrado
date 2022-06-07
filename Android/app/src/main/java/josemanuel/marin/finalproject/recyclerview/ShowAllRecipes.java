@@ -2,8 +2,7 @@ package josemanuel.marin.finalproject.recyclerview;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -17,8 +16,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -28,7 +28,9 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import josemanuel.marin.finalproject.R;
-import josemanuel.marin.finalproject.RecipeClicked;
+import josemanuel.marin.finalproject.view.EditOffer;
+import josemanuel.marin.finalproject.view.EditRecipe;
+import josemanuel.marin.finalproject.view.RecipeClicked;
 import josemanuel.marin.finalproject.controller.Connection;
 import josemanuel.marin.finalproject.model.ListRecipeItem;
 
@@ -44,6 +46,7 @@ public class ShowAllRecipes extends RecyclerView.Adapter<ShowAllRecipes.RecipeVi
     reportRecipe reportRecipe;
     int recipeID;
     int position;
+    ListRecipeItem recipe;
 
     public ShowAllRecipes(List<ListRecipeItem> mData, Context context) {
         this.mInflater = LayoutInflater.from(context);
@@ -104,12 +107,22 @@ public class ShowAllRecipes extends RecyclerView.Adapter<ShowAllRecipes.RecipeVi
             textViewRecipeLikes.setText(item.getLikes() + "");
             textViewRecipeUsername.setText(item.getUsername());
 
-            File file = new File(item.getImage());
-            Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
-            imageViewRecipe.setImageBitmap(bitmap);
+            imageViewRecipe.setClipToOutline(true);
+            if(item.getImage().equals("")){
+                imageViewRecipe.setImageResource(R.drawable.no_image_found);
+            }else {
+                String url = "http://"+item.getImage().substring(2).replace("\\", "/");
+                Picasso.get().load(url).into(imageViewRecipe);
+                imageViewRecipe.setBackgroundColor(Color.parseColor("#3F414E"));
+            }
+
+            if(imageViewRecipe.getDrawable() == null){
+                imageViewRecipe.setImageResource(R.drawable.no_image_found);
+            }
+
 
             imageViewOptionsMenuRecipe.setOnClickListener(v -> {
-                showMenu(v, item.getUsername(), item.getId());
+                showMenu(v, item.getUsername(), item.getId(),item);
             });
 
             itemView.setOnClickListener(v -> {
@@ -145,7 +158,7 @@ public class ShowAllRecipes extends RecyclerView.Adapter<ShowAllRecipes.RecipeVi
         notifyDataSetChanged();
     }
 
-    public void showMenu(View v, String username, int recipeID) {
+    public void showMenu(View v, String username, int recipeID, ListRecipeItem item) {
         getUser = new getUser();
         String[] currentUSer = null;
         try {
@@ -159,12 +172,15 @@ public class ShowAllRecipes extends RecyclerView.Adapter<ShowAllRecipes.RecipeVi
         menu.inflate(R.menu.recipe_menu);
 
         this.recipeID = recipeID;
+        this.recipe = item;
 
         if (currentUSer.length > 2) {
             if (currentUSer[2].equals(username)) {
+                menu.getMenu().findItem(R.id.update_recipe).setVisible(true);
                 menu.getMenu().findItem(R.id.delete_recipe).setVisible(true);
                 menu.getMenu().findItem(R.id.report_recipe).setVisible(false);
             } else {
+                menu.getMenu().findItem(R.id.update_recipe).setVisible(false);
                 menu.getMenu().findItem(R.id.delete_recipe).setVisible(false);
                 menu.getMenu().findItem(R.id.report_recipe).setVisible(true);
             }
@@ -185,6 +201,12 @@ public class ShowAllRecipes extends RecyclerView.Adapter<ShowAllRecipes.RecipeVi
             case R.id.delete_recipe:
                 deleteRecipe = new deleteRecipe();
                 deleteRecipe.execute();
+                return true;
+            case R.id.update_recipe:
+                Intent intent = new Intent(context, EditRecipe.class);
+                intent.putExtra("EditRecipe", recipe);
+                context.startActivity(intent);
+
                 return true;
             default:
                 return false;

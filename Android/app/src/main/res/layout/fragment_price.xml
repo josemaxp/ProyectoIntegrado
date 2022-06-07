@@ -59,7 +59,7 @@
                 android:textSize="34sp"
                 app:layout_constraintBottom_toBottomOf="@+id/editTextPriceUnity"
                 app:layout_constraintStart_toEndOf="@+id/editTextPriceUnity"
-                app:layout_constraintTop_toBottomOf="@+id/textViewPriceUnityTitle" />
+                app:layout_constraintTop_toTopOf="@+id/editTextPriceUnity" />
 
             <TextView
                 android:id="@+id/textViewPriceTitle"

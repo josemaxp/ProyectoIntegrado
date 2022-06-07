@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -56,21 +57,30 @@ public class RegisterController implements Initializable {
         if (textFieldUsername.getText().equals("") || textFieldPassword.getText().equals("") || textFieldemail.getText().equals("")) {
             textFieldError.setText("Los campos no pueden estar vacíos.");
         } else {
-            if (texxtFieldRepeatPassword.getText().equals(textFieldPassword.getText())) {
-                ConnectionManager.out.println("CL:" + "register:" + textFieldUsername.getText() + ":" + textFieldPassword.getText() + ":" + textFieldemail.getText());
-                String fromServer;
-                try {
-                    fromServer = ConnectionManager.in.readLine();
-                    if (fromServer.split(":")[2].equals("true")) {
-                        textFieldError.setText("Usuario creado.");
-                    } else {
-                        textFieldError.setText("Error al crear el ususario.");
+            if (patternMatches(textFieldemail.getText())) {
+                if (texxtFieldRepeatPassword.getText().equals(textFieldPassword.getText())) {
+                    ConnectionManager.out.println("CL:" + "register:" + textFieldUsername.getText() + ":" + textFieldPassword.getText() + ":" + textFieldemail.getText());
+                    String fromServer;
+                    try {
+                        fromServer = ConnectionManager.in.readLine();
+                        if (fromServer.split(":")[2].equals("true")) {
+                            textFieldError.setText("Usuario creado.");
+                        } else {
+                            textFieldError.setText("Error al crear el ususario.");
+                        }
+
+                        textFieldUsername.setText("");
+                        textFieldPassword.setText("");
+                        textFieldemail.setText("");
+                        texxtFieldRepeatPassword.setText("");
+                    } catch (IOException ex) {
+                        Logger.getLogger(RegisterController.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                } catch (IOException ex) {
-                    Logger.getLogger(RegisterController.class.getName()).log(Level.SEVERE, null, ex);
+                } else {
+                    textFieldError.setText("Las contraseñas no coinciden.");
                 }
             } else {
-                textFieldError.setText("Las contraseñas no coinciden.");
+                textFieldError.setText("Introduce un email válido.");
             }
         }
     }
@@ -90,6 +100,12 @@ public class RegisterController implements Initializable {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public static boolean patternMatches(String emailAddress) {
+        return Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")
+                .matcher(emailAddress)
+                .matches();
     }
 
 }

@@ -136,6 +136,12 @@ public class MyAccountController implements Initializable {
 
     @FXML
     private void onActionRedeem(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/view/RedeemPoints.fxml"));
+            WarnMaketApp.changeScene(root, "Canjear puntos");
+        } catch (IOException ex) {
+            Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void getUserInfo() {

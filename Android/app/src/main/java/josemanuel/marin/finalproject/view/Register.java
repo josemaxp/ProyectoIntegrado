@@ -1,8 +1,10 @@
-package josemanuel.marin.finalproject;
+package josemanuel.marin.finalproject.view;
 
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -17,6 +19,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.concurrent.ExecutionException;
 
+import josemanuel.marin.finalproject.R;
 import josemanuel.marin.finalproject.controller.Connection;
 
 public class Register extends AppCompatActivity {
@@ -40,28 +43,35 @@ public class Register extends AppCompatActivity {
 
         registerButton.setOnClickListener(v -> {
             if (email.getText().toString().equals("") || username.getText().toString().equals("") || password.getText().toString().equals("") || repeatPassword.getText().toString().equals("")) {
-                registerError.setText("Los campos no pueden estar vacíos.");
+                registerError.setText(R.string.errorEmptyFields);
             } else {
-                if (repeatPassword.getText().toString().equals(password.getText().toString())) {
-                    register = new register();
-                    try {
-                        String result = register.execute(username.getText().toString(), password.getText().toString(), email.getText().toString()).get();
+                if (isValidEmail(email.getText().toString())) {
+                    if (repeatPassword.getText().toString().equals(password.getText().toString())) {
+                        register = new register();
+                        try {
+                            boolean result = register.execute(username.getText().toString(), password.getText().toString(), email.getText().toString()).get();
+                            String message = "Error al crear usuario.";
 
-                        registerError.setText("");
-                        Toast.makeText(this, result, Toast.LENGTH_LONG).show();
-                    } catch (ExecutionException | InterruptedException e) {
-                        e.printStackTrace();
+                            if (result) {
+                                message = "Usuario creado correctamete.";
+                            }
+
+                            registerError.setText("");
+                            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+                        } catch (ExecutionException | InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        registerError.setText(R.string.error_passwords);
                     }
-
-
                 } else {
-                    registerError.setText("Las contraseñas no coinciden.");
+                    registerError.setText(R.string.errorEmail);
                 }
             }
         });
     }
 
-    class register extends AsyncTask<String, Void, String> {
+    class register extends AsyncTask<String, Void, Boolean> {
         Socket s;
 
         @Override
@@ -71,8 +81,8 @@ public class Register extends AppCompatActivity {
         }
 
         @Override
-        protected String doInBackground(String... params) {
-            String result = "";
+        protected Boolean doInBackground(String... params) {
+            boolean result = false;
             try {
                 out = new PrintWriter(s.getOutputStream(), true);
                 in = new BufferedReader(new InputStreamReader(s.getInputStream()));
@@ -81,9 +91,7 @@ public class Register extends AppCompatActivity {
                 String fromServer = in.readLine();
 
                 if (fromServer.split(":")[2].equals("true")) {
-                    result = "Usuario creado correctamete.";
-                } else {
-                    result = "Error al crear usuario.";
+                    result = true;
                 }
 
             } catch (IOException e) {
@@ -93,9 +101,13 @@ public class Register extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(Boolean result) {
             Intent intent = new Intent(Register.this, Login.class);
             startActivity(intent);
         }
+    }
+
+    public static boolean isValidEmail(CharSequence target) {
+        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
 }

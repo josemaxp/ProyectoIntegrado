@@ -2,8 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/report_offer"
-        android:title="Denunciar" />
+        android:title="@string/report" />
     <item
         android:id="@+id/delete_offer"
-        android:title="Borrar" />
+        android:title="@string/delete" />
+    <item
+        android:id="@+id/update_offer"
+        android:title="@string/update" />
 </menu>

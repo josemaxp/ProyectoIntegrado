@@ -33,10 +33,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import josemanuel.marin.finalproject.Login;
 import josemanuel.marin.finalproject.R;
-import josemanuel.marin.finalproject.WarnMarketActivity;
 import josemanuel.marin.finalproject.controller.Connection;
+import josemanuel.marin.finalproject.view.Login;
+import josemanuel.marin.finalproject.view.WarnMarketActivity;
 
 public class LocationFragment extends Fragment {
     EditText location;
@@ -96,6 +96,7 @@ public class LocationFragment extends Fragment {
                 TagsFragment.restartTagsList();
 
                 textViewAddError.setText("");
+
                 addOffer = new addOffer();
                 addOffer.execute(tags, PriceFragment.getPrice(), PriceFragment.getPriceUnity(),
                         PriceFragment.getUnity(), ImageFragment.getBitmap().toString(), getMarket(), getLocationData());
@@ -144,7 +145,7 @@ public class LocationFragment extends Fragment {
     }
 
     public String getLocationData() {
-        locationData = Login.direccion + ":" + Login.latitud + ":" + Login.longitud;
+        locationData = Login.direccionCompleta + ":" + Login.latitud + ":" + Login.longitud;
         return locationData;
     }
 
@@ -154,7 +155,7 @@ public class LocationFragment extends Fragment {
         try {
             username = getUser.execute().get().split(":");
             //LocalDateTime
-            File f = new File(getContext().getCacheDir(), "D" + LocalDate.now() + "%H" + LocalDateTime.now().getHour() + "%M" + LocalDateTime.now().getMinute() + "%S" + LocalDateTime.now().getSecond() + "%" + username[2]);
+            File f = new File(getContext().getCacheDir(), "D" + LocalDate.now() + "H" + LocalDateTime.now().getHour() + "M" + LocalDateTime.now().getMinute() + "S" + LocalDateTime.now().getSecond() + username[2]);
             try {
                 f.createNewFile();
 

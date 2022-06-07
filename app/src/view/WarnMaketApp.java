@@ -67,7 +67,7 @@ public class WarnMaketApp extends Application {
 
     public static void main(String[] args) {
         new ConnectionManager().getConnection();
-
+        
         launch(args);
     }
 }

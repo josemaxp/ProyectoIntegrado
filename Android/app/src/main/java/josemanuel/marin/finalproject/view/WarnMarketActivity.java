@@ -1,4 +1,4 @@
-package josemanuel.marin.finalproject;
+package josemanuel.marin.finalproject.view;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -21,12 +21,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import josemanuel.marin.finalproject.R;
 import josemanuel.marin.finalproject.controller.Connection;
 import josemanuel.marin.finalproject.model.ListOfferItem;
 import josemanuel.marin.finalproject.recyclerview.ShowOffer;
 
 public class WarnMarketActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
-    Button addButton, profileButton,recipesButton;
+    Button addButton, profileButton, recipesButton;
     SearchView searchView;
     List<ListOfferItem> offerItems;
     PrintWriter out = null;
@@ -74,10 +75,16 @@ public class WarnMarketActivity extends AppCompatActivity implements SearchView.
             }
         });
 
-        recipesButton.setOnClickListener(v ->{
+        recipesButton.setOnClickListener(v -> {
             Intent intent = new Intent(WarnMarketActivity.this, RecipesActivity.class);
             startActivity(intent);
         });
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        showOffers();
     }
 
     public void showOffers() {
@@ -100,11 +107,11 @@ public class WarnMarketActivity extends AppCompatActivity implements SearchView.
                     tags.add(ofertaFromServer[j].toLowerCase());
                 }
                 boolean approvedOffer = false;
-                if(ofertaFromServer[6].equals("true")){
+                if (ofertaFromServer[6].equals("true")) {
                     approvedOffer = true;
                 }
 
-                ListOfferItem oferta = new ListOfferItem(ofertaFromServer[3], tags, ofertaFromServer[4], ofertaFromServer[1], ofertaFromServer[2], ofertaFromServer[0],"\\\\"+Connection.IP+"\\"+ofertaFromServer[5],approvedOffer,Integer.parseInt(ofertaFromServer[7]),Double.parseDouble(ofertaFromServer[8]),Double.parseDouble(ofertaFromServer[9]));
+                ListOfferItem oferta = new ListOfferItem(ofertaFromServer[3], tags, ofertaFromServer[4], ofertaFromServer[1], ofertaFromServer[2], ofertaFromServer[0], "\\\\" + Connection.IP + "\\" + ofertaFromServer[5], approvedOffer, Integer.parseInt(ofertaFromServer[7]), Double.parseDouble(ofertaFromServer[8]), Double.parseDouble(ofertaFromServer[9]));
                 totalOfertas.add(oferta);
             }
 

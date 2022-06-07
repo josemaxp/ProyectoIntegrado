@@ -103,15 +103,18 @@ public class UsuarioDAO {
     public boolean checkUser(String username, String password, Session session) {
         String passwordHashed = SHA.generate512(password);
 
-        String hql = "from Usuario where username like :keyword";
+        String hql = "from Usuario where username = :keyword";
         Query query = session.createQuery(hql);
         query.setParameter("keyword", username);
 
         String passwordDB = "";
 
         List<Usuario> listUser = query.list();
+
         for (Usuario aUser : listUser) {
-            passwordDB = aUser.getPassword();
+            if (aUser.getUsername().equals(username)) {
+                passwordDB = aUser.getPassword();
+            }
         }
 
         return passwordDB.equals(passwordHashed);
@@ -119,7 +122,7 @@ public class UsuarioDAO {
 
     public List<Usuario> userInfo(String username, Session session) {
 
-        String hql = "from Usuario where username like :keyword";
+        String hql = "from Usuario where username = :keyword";
         Query query = session.createQuery(hql);
         query.setParameter("keyword", username);
 
@@ -129,7 +132,7 @@ public class UsuarioDAO {
     }
 
     public int getUserID(Session session, String username) {
-        String hql = "select id from Usuario where username like :keyword";
+        String hql = "select id from Usuario where username = :keyword";
         Query query = session.createQuery(hql);
         query.setParameter("keyword", username);
 

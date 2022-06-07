@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import josemanuel.marin.finalproject.AddOffer;
+import josemanuel.marin.finalproject.view.AddOffer;
 import josemanuel.marin.finalproject.fragments.ImageFragment;
 import josemanuel.marin.finalproject.fragments.LocationFragment;
 import josemanuel.marin.finalproject.fragments.PriceFragment;

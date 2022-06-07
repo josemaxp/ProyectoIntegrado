@@ -78,12 +78,19 @@ public class RecipeItemController implements Initializable {
         peopleText.setText(RecipeItem.getPeople() + "");
         time.setText(newTime);
 
-        //Image offerImage = new Image(offerItem.getImage());
-        //if (offerItem.getImage().equals("")) {
-        Image offerImage = new Image("/images/noImageFound.jpg");
-        //} 
+        Image recipeImage;
 
-        image.setImage(offerImage);
+        if (RecipeItem.getImage().equals("") || RecipeItem.getImage().equals("null")) {
+            recipeImage = new Image("/images/noImageFound.jpg");
+        } else {
+            recipeImage = new Image("http://" + RecipeItem.getImage().substring(2).replace("\\", "/"));
+        }
+
+        if (recipeImage.isError()) {
+            recipeImage = new Image("/images/noImageFound.jpg");
+        }
+
+        image.setImage(recipeImage);
 
         usernmaeUpload = RecipeItem.getUsername();
         recipeID = RecipeItem.getId();

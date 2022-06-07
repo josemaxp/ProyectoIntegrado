@@ -26,7 +26,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import model.OfferItem;
 import model.RecipeItem;
 import util.ConnectionManager;
@@ -304,6 +303,7 @@ public class MyUploadsController implements Initializable {
         totalRecetas = getRecipeData();
 
         if (!totalRecetas.isEmpty()) {
+            int columns = 0;
             int row = 0;
 
             Collections.sort(totalRecetas);
@@ -317,9 +317,12 @@ public class MyUploadsController implements Initializable {
                     RecipeItemController recipeItemController = fxmlLoader.getController();
                     recipeItemController.setData(totalRecetas.get(i));
 
-                    row++;
+                    if (columns == 2) {
+                        columns = 0;
+                        row++;
+                    }
 
-                    gridPane.add(anchorPane, 0, i);
+                    gridPane.add(anchorPane, columns++, row);
                     gridPane.setMargin(anchorPane, new Insets(10));
                 }
             } catch (IOException ex) {
@@ -400,6 +403,7 @@ public class MyUploadsController implements Initializable {
         totalOfertas = getOfferData();
 
         if (!totalOfertas.isEmpty()) {
+            int columns = 0;
             int row = 0;
 
             try {
@@ -411,9 +415,12 @@ public class MyUploadsController implements Initializable {
                     OfferItemController offerItemController = fxmlLoader.getController();
                     offerItemController.setData(totalOfertas.get(i));
 
-                    row++;
+                    if (columns == 2) {
+                        columns = 0;
+                        row++;
+                    }
 
-                    gridPane.add(anchorPane, 0, i);
+                    gridPane.add(anchorPane, columns++, row);
                     gridPane.setMargin(anchorPane, new Insets(10));
                 }
             } catch (IOException ex) {

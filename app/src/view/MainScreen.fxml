@@ -16,8 +16,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #292A33;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainScreenController">
+<AnchorPane id="AnchorPane" fx:id="ap" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #292A33;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainScreenController">
    <children>
       <Label fx:id="titleText" alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="600.0" text="Ofertas" textFill="#fc447a">
          <font>
@@ -29,15 +30,15 @@
             <Cursor fx:constant="TEXT" />
          </cursor></MFXTextField>
       <FontAwesomeIconView fill="#fd93b2" glyphName="SEARCH" layoutX="475.0" layoutY="77.0" size="20" text="" wrappingWidth="24.0" />
-      <MFXLegacyComboBox fx:id="comboBoxPoblacion" invalidLineColor="#fc447a" layoutX="389.0" layoutY="101.0" lineColor="#fd93b2" onAction="#onClickSelectPoblacion" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #FFFFFF;" unfocusedLineColor="#292a33">
+      <MFXLegacyComboBox fx:id="comboBoxPoblacion" invalidLineColor="#fc447a" layoutX="389.0" layoutY="101.0" lineColor="#fd93b2" onAction="#onClickSelectPoblacion" prefHeight="26.0" prefWidth="110.0" promptText="Localidad" style="-fx-background-color: #FFFFFF;" unfocusedLineColor="#292a33">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></MFXLegacyComboBox>
-      <MFXLegacyComboBox fx:id="comboBoxProvincia" invalidLineColor="#fc447a" layoutX="244.0" layoutY="101.0" lineColor="#fd93b2" onAction="#onClickSelectProvincia" prefHeight="25.0" prefWidth="110.0" style="-fx-background-color: #FFFFFF;" unfocusedLineColor="#292a33">
+      <MFXLegacyComboBox fx:id="comboBoxProvincia" invalidLineColor="#fc447a" layoutX="244.0" layoutY="101.0" lineColor="#fd93b2" onAction="#onClickSelectProvincia" prefHeight="25.0" prefWidth="110.0" promptText="Provincia" style="-fx-background-color: #FFFFFF;" unfocusedLineColor="#292a33">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></MFXLegacyComboBox>
-      <MFXLegacyComboBox fx:id="comboBoxComunidadAutonoma" invalidLineColor="#fc447a" layoutX="100.0" layoutY="101.0" lineColor="#fd93b2" onAction="#onClickSelectCA" prefHeight="25.0" prefWidth="110.0" style="-fx-background-color: #FFFFFF;" unfocusedLineColor="#292a33">
+      <MFXLegacyComboBox fx:id="comboBoxComunidadAutonoma" invalidLineColor="#fc447a" layoutX="100.0" layoutY="101.0" lineColor="#fd93b2" onAction="#onClickSelectCA" prefHeight="25.0" prefWidth="110.0" promptText="CA" style="-fx-background-color: #FFFFFF;" unfocusedLineColor="#292a33">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></MFXLegacyComboBox>
@@ -102,5 +103,10 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </FontAwesomeIconView>
+      <FontAwesomeIconView fx:id="fav" fill="#fd93b2" glyphName="STAR" layoutX="576.0" layoutY="393.0" size="20" />
+      <Text fx:id="favRecipes" fill="#fd93b2" layoutX="461.0" layoutY="390.0" onMouseClicked="#onClickFav" strokeType="OUTSIDE" strokeWidth="0.0" text="Recetas guardadas">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Text>
    </children>
 </AnchorPane>

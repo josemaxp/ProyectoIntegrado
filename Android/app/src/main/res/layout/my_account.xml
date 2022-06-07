@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/wave"
-    tools:context=".Login">
+    tools:context=".view.Login">
 
     <TextView
         android:id="@+id/manageTitle"
@@ -183,7 +183,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:backgroundTint="#FD93B2"
         android:text="Mis recetas"
@@ -196,11 +195,26 @@
         app:layout_constraintTop_toBottomOf="@+id/buttonMyOffers" />
 
     <Button
+        android:id="@+id/buttonFavRecipes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="#FD93B2"
+        android:text="Recetas guardadas"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:cornerRadius="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonMyRecipes" />
+
+    <Button
         android:id="@+id/buttonRedeem"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:backgroundTint="#FD93B2"
         android:text="Canjear puntos"
@@ -210,6 +224,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonMyRecipes" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonFavRecipes" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

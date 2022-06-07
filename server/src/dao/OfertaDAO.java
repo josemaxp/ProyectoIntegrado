@@ -28,6 +28,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import util.HibernateUtil;
 
 /**
  *
@@ -35,7 +36,9 @@ import org.hibernate.Transaction;
  */
 public class OfertaDAO {
 
-    public List<String> showOffer(Session session, Double latitud, Double longitud) {
+    public List<String> showOffer(Double latitud, Double longitud) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
         String hql = "from Oferta";
         Query query = session.createQuery(hql);
         String offer = "";
@@ -105,6 +108,8 @@ public class OfertaDAO {
             }
         }
 
+        session.close();
+
         return allOffers;
     }
 
@@ -125,14 +130,15 @@ public class OfertaDAO {
             userID = aUser.getId();
         }
 
-        hql = "update Usuario set puntos = puntos+100 where id like :id";
-        query = session.createQuery(hql);
-        query.setParameter("id", userID);
-
-        query.executeUpdate();
-
         try {
             tx = session.beginTransaction();
+
+            hql = "update Usuario set puntos = puntos+100 where id like :id";
+            query = session.createQuery(hql);
+            query.setParameter("id", userID);
+
+            query.executeUpdate();
+
             Oferta oferta = new Oferta(precio, precioUnidad + "€/" + unidad, imagen, userID);
             ofertaID = (Integer) session.save(oferta);
 
@@ -151,10 +157,10 @@ public class OfertaDAO {
             }
 
             if (marketID == -1) {
-                String direccionLugar = direccion.split("|")[0];
-                String poblacion = direccion.split("|")[1];
-                String provincia = direccion.split("|")[2];
-                String comunidadAutonoma = direccion.split("|")[3];
+                String direccionLugar = direccion.split("%")[0];
+                String poblacion = direccion.split("%")[1];
+                String provincia = direccion.split("%")[2];
+                String comunidadAutonoma = direccion.split("%")[3];
 
                 Supermercado supermercado = new Supermercado(nombreSupermercado, longitud, latitud, direccionLugar, poblacion, provincia, comunidadAutonoma);
                 supermercadoID = (Integer) session.save(supermercado);
@@ -186,15 +192,9 @@ public class OfertaDAO {
                         //añado los id de las etiquetas puestas por el usuario a una lista
                         tagsID.add(etiquetaID);
 
-                        Tener tener = null;
-                        TenerId tenerId = null;
-                        if (i == 0) {
-                            tenerId = new TenerId(etiquetaID, ofertaID);
-                            tener = new Tener(tenerId, true);
-                        } else {
-                            tenerId = new TenerId(etiquetaID, ofertaID);
-                            tener = new Tener(tenerId, false);
-                        }
+                        TenerId tenerId = new TenerId(etiquetaID, ofertaID);
+                        Tener tener = new Tener(tenerId, false);
+
                         session.save(tener);
                     } else {
 
@@ -322,7 +322,8 @@ public class OfertaDAO {
         return distancia;
     }
 
-    public List<String> myOffers(Session session, String username, Double latitud, Double longitud) {
+    public List<String> myOffers(String username, Double latitud, Double longitud) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
         //Obtener el id del usuario
         String hql = "select id from Usuario where username = :username";
         Query query = session.createQuery(hql);
@@ -394,7 +395,7 @@ public class OfertaDAO {
                 offer = "";
             }
         }
-
+        session.close();
         return allOffers;
     }
 
@@ -551,7 +552,7 @@ public class OfertaDAO {
             }
 
             if (!comprobarDenuncia) {
-                DenunciasofertasId denunciasOfertasId = new DenunciasofertasId(userID.get(0),offerID);
+                DenunciasofertasId denunciasOfertasId = new DenunciasofertasId(userID.get(0), offerID);
                 Denunciasofertas denunciasofertas = new Denunciasofertas(denunciasOfertasId);
 
                 session.save(denunciasofertas);
@@ -572,6 +573,175 @@ public class OfertaDAO {
                     deleteOffer(session, offerID);
                 }
             }
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
+    public void updateOffer(String[] tagsList, Float precio, String precioUnidad, String unidad, String imagen, int offerID) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        int etiquetaID = -1;
+        List<Integer> tagsID = new ArrayList();
+
+        try {
+
+            tx = session.beginTransaction();
+
+            //Primero borro las etiquetas que existen en la tabla tener
+            String hql = "from Tener";
+            Query query = session.createQuery(hql);
+            List<Tener> tenerRelacion = query.list();
+
+            hql = "select nombre from Etiqueta";
+            query = session.createQuery(hql);
+
+            List<String> allTags = query.list();
+            List<String> allTagsFromClientParsed = new ArrayList();
+
+            for (int i = 0; i < tagsList.length; i++) {
+                System.out.println(tagsList[i]);
+                allTagsFromClientParsed.add(tagsList[i]);
+            }
+
+            for (int i = 0; i < tagsList.length; i++) {
+                if (!tagsList[i].equals("-")) {
+                    if (allTags.contains(tagsList[i].trim())) {
+
+                        hql = "select id from Etiqueta where nombre = :nombre";
+                        query = session.createQuery(hql);
+                        query.setParameter("nombre", tagsList[i]);
+
+                        List<Integer> tagID = query.list();
+
+                        boolean comprobarEtiqueta = false;
+                        for (Tener aTener : tenerRelacion) {
+                            if (aTener.getId().getIdOferta() == offerID) {
+                                hql = "select nombre from Etiqueta where id = :id";
+                                query = session.createQuery(hql);
+                                query.setParameter("id", aTener.getId().getIdEtiqueta());
+
+                                List<String> tagName = query.list();
+
+                                if (allTagsFromClientParsed.contains(tagName.get(0))) {
+                                    tagsID.add(tagID.get(0));
+                                } else {
+                                    session.delete(aTener);
+                                }
+
+                                if (aTener.getId().getIdEtiqueta() == tagID.get(0)) {
+                                    comprobarEtiqueta = true;
+                                }
+                            }
+                        }
+                        //si la etiqueta existe pero no tenia ninguna relacion anterior se la añado
+                        if (!comprobarEtiqueta) {
+                            tagsID.add(tagID.get(0));
+
+                            TenerId tenerId = new TenerId(tagID.get(0), offerID);
+                            Tener tener = new Tener(tenerId, false);
+
+                            session.save(tener);
+                        }
+                    } else {
+                        Etiqueta etiqueta = new Etiqueta(tagsList[i].trim().toLowerCase(), 0);
+                        etiquetaID = (Integer) session.save(etiqueta);
+
+                        //añado los id de las etiquetas puestas por el usuario a una lista
+                        tagsID.add(etiquetaID);
+
+                        TenerId tenerId = new TenerId(etiquetaID, offerID);
+                        Tener tener = new Tener(tenerId, false);
+
+                        session.save(tener);
+                    }
+                }
+            }
+
+            Collections.sort(tagsID);
+
+            //Ahora, si hay una nueva etiqueta, la añado a la relación de etiquetas
+            boolean comprobarSiExisteRelacion = false;
+            for (int i = 0; i < tagsID.size() - 1; i++) {
+                for (int j = i + 1; j < tagsID.size(); j++) {
+
+                    hql = "from Relacionetiqueta";
+                    query = session.createQuery(hql);
+
+                    List<Relacionetiqueta> relationsTags = query.list();
+
+                    for (Relacionetiqueta relation : relationsTags) {
+                        if (relation.getId().getIdEtq1() == tagsID.get(i) && relation.getId().getIdEtq2() == tagsID.get(j)) {
+                            comprobarSiExisteRelacion = true;
+                            break;
+                        } else if (relation.getId().getIdEtq1() == tagsID.get(j) && relation.getId().getIdEtq2() == tagsID.get(i)) {
+                            comprobarSiExisteRelacion = true;
+                            break;
+                        } else {
+                            comprobarSiExisteRelacion = false;
+                        }
+                    }
+
+                    if (!comprobarSiExisteRelacion) {
+                        RelacionetiquetaId relacionEtiquetaId = new RelacionetiquetaId(tagsID.get(i), tagsID.get(j));
+                        Relacionetiqueta relacionEtiqueta = new Relacionetiqueta(relacionEtiquetaId, 1);
+                        session.save(relacionEtiqueta);
+                    }
+                }
+            }
+
+            tagsID.clear();
+
+            //Ahora hago update de los demás campos
+            if (imagen.equals("null")) {
+
+                hql = "update Oferta set precio = :precio, precioUnidad = :precioUnidad where id = :id";
+                query = session.createQuery(hql);
+                query.setParameter("precio", precio);
+                query.setParameter("precioUnidad", precioUnidad + "€/" + unidad);
+                query.setParameter("id", offerID);
+
+                query.executeUpdate();
+
+            } else {
+                hql = "update Oferta set precio = :precio, precioUnidad = :precioUnidad, imagen = :imagen where id = :id";
+                query = session.createQuery(hql);
+                query.setParameter("precio", precio);
+                query.setParameter("precioUnidad", precioUnidad + "€/" + unidad);
+                query.setParameter("imagen", imagen);
+                query.setParameter("id", offerID);
+
+                query.executeUpdate();
+
+            }
+
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }
+
+        session.close();
+    }
+
+    public void updateImageInformation(Session session, String path, int offerID) {
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+            String hql = "update Oferta set imagen = :path where id = :id";
+            Query query = session.createQuery(hql);
+            query.setParameter("path", path);
+            query.setParameter("id", offerID);
+
+            query.executeUpdate();
+
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {
