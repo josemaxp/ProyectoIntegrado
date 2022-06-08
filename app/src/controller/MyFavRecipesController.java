@@ -23,6 +23,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import model.OfferItem;
 import model.RecipeItem;
 import util.ConnectionManager;
 import view.WarnMaketApp;
@@ -59,7 +60,7 @@ public class MyFavRecipesController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
     }
 
     @FXML
@@ -85,57 +86,80 @@ public class MyFavRecipesController implements Initializable {
     }
 
     private void filterData() {
-        int row = 0;
+        int row = 1;
+        int column = 0;
         gridPane.getChildren().clear();
         String[] quitarEspacio = textFieldSearch.getText().trim().replaceAll(" +", " ").split(" ");
-        
-        try {
 
-            for (int i = 0; i < totalRecetas.size(); i++) {
-                for (String s : quitarEspacio) {
-                    if (totalRecetas.get(i).getName().toLowerCase().contains(s.toLowerCase())) {
-                        FXMLLoader fxmlLoader = new FXMLLoader();
-                        fxmlLoader.setLocation(getClass().getResource("/view/RecipeItem.fxml"));
-                        AnchorPane anchorPane = fxmlLoader.load();
-                        RecipeItemController recipeItemController = fxmlLoader.getController();
-                        recipeItemController.setData(totalRecetas.get(i));
+        if (!textFieldSearch.getText().equals("")) {
+            try {
+                List<RecipeItem> currentItems = new ArrayList<>();
 
-                        row++;
+                for (int i = 0; i < totalRecetas.size(); i++) {
+                    for (String s : quitarEspacio) {
+                        if (totalRecetas.get(i).getName().toLowerCase().contains(s.toLowerCase())) {
+                            if (!currentItems.contains(totalRecetas.get(i))) {
+                                FXMLLoader fxmlLoader = new FXMLLoader();
+                                fxmlLoader.setLocation(getClass().getResource("/view/RecipeItem.fxml"));
+                                AnchorPane anchorPane = fxmlLoader.load();
+                                RecipeItemController recipeItemController = fxmlLoader.getController();
+                                recipeItemController.setData(totalRecetas.get(i));
 
-                        gridPane.add(anchorPane, 0, i);
-                        gridPane.setMargin(anchorPane, new Insets(10));
-                    }
+                                if (column == 2) {
+                                    column = 0;
+                                    row++;
+                                }
 
-                    for (int j = 0; j < totalRecetas.get(i).getProducts().size(); j++) {
-                        if (totalRecetas.get(i).getProducts().get(j).contains(s.toLowerCase())) {
-                            FXMLLoader fxmlLoader = new FXMLLoader();
-                            fxmlLoader.setLocation(getClass().getResource("/view/RecipeItem.fxml"));
-                            AnchorPane anchorPane = fxmlLoader.load();
-                            RecipeItemController recipeItemController = fxmlLoader.getController();
-                            recipeItemController.setData(totalRecetas.get(i));
+                                gridPane.add(anchorPane, column++, row);
+                                gridPane.setMargin(anchorPane, new Insets(10));
 
-                            row++;
+                                currentItems.add(totalRecetas.get(i));
+                            }
+                        }
 
-                            gridPane.add(anchorPane, 0, i);
-                            gridPane.setMargin(anchorPane, new Insets(10));
+                        for (int j = 0; j < totalRecetas.get(i).getProducts().size(); j++) {
+                            if (totalRecetas.get(i).getProducts().get(j).contains(s.toLowerCase())) {
+                                if (!currentItems.contains(totalRecetas.get(i))) {
+                                    FXMLLoader fxmlLoader = new FXMLLoader();
+                                    fxmlLoader.setLocation(getClass().getResource("/view/RecipeItem.fxml"));
+                                    AnchorPane anchorPane = fxmlLoader.load();
+                                    RecipeItemController recipeItemController = fxmlLoader.getController();
+                                    recipeItemController.setData(totalRecetas.get(i));
+
+                                    if (column == 2) {
+                                        column = 0;
+                                        row++;
+                                    }
+
+                                    gridPane.add(anchorPane, column++, row);
+                                    gridPane.setMargin(anchorPane, new Insets(10));
+
+                                    currentItems.add(totalRecetas.get(i));
+                                }
+                            }
                         }
                     }
                 }
+            } catch (IOException ex) {
+                Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (IOException ex) {
-            Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        } else {
+            gridPane.getChildren().clear();
+            showRecipe();
+
         }
     }
-    
+
     public void showRecipe() {
         titleText.setText("Recetas guardadas");
         gridPane.getChildren().clear();
         totalRecetas = getRecipeData();
 
         if (!totalRecetas.isEmpty()) {
-            int row = 0;
+            int row = 1;
+            int column = 0;
             noRecipeFav.setText("");
-            
+
             Collections.sort(totalRecetas);
 
             try {
@@ -147,15 +171,18 @@ public class MyFavRecipesController implements Initializable {
                     RecipeItemController recipeItemController = fxmlLoader.getController();
                     recipeItemController.setData(totalRecetas.get(i));
 
-                    row++;
+                    if (column == 2) {
+                        column = 0;
+                        row++;
+                    }
 
-                    gridPane.add(anchorPane, 0, i);
+                    gridPane.add(anchorPane, column++, row);
                     gridPane.setMargin(anchorPane, new Insets(10));
                 }
             } catch (IOException ex) {
                 Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }else{            
+        } else {
             noRecipeFav.setText("No tienes ninguna receta guardada aún :(");
         }
     }
@@ -189,7 +216,7 @@ public class MyFavRecipesController implements Initializable {
 
         return totalRecetas;
     }
-    
+
     private void getUser() {
         ConnectionManager.out.println("CL:" + "getUser");
         String[] fromServer = null;

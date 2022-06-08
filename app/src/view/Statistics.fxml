@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1024.0" style="-fx-background-color: #292A33;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.StatisticsController">
+    <children>
+      <Text fill="#fd93b2" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Estadísticas" textAlignment="CENTER" wrappingWidth="1024.6">
+         <font>
+            <Font name="SansSerif Regular" size="36.0" />
+         </font>
+      </Text>
+      <FontAwesomeIconView fx:id="iconExit" fill="#fd93b2" glyphName="CLOSE" layoutX="978.0" layoutY="35.0" onMouseClicked="#onClickExit" size="30" text="">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </FontAwesomeIconView>
+      <Text fx:id="textFieldError" fill="#fc447a" layoutX="289.0" layoutY="544.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="443.199951171875">
+         <font>
+            <Font name="SansSerif Regular" size="24.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+      </Text>
+      <FontAwesomeIconView fx:id="iconBack" fill="#fd93b2" glyphName="ARROW_LEFT" layoutX="928.0" layoutY="35.0" onMouseClicked="#onClickBack" size="30" text="">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </FontAwesomeIconView>
+      <Label fx:id="userLikes" layoutX="60.0" layoutY="430.0" text="Tus likes totales" textFill="WHITE">
+         <font>
+            <Font name="SansSerif Regular" size="14.0" />
+         </font>
+      </Label>
+      <PieChart fx:id="chartLikesRecipe" layoutX="60.0" layoutY="70.0" prefHeight="350.0" prefWidth="400.0" style="-fx-background-radius: 10; -fx-background-color: #FFFFFF;" styleClass="-fx-text-fill: #4682b4;" />
+      <Label fx:id="userRecipes" layoutX="60.0" layoutY="528.0" text="Tus recetas subidas" textFill="WHITE">
+         <font>
+            <Font name="SansSerif Regular" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="userTags" layoutX="60.0" layoutY="497.0" text="Etiquetas más usadas" textFill="WHITE">
+         <font>
+            <Font name="SansSerif Regular" size="14.0" />
+         </font>
+      </Label>
+      <PieChart fx:id="chartTotalLikes" layoutX="544.0" layoutY="70.0" prefHeight="350.0" prefWidth="400.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 10;" />
+      <Label fx:id="userTotalLikes" layoutX="544.0" layoutY="430.0" text="Total likes que tienes" textFill="WHITE">
+         <font>
+            <Font name="SansSerif Regular" size="14.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

@@ -5,6 +5,7 @@
  */
 package dao;
 
+import entity.Receta;
 import entity.Usuario;
 import java.util.List;
 import org.hibernate.HibernateException;
@@ -131,6 +132,17 @@ public class UsuarioDAO {
         return listUser;
     }
 
+    public List<String> getUsername(Session session, int userId) {
+
+        String hql = "select username from Usuario where id = :id";
+        Query query = session.createQuery(hql);
+        query.setParameter("id", userId);
+
+        List<String> listUser = query.list();
+
+        return listUser;
+    }
+
     public int getUserID(Session session, String username) {
         String hql = "select id from Usuario where username = :keyword";
         Query query = session.createQuery(hql);
@@ -194,6 +206,16 @@ public class UsuarioDAO {
         } finally {
             session.close();
         }
+    }
+
+    public List<Object[]> getUserLikes(Session session) {
+        String hql = "select distinct idUsuario, SUM(likes) from Receta GROUP by idUsuario";
+        Query query = session.createQuery(hql);
+
+        List<Object[]> listUserLikes = query.list();
+
+        return listUserLikes;
+
     }
 
 }

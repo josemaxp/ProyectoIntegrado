@@ -11,6 +11,7 @@ import dao.ProductoDAO;
 import dao.RecetaDAO;
 import dao.SupermercadoDAO;
 import dao.UsuarioDAO;
+import entity.Receta;
 import entity.Supermercado;
 import entity.Usuario;
 import java.io.BufferedOutputStream;
@@ -306,7 +307,7 @@ public class Server {
                         }
 
                         String path = "images/" + username + "/" + fileName + ".png";
-                        FileOutputStream fos = new FileOutputStream("C:\\xampp\\htdocs\\"+path);
+                        FileOutputStream fos = new FileOutputStream("C:\\xampp\\htdocs\\" + path);
                         ofertaDAO.imageInformation(session, path);
 
                         InputStream is = clientSocket.getInputStream();
@@ -337,7 +338,7 @@ public class Server {
                         }
 
                         String path = "images/" + username + "/" + fileName + ".png";
-                        FileOutputStream fos = new FileOutputStream("C:\\xampp\\htdocs\\"+path);
+                        FileOutputStream fos = new FileOutputStream("C:\\xampp\\htdocs\\" + path);
                         ofertaDAO.updateImageInformation(session, path, offerID);
 
                         InputStream is = clientSocket.getInputStream();
@@ -367,7 +368,7 @@ public class Server {
                         }
 
                         String path = "images/" + username + "/" + fileName + ".png";
-                        FileOutputStream fos = new FileOutputStream("C:\\xampp\\htdocs\\"+path);
+                        FileOutputStream fos = new FileOutputStream("C:\\xampp\\htdocs\\" + path);
                         recetaDAO.imageInformation(session, path);
 
                         InputStream is = clientSocket.getInputStream();
@@ -398,7 +399,7 @@ public class Server {
                         }
 
                         String path = "images/" + username + "/" + fileName + ".png";
-                        FileOutputStream fos = new FileOutputStream("C:\\xampp\\htdocs\\"+path);
+                        FileOutputStream fos = new FileOutputStream("C:\\xampp\\htdocs\\" + path);
                         recetaDAO.updateImageInformation(session, path, recipeID);
 
                         InputStream is = clientSocket.getInputStream();
@@ -557,6 +558,35 @@ public class Server {
                         }
 
                         out.println("S:getAllLikeRecipe:" + recipes);
+
+                    }
+
+                    if (inputLine.split(":")[1].equals("getMostLikedRecipes")) {
+
+                        String likedRecipes = "";
+                        List<Receta> allRecipes = recetaDAO.getMostLikedRecipes(session, username);
+
+                        for (int i = 0; i < allRecipes.size(); i++) {
+                            likedRecipes += allRecipes.get(i).getNombre() + "_" + allRecipes.get(i).getLikes() + "_" + userDAO.getUsername(session, allRecipes.get(i).getIdUsuario()).get(0) + ":";
+                        }
+
+                        out.println("S:getMostLikedRecipes:" + likedRecipes);
+
+                    }
+
+                    if (inputLine.split(":")[1].equals("getUserLikes")) {
+
+                        String userLikes = "";
+                        List<Object[]> userLikesList = userDAO.getUserLikes(session);
+
+                        for (int i = 0; i < userLikesList.size(); i++) {
+                            int user = (int) userLikesList.get(i)[0];
+                            long likes = (long) userLikesList.get(i)[1];
+
+                            userLikes += userDAO.getUsername(session, user).get(0) + "_" + likes + ":";
+                        }
+
+                        out.println("S:getUserLikes:" + userLikes);
 
                     }
                 }

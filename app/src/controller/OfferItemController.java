@@ -76,7 +76,6 @@ public class OfferItemController implements Initializable {
             offerImage = new Image("/images/noImageFound.jpg");
         } else {
             offerImage = new Image("http://"+offerItem.getImage().substring(2).replace("\\", "/"));
-            System.out.println("http://"+offerItem.getImage().substring(2).replace("\\", "/"));
         }
         
         if (offerImage.isError()) {

@@ -5,37 +5,30 @@
 <?import io.github.palexdev.materialfx.controls.MFXPasswordField?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #292A33;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MyAccountController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1024.0" style="-fx-background-color: #292A33;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MyAccountController">
    <children>
-      <ImageView fitHeight="400.0" fitWidth="663.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/wave-haikei.jpg" />
-         </image>
-      </ImageView>
-      <MFXPasswordField fx:id="textFieldPassword" alignment="TOP_LEFT" allowCopy="true" allowCut="true" allowPaste="true" layoutX="170.0" layoutY="139.0" minHeight="-Infinity" prefHeight="30.0" prefWidth="260.0" promptText="Contraseña">
+      <MFXPasswordField fx:id="textFieldPassword" alignment="TOP_LEFT" allowCopy="true" allowCut="true" allowPaste="true" layoutX="186.0" layoutY="184.0" minHeight="-Infinity" prefHeight="30.0" prefWidth="300.0" promptText="Contraseña">
          <textFill>
             <Color red="0.9882352948188782" green="0.2666666805744171" blue="0.47843137383461" opacity="0.8700000047683716" />
          </textFill>
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor></MFXPasswordField>
-      <Text fill="#fd93b2" layoutX="226.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ajustes de usuario">
+      <Text fill="#fd93b2" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ajustes de usuario" textAlignment="CENTER" wrappingWidth="1024.6">
          <font>
-            <Font name="SansSerif Regular" size="18.0" />
+            <Font name="SansSerif Regular" size="36.0" />
          </font>
       </Text>
-      <MFXButton fx:id="buttonUpdate" buttonType="RAISED" depthLevel="LEVEL5" layoutX="37.0" layoutY="261.0" onAction="#onActionUpdate" prefHeight="26.0" prefWidth="260.0" rippleColor="#252850" style="-fx-background-color: #fd93b2;" text="Actualizar datos" textFill="#252850">
+      <MFXButton fx:id="buttonUpdate" buttonType="RAISED" depthLevel="LEVEL5" layoutX="148.0" layoutY="337.0" onAction="#onActionUpdate" prefHeight="26.0" prefWidth="340.0" rippleColor="#252850" style="-fx-background-color: #fd93b2; -fx-background-radius: 10;" text="Actualizar datos" textFill="#252850">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></MFXButton>
-      <MFXTextField fx:id="textFieldUsername" layoutX="170.0" layoutY="52.0" minHeight="-Infinity" prefHeight="30.0" prefWidth="260.0" promptText="Usuario">
+      <MFXTextField fx:id="textFieldUsername" layoutX="186.0" layoutY="125.0" minHeight="-Infinity" prefHeight="30.0" prefWidth="300.0" promptText="Usuario">
          <textFill>
             <Color red="1.0" green="1.0" blue="1.0" opacity="0.8700000047683716" />
          </textFill>
@@ -46,22 +39,22 @@
             <Cursor fx:constant="TEXT" />
          </cursor>
       </MFXTextField>
-      <FontAwesomeIconView fill="#fd93b2" glyphName="LOCK" layoutX="133.0" layoutY="164.0" size="28" text="" />
-      <FontAwesomeIconView fill="#fd93b2" glyphName="USER" layoutX="132.0" layoutY="77.0" size="28" text="" />
-      <FontAwesomeIconView fx:id="iconExit" fill="#fd93b2" glyphName="CLOSE" layoutX="553.0" layoutY="38.0" onMouseClicked="#onClickExit" size="20" text="">
+      <FontAwesomeIconView fill="#fd93b2" glyphName="LOCK" layoutX="149.0" layoutY="209.0" size="28" text="" />
+      <FontAwesomeIconView fill="#fd93b2" glyphName="USER" layoutX="148.0" layoutY="150.0" size="28" text="" />
+      <FontAwesomeIconView fx:id="iconExit" fill="#fd93b2" glyphName="CLOSE" layoutX="978.0" layoutY="35.0" onMouseClicked="#onClickExit" size="30" text="">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </FontAwesomeIconView>
-      <Text fx:id="textFieldError" fill="#fc447a" layoutX="171.0" layoutY="374.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="260.0">
+      <Text fx:id="textFieldError" fill="#fc447a" layoutX="289.0" layoutY="544.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="443.199951171875">
          <font>
-            <Font name="SansSerif Regular" size="14.0" />
+            <Font name="SansSerif Regular" size="24.0" />
          </font>
          <cursor>
             <Cursor fx:constant="DEFAULT" />
          </cursor>
       </Text>
-      <MFXPasswordField fx:id="texxtFieldRepeatPassword" alignment="TOP_LEFT" allowCopy="true" allowCut="true" allowPaste="true" layoutX="171.0" layoutY="183.0" minHeight="-Infinity" prefHeight="30.0" prefWidth="260.0" promptText="Repite la contraseña">
+      <MFXPasswordField fx:id="texxtFieldRepeatPassword" alignment="TOP_LEFT" allowCopy="true" allowCut="true" allowPaste="true" layoutX="609.0" layoutY="186.0" minHeight="-Infinity" prefHeight="30.0" prefWidth="300.0" promptText="Repite la contraseña">
          <textFill>
             <Color red="0.9882352948188782" green="0.2666666805744171" blue="0.47843137383461" opacity="0.8700000047683716" />
          </textFill>
@@ -69,13 +62,13 @@
             <Cursor fx:constant="TEXT" />
          </cursor>
       </MFXPasswordField>
-      <FontAwesomeIconView fill="#fd93b2" glyphName="LOCK" layoutX="133.0" layoutY="208.0" size="28" text="" />
-      <FontAwesomeIconView fx:id="iconBack" fill="#fd93b2" glyphName="ARROW_LEFT" layoutX="519.0" layoutY="39.0" onMouseClicked="#onClickBack" size="20" text="">
+      <FontAwesomeIconView fill="#fd93b2" glyphName="LOCK" layoutX="571.0" layoutY="211.0" size="28" text="" />
+      <FontAwesomeIconView fx:id="iconBack" fill="#fd93b2" glyphName="ARROW_LEFT" layoutX="928.0" layoutY="35.0" onMouseClicked="#onClickBack" size="30" text="">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </FontAwesomeIconView>
-      <MFXTextField fx:id="textFieldemail" layoutX="171.0" layoutY="94.0" minHeight="-Infinity" prefHeight="30.0" prefWidth="260.0" promptText="E-mail">
+      <MFXTextField fx:id="textFieldemail" layoutX="609.0" layoutY="125.0" minHeight="-Infinity" prefHeight="30.0" prefWidth="300.0" promptText="E-mail">
          <textFill>
             <Color red="1.0" green="1.0" blue="1.0" opacity="0.8700000047683716" />
          </textFill>
@@ -86,23 +79,23 @@
             <Cursor fx:constant="TEXT" />
          </cursor>
       </MFXTextField>
-      <FontAwesomeIconView fill="#fd93b2" glyphName="ENVELOPE" layoutX="128.0" layoutY="119.0" size="28" />
-      <Text fx:id="textFieldPoints" fill="WHITE" layoutX="271.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Puntos:">
+      <FontAwesomeIconView fill="#fd93b2" glyphName="ENVELOPE" layoutX="566.0" layoutY="150.0" size="28" />
+      <Text fx:id="textFieldPoints" fill="WHITE" layoutX="422.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Puntos:">
          <font>
-            <Font name="SansSerif Bold" size="16.0" />
+            <Font name="SansSerif Bold" size="24.0" />
          </font>
       </Text>
-      <MFXButton fx:id="buttonMyOffers" buttonType="RAISED" depthLevel="LEVEL5" layoutX="37.0" layoutY="305.0" onAction="#onActionMyOffers" prefHeight="26.0" prefWidth="260.0" rippleColor="#252850" style="-fx-background-color: #fd93b2;" text="Mis ofertas" textFill="#252850">
+      <MFXButton fx:id="buttonMyOffers" buttonType="RAISED" depthLevel="LEVEL5" layoutX="148.0" layoutY="403.0" onAction="#onActionMyOffers" prefWidth="340.0" rippleColor="#252850" style="-fx-background-color: #fd93b2; -fx-background-radius: 10;" text="Mis ofertas" textFill="#252850">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </MFXButton>
-      <MFXButton fx:id="buttonMyRecipes" buttonType="RAISED" depthLevel="LEVEL5" layoutX="306.0" layoutY="305.0" onAction="#onActionMyRecipes" prefHeight="26.0" prefWidth="260.0" rippleColor="#252850" style="-fx-background-color: #fd93b2;" text="Mis recetas" textFill="#252850">
+      <MFXButton fx:id="buttonMyRecipes" buttonType="RAISED" depthLevel="LEVEL5" layoutX="580.0" layoutY="403.0" onAction="#onActionMyRecipes" prefWidth="340.0" rippleColor="#252850" style="-fx-background-color: #fd93b2; -fx-background-radius: 10;" text="Mis recetas" textFill="#252850">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </MFXButton>
-      <MFXButton fx:id="buttonRedeem" buttonType="RAISED" depthLevel="LEVEL5" layoutX="306.0" layoutY="261.0" onAction="#onActionRedeem" prefHeight="26.0" prefWidth="260.0" rippleColor="#252850" style="-fx-background-color: #fd93b2;" text="Canjear puntos" textFill="#252850">
+      <MFXButton fx:id="buttonRedeem" buttonType="RAISED" depthLevel="LEVEL5" layoutX="580.0" layoutY="337.0" onAction="#onActionRedeem" prefWidth="340.0" rippleColor="#252850" style="-fx-background-color: #fd93b2; -fx-background-radius: 10;" text="Canjear puntos" textFill="#252850">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>

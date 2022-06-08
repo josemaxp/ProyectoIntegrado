@@ -52,6 +52,7 @@ public class WarnMaketApp extends Application {
         WarnMaketApp.stage.initStyle(StageStyle.UNDECORATED);
         WarnMaketApp.stage.setScene(scene);
         WarnMaketApp.stage.show();
+        
     }
 
     /**
@@ -63,6 +64,7 @@ public class WarnMaketApp extends Application {
         stage.setTitle(nTitle);
         stage.setScene(scene);
         stage.show();
+        stage.centerOnScreen();
     }
 
     public static void main(String[] args) {

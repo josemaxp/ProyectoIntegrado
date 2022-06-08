@@ -11,81 +11,84 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #292A33;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RecipeViewController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1024.0" style="-fx-background-color: #292A33;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RecipeViewController">
    <children>
-      <Label fx:id="titleText" contentDisplay="CENTER" layoutX="25.0" layoutY="14.0" prefHeight="38.0" prefWidth="515.0" text="Nombre oferta" textFill="#fc447a">
+      <Label fx:id="titleText" contentDisplay="CENTER" prefHeight="94.0" prefWidth="1024.0" text="Nombre oferta" textFill="#fc447a">
          <font>
             <Font name="SansSerif Bold" size="24.0" />
          </font>
+         <padding>
+            <Insets left="10.0" />
+         </padding>
       </Label>
-      <FontAwesomeIconView fx:id="iconLoginExit" fill="#fd93b2" glyphName="CLOSE" layoutX="578.0" layoutY="21.0" onMouseClicked="#onClickLoginExit" size="20">
+      <FontAwesomeIconView fx:id="iconLoginExit" fill="#fd93b2" glyphName="CLOSE" layoutX="978.0" layoutY="35.0" onMouseClicked="#onClickLoginExit" size="30">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </FontAwesomeIconView>
-      <FontAwesomeIconView fx:id="returnIcon" fill="#fd93b2" glyphName="ARROW_LEFT" layoutX="553.0" layoutY="21.0" onMouseClicked="#onClickReturn" size="20">
+      <FontAwesomeIconView fx:id="returnIcon" fill="#fd93b2" glyphName="ARROW_LEFT" layoutX="928.0" layoutY="35.0" onMouseClicked="#onClickReturn" size="30">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </FontAwesomeIconView>
-      <ImageView fx:id="image" fitHeight="200.0" fitWidth="200.0" layoutX="25.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true" />
-      <Text fx:id="username" fill="#fd93b2" layoutX="25.0" layoutY="277.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Usuario">
+      <ImageView fx:id="image" fitHeight="300.0" fitWidth="300.0" layoutX="25.0" layoutY="104.0" pickOnBounds="true" preserveRatio="true" />
+      <Text fx:id="username" fill="#fd93b2" layoutX="25.0" layoutY="420.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Usuario">
          <font>
-            <Font name="SansSerif Bold" size="12.0" />
+            <Font name="SansSerif Bold" size="14.0" />
          </font>
       </Text>
-      <FontAwesomeIconView fill="WHITE" glyphName="HEART" layoutX="232.0" layoutY="136.0" size="20" text="" />
-      <Text fx:id="likes" fill="WHITE" layoutX="261.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1000" wrappingWidth="44.677734375">
-         <font>
-            <Font name="SansSerif Regular" size="12.0" />
-         </font>
-      </Text>
-      <FontAwesomeIconView fill="WHITE" glyphName="USERS" layoutX="231.0" layoutY="175.0" size="20" />
-      <Text fx:id="people" fill="WHITE" layoutX="260.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="100" wrappingWidth="44.677734375">
+      <FontAwesomeIconView fill="WHITE" glyphName="HEART" layoutX="25.0" layoutY="508.0" size="20" text="" />
+      <Text fx:id="likes" fill="WHITE" layoutX="60.0" layoutY="505.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1000" wrappingWidth="44.677734375">
          <font>
             <Font name="SansSerif Regular" size="12.0" />
          </font>
       </Text>
-      <ImageView fitHeight="25.0" fitWidth="28.0" layoutX="230.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true">
+      <FontAwesomeIconView fill="WHITE" glyphName="USERS" layoutX="25.0" layoutY="553.0" size="20" />
+      <Text fx:id="people" fill="WHITE" layoutX="60.0" layoutY="550.0" strokeType="OUTSIDE" strokeWidth="0.0" text="100" wrappingWidth="44.677734375">
+         <font>
+            <Font name="SansSerif Regular" size="12.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="25.0" fitWidth="28.0" layoutX="25.0" layoutY="440.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/timer.png" />
          </image>
       </ImageView>
-      <Text fx:id="time" fill="WHITE" layoutX="261.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10 hora(s) y 10 minuto(s)" wrappingWidth="73.2293701171875">
+      <Text fx:id="time" fill="WHITE" layoutX="60.0" layoutY="456.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10 hora(s) y 10 minuto(s)" wrappingWidth="178.02935791015625">
          <font>
             <Font name="SansSerif Regular" size="12.0" />
          </font>
       </Text>
-      <MFXScrollPane layoutX="25.0" layoutY="296.0" prefHeight="90.0" prefWidth="555.0" style="-fx-background-color: #3F414E; -fx-background-radius: 5;">
+      <MFXScrollPane layoutX="377.0" layoutY="404.0" prefHeight="154.0" prefWidth="620.0" style="-fx-background-color: #3F414E; -fx-background-radius: 5;">
          <content>
-            <Text fx:id="steps" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Pasos" wrappingWidth="527.7367286682129" />
+            <Text fx:id="steps" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Pasos" wrappingWidth="604.5367774963379" />
          </content>
          <padding>
             <Insets left="10.0" top="10.0" />
          </padding>
       </MFXScrollPane>
-      <MFXScrollPane layoutX="334.0" layoutY="53.0" prefHeight="108.0" prefWidth="246.0" style="-fx-background-color: #3F414E; -fx-background-radius: 5;">
+      <MFXScrollPane layoutX="377.0" layoutY="104.0" prefHeight="250.0" prefWidth="300.0" style="-fx-background-color: #3F414E; -fx-background-radius: 5;">
          <content>
-            <Text fx:id="products" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Productos" wrappingWidth="226.93669509887695" />
+            <Text fx:id="products" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Productos" wrappingWidth="277.33671951293945" />
          </content>
          <padding>
             <Insets left="10.0" top="10.0" />
          </padding>
       </MFXScrollPane>
-      <MFXScrollPane layoutX="334.0" layoutY="175.0" prefHeight="108.0" prefWidth="246.0" style="-fx-background-color: #3F414E; -fx-background-radius: 5;">
+      <MFXScrollPane layoutX="692.0" layoutY="104.0" prefHeight="250.0" prefWidth="300.0" style="-fx-background-color: #3F414E; -fx-background-radius: 5;">
          <content>
-            <Text fx:id="cookware" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Utensilios" wrappingWidth="235.7366828918457" />
+            <Text fx:id="cookware" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Utensilios" wrappingWidth="285.3366584777832" />
          </content>
          <padding>
             <Insets left="10.0" top="10.0" />
          </padding>
       </MFXScrollPane>
-      <FontAwesomeIconView fx:id="giveLike" fill="WHITE" glyphName="THUMBS_UP" layoutX="206.0" layoutY="279.0" onMouseClicked="#onClickLike" size="20">
+      <FontAwesomeIconView fx:id="giveLike" fill="WHITE" glyphName="THUMBS_UP" layoutX="334.0" layoutY="121.0" onMouseClicked="#onClickLike" size="20">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </FontAwesomeIconView>
-      <FontAwesomeIconView fx:id="giveDislike" fill="WHITE" glyphName="THUMBS_DOWN" layoutX="206.0" layoutY="279.0" onMouseClicked="#onClickDislike" size="20">
+      <FontAwesomeIconView fx:id="giveDislike" fill="WHITE" glyphName="THUMBS_DOWN" layoutX="334.0" layoutY="121.0" onMouseClicked="#onClickDislike" size="20">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>

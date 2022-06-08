@@ -151,7 +151,8 @@ public class MainScreenController implements Initializable {
         gridPane.getChildren().clear();
         totalOfertas = getOfferData();
         if (!totalOfertas.isEmpty()) {
-            int row = 0;
+            int row = 1;
+            int column = 0;
 
             try {
                 for (int i = 0; i < totalOfertas.size(); i++) {
@@ -162,9 +163,12 @@ public class MainScreenController implements Initializable {
                     OfferItemController offerItemController = fxmlLoader.getController();
                     offerItemController.setData(totalOfertas.get(i));
 
-                    row++;
+                    if (column == 2) {
+                        column = 0;
+                        row++;
+                    }
 
-                    gridPane.add(anchorPane, 0, i);
+                    gridPane.add(anchorPane, column++, row);
                     gridPane.setMargin(anchorPane, new Insets(10));
                 }
             } catch (IOException ex) {
@@ -206,7 +210,8 @@ public class MainScreenController implements Initializable {
         gridPane.getChildren().clear();
         totalRecetas = getRecipeData();
         if (!totalRecetas.isEmpty()) {
-            int row = 0;
+            int row = 1;
+            int column = 0;
 
             Collections.sort(totalRecetas);
 
@@ -219,9 +224,12 @@ public class MainScreenController implements Initializable {
                     RecipeItemController recipeItemController = fxmlLoader.getController();
                     recipeItemController.setData(totalRecetas.get(i));
 
-                    row++;
+                    if (column == 2) {
+                        column = 0;
+                        row++;
+                    }
 
-                    gridPane.add(anchorPane, 0, i);
+                    gridPane.add(anchorPane, column++, row);
                     gridPane.setMargin(anchorPane, new Insets(10));
                 }
             } catch (IOException ex) {
@@ -232,122 +240,135 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private void onClickSelectCA(ActionEvent event) {
-        if (!comboBoxComunidadAutonoma.getValue().equals("")) {
-            provincias.clear();
-            comboBoxProvincia.setDisable(false);
 
-            ConnectionManager.out.println("CL:provincias:" + comboBoxComunidadAutonoma.getValue());
+        provincias.clear();
+        comboBoxProvincia.setDisable(false);
 
-            String[] fromServer = null;
-            try {
-                fromServer = ConnectionManager.in.readLine().split(":");
-            } catch (IOException ex) {
-                Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        ConnectionManager.out.println("CL:provincias:" + comboBoxComunidadAutonoma.getValue());
+
+        String[] fromServer = null;
+        try {
+            fromServer = ConnectionManager.in.readLine().split(":");
+        } catch (IOException ex) {
+            Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (fromServer.length > 2) {
+            for (int i = 2; i < fromServer.length; i++) {
+                provincias.add(fromServer[i]);
             }
-            if (fromServer.length > 2) {
-                for (int i = 2; i < fromServer.length; i++) {
-                    provincias.add(fromServer[i]);
-                }
-                comboBoxProvincia.setItems(provincias);
-            }
-            int row = 0;
+            comboBoxProvincia.setItems(provincias);
+        }
 
-            try {
-                for (int i = 0; i < totalOfertas.size(); i++) {
-                    if (totalOfertas.get(i).getComunidadAutonoma().equals(comboBoxComunidadAutonoma.getValue())) {
-                        FXMLLoader fxmlLoader = new FXMLLoader();
-                        fxmlLoader.setLocation(getClass().getResource("/view/OfferItem.fxml"));
-                        AnchorPane anchorPane = fxmlLoader.load();
+        int row = 1;
+        int column = 0;
+        try {
+            for (int i = 0; i < totalOfertas.size(); i++) {
+                if (totalOfertas.get(i).getComunidadAutonoma().equals(comboBoxComunidadAutonoma.getValue())) {
+                    FXMLLoader fxmlLoader = new FXMLLoader();
+                    fxmlLoader.setLocation(getClass().getResource("/view/OfferItem.fxml"));
+                    AnchorPane anchorPane = fxmlLoader.load();
 
-                        OfferItemController offerItemController = fxmlLoader.getController();
-                        offerItemController.setData(totalOfertas.get(i));
+                    OfferItemController offerItemController = fxmlLoader.getController();
+                    offerItemController.setData(totalOfertas.get(i));
 
+                    if (column == 2) {
+                        column = 0;
                         row++;
-
-                        gridPane.add(anchorPane, 0, i);
-                        gridPane.setMargin(anchorPane, new Insets(10));
                     }
+
+                    gridPane.add(anchorPane, column++, row);
+                    gridPane.setMargin(anchorPane, new Insets(10));
                 }
-            } catch (IOException ex) {
-                Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } catch (IOException ex) {
+            Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @FXML
     private void onClickSelectProvincia(ActionEvent event) {
-        if (!comboBoxProvincia.getValue().equals("")) {
-            gridPane.getChildren().clear();
-            poblaciones.clear();
-            comboBoxPoblacion.setDisable(false);
+        gridPane.getChildren().clear();
+        poblaciones.clear();
+        comboBoxPoblacion.setDisable(false);
 
-            ConnectionManager.out.println("CL:poblaciones:" + comboBoxProvincia.getValue());
+        ConnectionManager.out.println("CL:poblaciones:" + comboBoxProvincia.getValue());
 
-            String[] fromServer = null;
-            try {
-                fromServer = ConnectionManager.in.readLine().split(":");
-            } catch (IOException ex) {
-                Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            if (fromServer.length > 2) {
-                for (int i = 2; i < fromServer.length; i++) {
-                    poblaciones.add(fromServer[i]);
-                }
+        String[] fromServer = null;
+        try {
+            fromServer = ConnectionManager.in.readLine().split(":");
 
-                comboBoxPoblacion.setItems(poblaciones);
+        } catch (IOException ex) {
+            Logger.getLogger(MainScreenController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+        if (fromServer.length > 2) {
+            for (int i = 2; i < fromServer.length; i++) {
+                poblaciones.add(fromServer[i]);
             }
 
-            int row = 0;
+            comboBoxPoblacion.setItems(poblaciones);
+        }
 
-            try {
-                for (int i = 0; i < totalOfertas.size(); i++) {
-                    if (totalOfertas.get(i).getProvincia().equals(comboBoxProvincia.getValue())) {
-                        FXMLLoader fxmlLoader = new FXMLLoader();
-                        fxmlLoader.setLocation(getClass().getResource("/view/OfferItem.fxml"));
-                        AnchorPane anchorPane = fxmlLoader.load();
+        int row = 1;
+        int column = 0;
 
-                        OfferItemController offerItemController = fxmlLoader.getController();
-                        offerItemController.setData(totalOfertas.get(i));
+        try {
+            for (int i = 0; i < totalOfertas.size(); i++) {
+                if (totalOfertas.get(i).getProvincia().equals(comboBoxProvincia.getValue())) {
+                    FXMLLoader fxmlLoader = new FXMLLoader();
+                    fxmlLoader.setLocation(getClass().getResource("/view/OfferItem.fxml"));
+                    AnchorPane anchorPane = fxmlLoader.load();
 
+                    OfferItemController offerItemController = fxmlLoader.getController();
+                    offerItemController.setData(totalOfertas.get(i));
+
+                    if (column == 2) {
+                        column = 0;
                         row++;
-
-                        gridPane.add(anchorPane, 0, i);
-                        gridPane.setMargin(anchorPane, new Insets(10));
                     }
+
+                    gridPane.add(anchorPane, column++, row);
+                    gridPane.setMargin(anchorPane, new Insets(10));
+
                 }
-            } catch (IOException ex) {
-                Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } catch (IOException ex) {
+            Logger.getLogger(MainScreenController.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @FXML
     private void onClickSelectPoblacion(ActionEvent event) {
-        if (!comboBoxPoblacion.getValue().equals("")) {
-            gridPane.getChildren().clear();
-            int row = 0;
+        gridPane.getChildren().clear();
+        int row = 1;
+        int column = 0;
 
-            try {
-                for (int i = 0; i < totalOfertas.size(); i++) {
-                    if (totalOfertas.get(i).getPoblacion().equals(comboBoxPoblacion.getValue())) {
-                        FXMLLoader fxmlLoader = new FXMLLoader();
-                        fxmlLoader.setLocation(getClass().getResource("/view/OfferItem.fxml"));
-                        AnchorPane anchorPane = fxmlLoader.load();
+        try {
+            for (int i = 0; i < totalOfertas.size(); i++) {
+                if (totalOfertas.get(i).getPoblacion().equals(comboBoxPoblacion.getValue())) {
+                    FXMLLoader fxmlLoader = new FXMLLoader();
+                    fxmlLoader.setLocation(getClass().getResource("/view/OfferItem.fxml"));
+                    AnchorPane anchorPane = fxmlLoader.load();
 
-                        OfferItemController offerItemController = fxmlLoader.getController();
-                        offerItemController.setData(totalOfertas.get(i));
+                    OfferItemController offerItemController = fxmlLoader.getController();
+                    offerItemController.setData(totalOfertas.get(i));
 
+                    if (column == 2) {
+                        column = 0;
                         row++;
-
-                        gridPane.add(anchorPane, 0, i);
-                        gridPane.setMargin(anchorPane, new Insets(10));
                     }
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
-            }
 
+                    gridPane.add(anchorPane, column++, row);
+                    gridPane.setMargin(anchorPane, new Insets(10));
+
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(MainScreenController.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
     @FXML
@@ -363,78 +384,123 @@ public class MainScreenController implements Initializable {
     }
 
     private void filterData() {
-        int row = 0;
         gridPane.getChildren().clear();
         String[] quitarEspacio = textFieldSearch.getText().trim().replaceAll(" +", " ").split(" ");
+        if (!textFieldSearch.getText().equals("")) {
 
-        try {
-            if (!activePane) {
-                for (int i = 0; i < totalOfertas.size(); i++) {
-                    for (String s : quitarEspacio) {
-                        if (totalOfertas.get(i).getMarket().toLowerCase().contains(s.toLowerCase())) {
-                            FXMLLoader fxmlLoader = new FXMLLoader();
-                            fxmlLoader.setLocation(getClass().getResource("/view/OfferItem.fxml"));
-                            AnchorPane anchorPane = fxmlLoader.load();
-                            OfferItemController offerItemController = fxmlLoader.getController();
-                            offerItemController.setData(totalOfertas.get(i));
+            int row = 1;
+            int column = 0;
 
-                            row++;
+            try {
+                if (!activePane) {
+                    List<OfferItem> currentItems = new ArrayList<>();
+                    for (int i = 0; i < totalOfertas.size(); i++) {
+                        for (String s : quitarEspacio) {
+                            if (totalOfertas.get(i).getMarket().toLowerCase().contains(s.toLowerCase())) {
+                                if (!currentItems.contains(totalOfertas.get(i))) {
+                                    FXMLLoader fxmlLoader = new FXMLLoader();
+                                    fxmlLoader.setLocation(getClass().getResource("/view/OfferItem.fxml"));
+                                    AnchorPane anchorPane = fxmlLoader.load();
+                                    OfferItemController offerItemController = fxmlLoader.getController();
+                                    offerItemController.setData(totalOfertas.get(i));
 
-                            gridPane.add(anchorPane, 0, i);
-                            gridPane.setMargin(anchorPane, new Insets(10));
+                                    if (column == 2) {
+                                        column = 0;
+                                        row++;
+                                    }
+
+                                    gridPane.add(anchorPane, column++, row);
+                                    gridPane.setMargin(anchorPane, new Insets(10));
+
+                                    currentItems.add(totalOfertas.get(i));
+                                }
+                            }
+
+                            for (int j = 0; j < totalOfertas.get(i).getTags().size(); j++) {
+                                if (totalOfertas.get(i).getTags().get(j).contains(s.toLowerCase())) {
+
+                                    if (!currentItems.contains(totalOfertas.get(i))) {
+                                        FXMLLoader fxmlLoader = new FXMLLoader();
+                                        fxmlLoader.setLocation(getClass().getResource("/view/OfferItem.fxml"));
+                                        AnchorPane anchorPane = fxmlLoader.load();
+                                        OfferItemController offerItemController = fxmlLoader.getController();
+                                        offerItemController.setData(totalOfertas.get(i));
+
+                                        if (column == 2) {
+                                            column = 0;
+                                            row++;
+                                        }
+
+                                        gridPane.add(anchorPane, column++, row);
+                                        gridPane.setMargin(anchorPane, new Insets(10));
+
+                                        currentItems.add(totalOfertas.get(i));
+                                    }
+                                }
+                            }
                         }
+                    }
+                } else {
+                    List<RecipeItem> currentItems = new ArrayList<>();
+                    for (int i = 0; i < totalRecetas.size(); i++) {
+                        for (String s : quitarEspacio) {
+                            if (totalRecetas.get(i).getName().toLowerCase().contains(s.toLowerCase())) {
+                                if (!currentItems.contains(totalRecetas.get(i))) {
+                                    FXMLLoader fxmlLoader = new FXMLLoader();
+                                    fxmlLoader.setLocation(getClass().getResource("/view/RecipeItem.fxml"));
+                                    AnchorPane anchorPane = fxmlLoader.load();
+                                    RecipeItemController recipeItemController = fxmlLoader.getController();
+                                    recipeItemController.setData(totalRecetas.get(i));
 
-                        for (int j = 0; j < totalOfertas.get(i).getTags().size(); j++) {
-                            if (totalOfertas.get(i).getTags().get(j).contains(s.toLowerCase())) {
-                                FXMLLoader fxmlLoader = new FXMLLoader();
-                                fxmlLoader.setLocation(getClass().getResource("/view/OfferItem.fxml"));
-                                AnchorPane anchorPane = fxmlLoader.load();
-                                OfferItemController offerItemController = fxmlLoader.getController();
-                                offerItemController.setData(totalOfertas.get(i));
+                                    if (column == 2) {
+                                        column = 0;
+                                        row++;
+                                    }
 
-                                row++;
+                                    gridPane.add(anchorPane, column++, row);
+                                    gridPane.setMargin(anchorPane, new Insets(10));
 
-                                gridPane.add(anchorPane, 0, i);
-                                gridPane.setMargin(anchorPane, new Insets(10));
+                                    currentItems.add(totalRecetas.get(i));
+                                }
+                            }
+
+                            for (int j = 0; j < totalRecetas.get(i).getProducts().size(); j++) {
+                                if (totalRecetas.get(i).getProducts().get(j).contains(s.toLowerCase())) {
+
+                                    if (!currentItems.contains(totalRecetas.get(i))) {
+                                        FXMLLoader fxmlLoader = new FXMLLoader();
+                                        fxmlLoader.setLocation(getClass().getResource("/view/RecipeItem.fxml"));
+                                        AnchorPane anchorPane = fxmlLoader.load();
+                                        RecipeItemController recipeItemController = fxmlLoader.getController();
+                                        recipeItemController.setData(totalRecetas.get(i));
+
+                                        if (column == 2) {
+                                            column = 0;
+                                            row++;
+                                        }
+
+                                        gridPane.add(anchorPane, column++, row);
+                                        gridPane.setMargin(anchorPane, new Insets(10));
+
+                                        currentItems.add(totalRecetas.get(i));
+
+                                    }
+                                }
                             }
                         }
                     }
                 }
-            } else {
-                for (int i = 0; i < totalRecetas.size(); i++) {
-                    for (String s : quitarEspacio) {
-                        if (totalRecetas.get(i).getName().toLowerCase().contains(s.toLowerCase())) {
-                            FXMLLoader fxmlLoader = new FXMLLoader();
-                            fxmlLoader.setLocation(getClass().getResource("/view/RecipeItem.fxml"));
-                            AnchorPane anchorPane = fxmlLoader.load();
-                            RecipeItemController recipeItemController = fxmlLoader.getController();
-                            recipeItemController.setData(totalRecetas.get(i));
-
-                            row++;
-
-                            gridPane.add(anchorPane, 0, i);
-                            gridPane.setMargin(anchorPane, new Insets(10));
-                        }
-
-                        for (int j = 0; j < totalRecetas.get(i).getProducts().size(); j++) {
-                            if (totalRecetas.get(i).getProducts().get(j).contains(s.toLowerCase())) {
-                                FXMLLoader fxmlLoader = new FXMLLoader();
-                                fxmlLoader.setLocation(getClass().getResource("/view/RecipeItem.fxml"));
-                                AnchorPane anchorPane = fxmlLoader.load();
-                                RecipeItemController recipeItemController = fxmlLoader.getController();
-                                recipeItemController.setData(totalRecetas.get(i));
-
-                                row++;
-
-                                gridPane.add(anchorPane, 0, i);
-                                gridPane.setMargin(anchorPane, new Insets(10));
-                            }
-                        }
-                    }
-                }
+            } catch (IOException ex) {
+                Logger.getLogger(MainScreenController.class
+                        .getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (IOException ex) {
-            Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        } else {
+            gridPane.getChildren().clear();
+            if (!activePane) {
+                showOffer();
+            } else {
+                showRecipe();
+            }
         }
     }
 
@@ -508,13 +574,15 @@ public class MainScreenController implements Initializable {
             try {
                 Parent root = FXMLLoader.load(getClass().getResource("/view/MyAccount.fxml"));
                 WarnMaketApp.changeScene(root, "Mi cuenta");
+
             } catch (IOException ex) {
-                Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(MainScreenController.class
+                        .getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             Stage stage = (Stage) ap.getScene().getWindow();
 
-            String toastMsg = "Debes iniciar sesión para acceder a tu cuenta.";
+            String toastMsg = "Inicia sesión para acceder a tu cuenta.";
             int toastMsgTime = 1500; //1.5 seconds
             int fadeInTime = 500; //0.5 seconds
             int fadeOutTime = 500; //0.5 seconds
@@ -527,8 +595,10 @@ public class MainScreenController implements Initializable {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
             WarnMaketApp.changeScene(root, "Login");
+
         } catch (IOException ex) {
-            Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainScreenController.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -537,8 +607,10 @@ public class MainScreenController implements Initializable {
         String[] fromServer = null;
         try {
             fromServer = ConnectionManager.in.readLine().split(":");
+
         } catch (IOException ex) {
-            Logger.getLogger(RecipeItemController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RecipeItemController.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
 
         if (fromServer.length > 2) {
@@ -563,16 +635,50 @@ public class MainScreenController implements Initializable {
                 controller.showRecipe();
 
             } catch (IOException ex) {
-                Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(MainScreenController.class
+                        .getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             Stage stage = (Stage) ap.getScene().getWindow();
 
-            String toastMsg = "Debes iniciar sesión para ver tus recetas guardadas.";
+            String toastMsg = "Inicia sesión para ver tus recetas guardadas.";
             int toastMsgTime = 1500; //1.5 seconds
             int fadeInTime = 500; //0.5 seconds
             int fadeOutTime = 500; //0.5 seconds
             Toast.makeText(stage, toastMsg, toastMsgTime, fadeInTime, fadeOutTime);
         }
+    }
+
+    @FXML
+    private void onClickStatisticstButton(ActionEvent event) {
+        getUser();
+        if (!username.equals("")) {
+            try {
+                Parent root = FXMLLoader.load(getClass().getResource("/view/Statistics.fxml"));
+                WarnMaketApp.changeScene(root, "WarnMarket");
+            } catch (IOException ex) {
+                Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            Stage stage = (Stage) ap.getScene().getWindow();
+
+            String toastMsg = "Inicia sesión para ver las estadísticas.";
+            int toastMsgTime = 1500; //1.5 seconds
+            int fadeInTime = 500; //0.5 seconds
+            int fadeOutTime = 500; //0.5 seconds
+            Toast.makeText(stage, toastMsg, toastMsgTime, fadeInTime, fadeOutTime);
+        }
+    }
+
+    @FXML
+    private void onClickRefresh(MouseEvent event) {
+        comboBoxComunidadAutonoma.getSelectionModel().clearSelection();
+        comboBoxPoblacion.getSelectionModel().clearSelection();
+        comboBoxProvincia.getSelectionModel().clearSelection();
+
+        comboBoxPoblacion.setDisable(true);
+        comboBoxProvincia.setDisable(true);
+
+        showOffer();
     }
 }

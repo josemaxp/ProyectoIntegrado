@@ -573,4 +573,14 @@ public class RecetaDAO {
         }
         session.close();
     }
+    
+    public List<Receta> getMostLikedRecipes(Session session, String username) {
+
+        String hql = "from Receta order by likes asc";
+        Query query = session.createQuery(hql);
+
+        List<Receta> mostLikedRecipes = query.list();
+
+        return mostLikedRecipes;
+    }
 }
