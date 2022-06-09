@@ -33,27 +33,22 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </FontAwesomeIconView>
-      <Label fx:id="userLikes" layoutX="60.0" layoutY="430.0" text="Tus likes totales" textFill="WHITE">
+      <Label fx:id="userLikes" layoutX="70.0" layoutY="472.0" text="Tus likes totales" textFill="WHITE">
          <font>
             <Font name="SansSerif Regular" size="14.0" />
          </font>
       </Label>
-      <PieChart fx:id="chartLikesRecipe" layoutX="60.0" layoutY="70.0" prefHeight="350.0" prefWidth="400.0" style="-fx-background-radius: 10; -fx-background-color: #FFFFFF;" styleClass="-fx-text-fill: #4682b4;" />
-      <Label fx:id="userRecipes" layoutX="60.0" layoutY="528.0" text="Tus recetas subidas" textFill="WHITE">
+      <PieChart fx:id="chartLikesRecipe" layoutX="70.0" layoutY="112.0" prefHeight="350.0" prefWidth="400.0" style="-fx-background-radius: 10; -fx-background-color: #FFFFFF;" styleClass="-fx-text-fill: #4682b4;" />
+      <PieChart fx:id="chartTotalLikes" layoutX="554.0" layoutY="112.0" prefHeight="350.0" prefWidth="400.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 10;" />
+      <Label fx:id="userTotalLikes" layoutX="554.0" layoutY="472.0" text="Total likes que tienes" textFill="WHITE">
          <font>
             <Font name="SansSerif Regular" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="userTags" layoutX="60.0" layoutY="497.0" text="Etiquetas más usadas" textFill="WHITE">
-         <font>
-            <Font name="SansSerif Regular" size="14.0" />
-         </font>
-      </Label>
-      <PieChart fx:id="chartTotalLikes" layoutX="544.0" layoutY="70.0" prefHeight="350.0" prefWidth="400.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 10;" />
-      <Label fx:id="userTotalLikes" layoutX="544.0" layoutY="430.0" text="Total likes que tienes" textFill="WHITE">
-         <font>
-            <Font name="SansSerif Regular" size="14.0" />
-         </font>
-      </Label>
+      <FontAwesomeIconView fill="#fd93b2" glyphName="DOWNLOAD" layoutX="976.0" layoutY="559.0" onMouseClicked="#onClickDownload" size="30">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </FontAwesomeIconView>
    </children>
 </AnchorPane>

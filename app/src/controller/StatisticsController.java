@@ -3,6 +3,9 @@ package controller;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +21,12 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import util.ConnectionManager;
 import view.WarnMaketApp;
 
@@ -39,15 +48,11 @@ public class StatisticsController implements Initializable {
     @FXML
     private PieChart chartTotalLikes;
     @FXML
-    private Label userRecipes;
-    @FXML
-    private Label userTags;
-
-    private String username = "";
-    @FXML
     private Label userTotalLikes;
     @FXML
     private PieChart chartLikesRecipe;
+
+    private String username = "";
 
     /**
      * Initializes the controller class.
@@ -85,7 +90,7 @@ public class StatisticsController implements Initializable {
 
             for (int i = 2; i < fromServer.length; i++) {
                 String[] userData = fromServer[i].split("_");
-                pieChartData.add(new PieChart.Data(userData[0]+" ("+userData[2]+")", Integer.valueOf(userData[1])));
+                pieChartData.add(new PieChart.Data(userData[0] + " (" + userData[2] + ")", Integer.valueOf(userData[1])));
 
                 if (username.equals(userData[2])) {
                     userLikes.setText("Tu receta con más likes es: " + userData[0] + " (" + Integer.valueOf(userData[1]) + " likes)");
@@ -168,4 +173,24 @@ public class StatisticsController implements Initializable {
         }
     }
 
+    @FXML
+    private void onClickDownload(MouseEvent event) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/proyectofinal", "root", "");
+
+            JasperReport jr = (JasperReport) JRLoader.loadObjectFromFile("src\\reports\\report1.jasper");
+            JasperPrint jp = JasperFillManager.fillReport(jr, null, connection);
+
+            JasperViewer.viewReport(jp);
+
+            connection.close();
+
+        } catch (JRException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException ex) {
+            Logger.getLogger(StatisticsController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
