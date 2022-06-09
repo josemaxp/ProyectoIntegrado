@@ -22,6 +22,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -180,7 +181,9 @@ public class StatisticsController implements Initializable {
 
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/proyectofinal", "root", "");
 
-            JasperReport jr = (JasperReport) JRLoader.loadObjectFromFile("src\\reports\\report1.jasper");
+            JasperReport jr = (JasperReport) JRLoader.loadObjectFromFile("src\\reports\\reportNoChart.jasper");
+            /*JasperReport jr = JasperCompileManager.compileReport("src\\reports\\report1.jrxml");*/
+            
             JasperPrint jp = JasperFillManager.fillReport(jr, null, connection);
 
             JasperViewer.viewReport(jp);

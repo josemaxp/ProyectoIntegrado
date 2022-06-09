@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="995f76e6-1bc9-49d8-a35b-37ca08f72e40">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[select (select username from usuario where id = R.id_usuario) usuario, nombre,likes from Receta R order by likes desc;]]>
+	</queryString>
+	<field name="usuario" class="java.lang.String"/>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="likes" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="79" forecolor="#FFFFFF" backcolor="#3D3D3D" uuid="18432ecf-dcd2-4918-8ce0-cd2bed606e55"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="24" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[ESTADÍSTICAS WARNMARKET]]></text>
+			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="455" y="59" width="100" height="20" forecolor="#FFFFFF" uuid="64e3f184-a918-4256-b549-34fcad6f717e"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="35" forecolor="#FFFFFF" backcolor="#505050" uuid="f57559fb-ae7f-4e75-b8c7-c1993d9c1f4c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Recetas]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="185" height="20" forecolor="#FFFFFF" backcolor="#646464" uuid="205f4fac-7450-467e-b91b-4318caf58599"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+					<paragraph firstLineIndent="10"/>
+				</textElement>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="370" y="0" width="185" height="20" forecolor="#FFFFFF" backcolor="#646464" uuid="5ec54b46-1bc6-4243-901a-6d080cfd68e7"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+					<paragraph firstLineIndent="10"/>
+				</textElement>
+				<text><![CDATA[Likes]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="185" y="0" width="185" height="20" forecolor="#FFFFFF" backcolor="#646464" uuid="83826ffc-0cc5-41b7-a1ae-48fe5da67795"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+					<paragraph firstLineIndent="10"/>
+				</textElement>
+				<text><![CDATA[Usuario]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement x="0" y="0" width="185" height="20" uuid="9c0fdee4-5e5d-4515-8b05-39346bb4bb81"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" rotation="None">
+					<font isUnderline="false" isStrikeThrough="false"/>
+					<paragraph lineSpacing="Single" firstLineIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement x="185" y="0" width="185" height="20" uuid="978014b5-1799-4d6d-b05f-0cbeb0243e27"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" rotation="None">
+					<font isUnderline="false" isStrikeThrough="false"/>
+					<paragraph lineSpacing="1_1_2" firstLineIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{usuario}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement x="370" y="0" width="185" height="20" uuid="ea83644d-5082-405b-9b32-2720ed5b1126"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" rotation="None">
+					<font isUnderline="false" isStrikeThrough="false"/>
+					<paragraph lineSpacing="1_1_2" firstLineIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{likes}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement mode="Transparent" x="0" y="0" width="185" height="20" uuid="08b915e7-d7d6-47da-90a5-e1146a6e2923"/>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Transparent" x="185" y="0" width="185" height="20" uuid="3f7a9863-2f07-4a36-af2f-8c72d3bf6f09"/>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Transparent" x="370" y="0" width="185" height="20" uuid="eab3165a-4ada-4c6c-a9b4-b92e17a05c60"/>
+			</rectangle>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="246" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="435" y="0" width="80" height="20" uuid="6cb119e4-8171-4a9c-a7e3-c638b0009e95"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="515" y="0" width="40" height="20" uuid="b8c6345a-2d25-4713-8e98-fffd0ac472a0"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>
