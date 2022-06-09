@@ -181,14 +181,10 @@ public class StatisticsController implements Initializable {
 
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/proyectofinal", "root", "");
 
-            JasperReport jr = (JasperReport) JRLoader.loadObjectFromFile("src\\reports\\reportNoChart.jasper");
-            /*JasperReport jr = JasperCompileManager.compileReport("src\\reports\\report1.jrxml");*/
-            
+            JasperReport jr = (JasperReport) JRLoader.loadObjectFromFile("src\\reports\\reportChart.jasper");            
             JasperPrint jp = JasperFillManager.fillReport(jr, null, connection);
-
-            JasperViewer.viewReport(jp);
-
-            connection.close();
+            
+            JasperViewer.viewReport(jp,false);
 
         } catch (JRException | ClassNotFoundException e) {
             e.printStackTrace();
