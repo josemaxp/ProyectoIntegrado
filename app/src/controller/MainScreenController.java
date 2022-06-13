@@ -82,6 +82,7 @@ public class MainScreenController implements Initializable {
     private final ObservableList<String> poblaciones = FXCollections.observableArrayList();
     private boolean activePane = false; //false = offers // true = recipes
     private String username = "";
+    private boolean comprobarTexto = false;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -241,6 +242,11 @@ public class MainScreenController implements Initializable {
     @FXML
     private void onClickSelectCA(ActionEvent event) {
 
+        if (comprobarTexto) {
+            textFieldSearch.setText("");
+            comprobarTexto = false;
+        }
+
         provincias.clear();
         comboBoxProvincia.setDisable(false);
 
@@ -283,10 +289,12 @@ public class MainScreenController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(MainScreenController.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
     @FXML
-    private void onClickSelectProvincia(ActionEvent event) {
+    private void onClickSelectProvincia(ActionEvent event
+    ) {
         gridPane.getChildren().clear();
         poblaciones.clear();
         comboBoxPoblacion.setDisable(false);
@@ -339,7 +347,8 @@ public class MainScreenController implements Initializable {
     }
 
     @FXML
-    private void onClickSelectPoblacion(ActionEvent event) {
+    private void onClickSelectPoblacion(ActionEvent event
+    ) {
         gridPane.getChildren().clear();
         int row = 1;
         int column = 0;
@@ -372,14 +381,16 @@ public class MainScreenController implements Initializable {
     }
 
     @FXML
-    private void onClickLoginExit(MouseEvent event) {
+    private void onClickLoginExit(MouseEvent event
+    ) {
         if (event.getSource() == iconLoginExit) {
             System.exit(0);
         }
     }
 
     @FXML
-    private void search(KeyEvent event) {
+    private void search(KeyEvent event
+    ) {
         filterData();
     }
 
@@ -393,6 +404,16 @@ public class MainScreenController implements Initializable {
 
             try {
                 if (!activePane) {
+
+                    comboBoxComunidadAutonoma.getSelectionModel().clearSelection();
+                    comboBoxPoblacion.getSelectionModel().clearSelection();
+                    comboBoxProvincia.getSelectionModel().clearSelection();
+
+                    comboBoxPoblacion.setDisable(true);
+                    comboBoxProvincia.setDisable(true);
+
+                    comprobarTexto = true;
+
                     List<OfferItem> currentItems = new ArrayList<>();
                     for (int i = 0; i < totalOfertas.size(); i++) {
                         for (String s : quitarEspacio) {
@@ -496,6 +517,7 @@ public class MainScreenController implements Initializable {
             }
         } else {
             gridPane.getChildren().clear();
+            textFieldSearch.setText("");
             if (!activePane) {
                 showOffer();
             } else {
@@ -672,13 +694,15 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private void onClickRefresh(MouseEvent event) {
-        comboBoxComunidadAutonoma.getSelectionModel().clearSelection();
-        comboBoxPoblacion.getSelectionModel().clearSelection();
-        comboBoxProvincia.getSelectionModel().clearSelection();
+        if (!activePane) {
+            comboBoxComunidadAutonoma.getSelectionModel().clearSelection();
+            comboBoxPoblacion.getSelectionModel().clearSelection();
+            comboBoxProvincia.getSelectionModel().clearSelection();
 
-        comboBoxPoblacion.setDisable(true);
-        comboBoxProvincia.setDisable(true);
+            comboBoxPoblacion.setDisable(true);
+            comboBoxProvincia.setDisable(true);
 
-        showOffer();
+            showOffer();
+        }
     }
 }

@@ -89,6 +89,7 @@
             android:inputType="textPassword"
             android:minHeight="48dp"
             android:padding="10dp"
+            android:textColor="#000000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/LoginUsernameText" />
@@ -119,6 +120,7 @@
             android:padding="10dp"
             android:textAlignment="textStart"
             android:fontFamily="sans-serif"
+            android:textColor="#000000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

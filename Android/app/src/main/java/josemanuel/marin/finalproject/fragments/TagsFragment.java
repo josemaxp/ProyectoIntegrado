@@ -27,13 +27,26 @@ import josemanuel.marin.finalproject.controller.Connection;
 public class TagsFragment extends Fragment {
     AutoCompleteTextView newTag;
     TextView errorText;
-    Button addTag, buttonTag1, buttonTag2, buttonTag3, buttonTag4, buttonTag5, buttonTag6, buttonTag7, buttonTag8, buttonTag9, buttonTag10, buttonPopularTag1, buttonPopularTag2, buttonPopularTag3;
-    static List<String> tagsList = new ArrayList<>();
-    List<Button> buttonsList = new ArrayList<>();
-    List<Button> popularButtonsList = new ArrayList<>();
-    PrintWriter out = null;
-    BufferedReader in = null;
-    getPopularTags getPopularTags;
+    Button addTag;
+    Button buttonTag1;
+    Button buttonTag2;
+    Button buttonTag3;
+    Button buttonTag4;
+    Button buttonTag5;
+    Button buttonTag6;
+    Button buttonTag7;
+    Button buttonTag8;
+    Button buttonTag9;
+    Button buttonTag10;
+    static Button buttonPopularTag1;
+    static Button buttonPopularTag2;
+    static Button buttonPopularTag3;
+    static List<String> tagsList;
+    static List<Button> buttonsList;
+    static List<Button> popularButtonsList;
+    static PrintWriter out = null;
+    static BufferedReader in = null;
+    static getPopularTags getPopularTags;
     getTagsName getTagsName;
     getRelationTags getRelationTags;
 
@@ -62,6 +75,7 @@ public class TagsFragment extends Fragment {
         buttonPopularTag2 = view.findViewById(R.id.buttonPopularTag2);
         buttonPopularTag3 = view.findViewById(R.id.buttonPopularTag3);
 
+        buttonsList = new ArrayList<>();
         buttonsList.add(buttonTag1);
         buttonsList.add(buttonTag2);
         buttonsList.add(buttonTag3);
@@ -73,6 +87,7 @@ public class TagsFragment extends Fragment {
         buttonsList.add(buttonTag9);
         buttonsList.add(buttonTag10);
 
+        popularButtonsList = new ArrayList<>();
         popularButtonsList.add(buttonPopularTag1);
         popularButtonsList.add(buttonPopularTag2);
         popularButtonsList.add(buttonPopularTag3);
@@ -83,28 +98,8 @@ public class TagsFragment extends Fragment {
 
         setNewTagAdapter();
 
-        //Instantiate asynctask
-        if (getPopularTags == null) {
-            getPopularTags = new getPopularTags();
-
-
-            //Get popularTags on buttons
-            try {
-                String[] popularTagsListServer = getPopularTags.execute().get().split(":");
-
-                buttonPopularTag1.setText(popularTagsListServer[2] + "    +");
-                buttonPopularTag2.setText(popularTagsListServer[3] + "    +");
-                buttonPopularTag3.setText(popularTagsListServer[4] + "    +");
-
-                for (int i = 0; i < popularButtonsList.size(); i++) {
-                    popularButtonsList.get(i).setVisibility(View.VISIBLE);
-                }
-
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
+        setPopularTags();
+        tagsList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             tagsList.add("-");
         }
@@ -133,6 +128,10 @@ public class TagsFragment extends Fragment {
                                     } else {
                                         popularButtonsList.get(j).setVisibility(View.GONE);
                                     }
+                                }
+                            } else {
+                                for (int k = 0; k < popularButtonsList.size(); k++) {
+                                    popularButtonsList.get(k).setVisibility(View.GONE);
                                 }
                             }
                         } catch (ExecutionException | InterruptedException e) {
@@ -196,8 +195,10 @@ public class TagsFragment extends Fragment {
                     if (tagsList.get(j).equals("-")) {
                         String popularTagName = addPopularTag.getText().toString().toLowerCase().trim();
 
-                        if (!tagsList.contains(popularTagName.substring(0, popularTagName.length() - 1).trim())) {
-                            tagsList.set(j, popularTagName.substring(0, popularTagName.length() - 1).trim());
+                        String popularTagNameSubstr = popularTagName.substring(0, popularTagName.length() - 1).trim();
+
+                        if (!tagsList.contains(popularTagNameSubstr)) {
+                            tagsList.set(j, popularTagNameSubstr);
                             buttonsList.get(j).setVisibility(View.VISIBLE);
                             buttonsList.get(j).setText(tagsList.get(j) + "  X");
 
@@ -241,9 +242,36 @@ public class TagsFragment extends Fragment {
         for (int i = 0; i < 10; i++) {
             tagsList.add("-");
         }
+
+        setPopularTags();
+
+        for (int i = 0; i < buttonsList.size(); i++) {
+            buttonsList.get(i).setText("-");
+            buttonsList.get(i).setVisibility(View.GONE);
+        }
     }
 
-    class getPopularTags extends AsyncTask<Void, Void, String> {
+    private static void setPopularTags() {
+        getPopularTags = new getPopularTags();
+
+        //Get popularTags on buttons
+        try {
+            String[] popularTagsListServer = getPopularTags.execute().get().split(":");
+
+            buttonPopularTag1.setText(popularTagsListServer[2] + "    +");
+            buttonPopularTag2.setText(popularTagsListServer[3] + "    +");
+            buttonPopularTag3.setText(popularTagsListServer[4] + "    +");
+
+            for (int i = 0; i < popularButtonsList.size(); i++) {
+                popularButtonsList.get(i).setVisibility(View.VISIBLE);
+            }
+
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static class getPopularTags extends AsyncTask<Void, Void, String> {
         Socket s;
 
         @Override
@@ -305,7 +333,6 @@ public class TagsFragment extends Fragment {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            System.out.println(tagsName);
             return tagsName;
         }
 

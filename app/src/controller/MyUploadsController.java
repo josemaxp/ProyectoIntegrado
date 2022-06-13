@@ -66,6 +66,7 @@ public class MyUploadsController implements Initializable {
     private final ObservableList<String> poblaciones = FXCollections.observableArrayList();
     private boolean activePane = false; //false = offers // true = recipes
     private String username = "";
+    private boolean comprobarTexto = false;
 
     /**
      * Initializes the controller class.
@@ -89,6 +90,15 @@ public class MyUploadsController implements Initializable {
 
             try {
                 if (!activePane) {
+
+                    comboBoxComunidadAutonoma.getSelectionModel().clearSelection();
+                    comboBoxPoblacion.getSelectionModel().clearSelection();
+                    comboBoxProvincia.getSelectionModel().clearSelection();
+
+                    comboBoxPoblacion.setDisable(true);
+                    comboBoxProvincia.setDisable(true);
+
+                    comprobarTexto = true;
 
                     List<OfferItem> currentItems = new ArrayList<>();
 
@@ -281,6 +291,11 @@ public class MyUploadsController implements Initializable {
 
     @FXML
     private void onClickSelectCA(ActionEvent event) {
+        if (comprobarTexto) {
+            textFieldSearch.setText("");
+            comprobarTexto = false;
+        }
+
         provincias.clear();
         comboBoxProvincia.setDisable(false);
 
@@ -515,14 +530,16 @@ public class MyUploadsController implements Initializable {
 
     @FXML
     private void onClickRefresh(MouseEvent event) {
-        comboBoxComunidadAutonoma.getSelectionModel().clearSelection();
-        comboBoxPoblacion.getSelectionModel().clearSelection();
-        comboBoxProvincia.getSelectionModel().clearSelection();
+        if (!activePane) {
+            comboBoxComunidadAutonoma.getSelectionModel().clearSelection();
+            comboBoxPoblacion.getSelectionModel().clearSelection();
+            comboBoxProvincia.getSelectionModel().clearSelection();
 
-        comboBoxPoblacion.setDisable(true);
-        comboBoxProvincia.setDisable(true);
+            comboBoxPoblacion.setDisable(true);
+            comboBoxProvincia.setDisable(true);
 
-        showOffer();
+            showOffer();
+        }
     }
 
 }

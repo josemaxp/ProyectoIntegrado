@@ -61,7 +61,7 @@ public class ConnectionManager {
         try {
             kkSocket = new Socket(IP, 4444);
             out = new PrintWriter(kkSocket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(kkSocket.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(kkSocket.getInputStream(),"utf-8"));
         } catch (IOException ex) {
             return false;
         }

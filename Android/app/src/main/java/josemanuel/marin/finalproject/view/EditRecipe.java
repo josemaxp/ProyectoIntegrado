@@ -211,7 +211,7 @@ public class EditRecipe extends AppCompatActivity {
                 System.out.println(params[i]);
 
             }
-            out.println("CL:" + "updateRecipe:" + params[0] + ":" + params[1] + ":" + params[2] + ":" + params[3] + ":" + params[4] + ":" + params[5] + ":" + params[6]);
+            out.println("CL:updateRecipe:" + params[0] + ":" + params[1] + ":" + params[2] + ":" + params[3] + ":" + params[4] + ":" + params[5] + ":" + params[6]);
 
             return null;
         }
@@ -236,19 +236,21 @@ public class EditRecipe extends AppCompatActivity {
         @Override
         protected File doInBackground(File... params) {
             out.println("CL:updateImgRecipe:" + params[0].getName() + ":" + params[0].length() + ":" + recipeID);
-            OutputStream os = null;
             try {
 
                 byte[] filebyte = new byte[(int) params[0].length()];
-                BufferedInputStream bis = new BufferedInputStream(new FileInputStream(params[0]));
-                os = s.getOutputStream();
-                int numeroBytesLeidos = 0;
-                while (numeroBytesLeidos != filebyte.length) {
-                    numeroBytesLeidos += bis.read(filebyte, 0, filebyte.length);
-                    os.write(filebyte, 0, filebyte.length);
+
+                if (filebyte.length < 8192) {
+                    OutputStream os = null;
+                    BufferedInputStream bis = new BufferedInputStream(new FileInputStream(params[0]));
+                    os = s.getOutputStream();
+                    int numeroBytesLeidos = 0;
+                    while (numeroBytesLeidos != filebyte.length) {
+                        numeroBytesLeidos += bis.read(filebyte, 0, filebyte.length);
+                        os.write(filebyte, 0, filebyte.length);
+                    }
+                    os.flush();
                 }
-                os.flush();
-                in.readLine();
             } catch (IOException e) {
                 e.printStackTrace();
             }

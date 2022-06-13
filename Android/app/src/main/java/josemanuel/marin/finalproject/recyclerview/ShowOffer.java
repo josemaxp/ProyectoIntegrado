@@ -32,7 +32,8 @@ import josemanuel.marin.finalproject.R;
 import josemanuel.marin.finalproject.controller.Connection;
 import josemanuel.marin.finalproject.model.ListOfferItem;
 import josemanuel.marin.finalproject.view.EditOffer;
-import josemanuel.marin.finalproject.view.RecipeClicked;
+import josemanuel.marin.finalproject.view.MyOffers;
+import josemanuel.marin.finalproject.view.WarnMarketActivity;
 
 public class ShowOffer extends RecyclerView.Adapter<ShowOffer.OfferViewHolder> implements PopupMenu.OnMenuItemClickListener {
     List<ListOfferItem> mData;
@@ -107,8 +108,12 @@ public class ShowOffer extends RecyclerView.Adapter<ShowOffer.OfferViewHolder> i
             textViewOfferMarket.setText(item.getMarket());
             textViewOfferTags.setText(tags);
             textViewOfferDistance.setText(item.getDistance());
-            textViewOfferPrice.setText(item.getPrice());
-            textViewOfferPriceUnity.setText("(" + item.getPriceUnity() + ")");
+            textViewOfferPrice.setText(item.getPrice() + "€");
+
+            String[] priceUnitySeparated = item.getPriceUnity().split("/");
+            String priceUnityPrice = priceUnitySeparated[0].substring(0, priceUnitySeparated[0].length() - 1);
+            textViewOfferPriceUnity.setText("(" + priceUnityPrice + "€/" + priceUnitySeparated[1] + ")");
+
             textViewOfferUsername.setText(item.getUsername());
 
             if (item.getApprovedOffer()) {
@@ -118,15 +123,15 @@ public class ShowOffer extends RecyclerView.Adapter<ShowOffer.OfferViewHolder> i
             }
 
             imageViewOffer.setClipToOutline(true);
-            if(item.getImage().equals("")){
+            if (item.getImage().equals("")) {
                 imageViewOffer.setImageResource(R.drawable.no_image_found);
-            }else {
-                String url = "http://"+item.getImage().substring(2).replace("\\", "/");
+            } else {
+                String url = "http://" + item.getImage().substring(2).replace("\\", "/");
                 Picasso.get().load(url).into(imageViewOffer);
                 imageViewOffer.setBackgroundColor(Color.parseColor("#3F414E"));
             }
 
-            if(imageViewOffer.getDrawable() == null){
+            if (imageViewOffer.getDrawable() == null) {
                 imageViewOffer.setImageResource(R.drawable.no_image_found);
             }
 
@@ -180,8 +185,8 @@ public class ShowOffer extends RecyclerView.Adapter<ShowOffer.OfferViewHolder> i
         }
 
         PopupMenu menu = new PopupMenu(v.getContext(), v);
-        menu.setOnMenuItemClickListener(this);
         menu.inflate(R.menu.offer_menu);
+        menu.setOnMenuItemClickListener(this);
 
         this.offerID = offerID;
         this.offer = offer;
@@ -213,6 +218,13 @@ public class ShowOffer extends RecyclerView.Adapter<ShowOffer.OfferViewHolder> i
             case R.id.delete_offer:
                 deleteOffer = new deleteOffer();
                 deleteOffer.execute();
+                if (context instanceof WarnMarketActivity) {
+                    Intent intent = new Intent(context, WarnMarketActivity.class);
+                    context.startActivity(intent);
+                } else {
+                    Intent intent = new Intent(context, MyOffers.class);
+                    context.startActivity(intent);
+                }
                 return true;
             case R.id.update_offer:
                 Intent intent = new Intent(context, EditOffer.class);
@@ -290,7 +302,7 @@ public class ShowOffer extends RecyclerView.Adapter<ShowOffer.OfferViewHolder> i
 
         @Override
         protected void onPostExecute(String result) {
-            notifyItemRemoved(position);
+            super.onPostExecute(result);
         }
     }
 

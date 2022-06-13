@@ -23,6 +23,7 @@ import josemanuel.marin.finalproject.controller.Connection;
 
 public class IPDialog extends DialogFragment {
     EditText editTextIP;
+    Connection connection;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -45,14 +46,18 @@ public class IPDialog extends DialogFragment {
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         String ip = editTextIP.getText().toString().trim();
+                        SharedPreferences preferences;
 
                         if (!ip.equals("")) {
                             Connection.setIP(ip);
 
-                            SharedPreferences preferences = getActivity().getSharedPreferences("IP", Context.MODE_PRIVATE);
+                            preferences = getActivity().getSharedPreferences("IP", Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.putString("IP", ip);
                             editor.apply();
+
+                            connection = new Connection();
+                            connection.start();
                         }
                     }
                 })

@@ -24,6 +24,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -301,30 +304,41 @@ public class Server {
                         String fileName = inputLine.split(":")[2];
                         byte[] filebyte = new byte[Integer.valueOf(inputLine.split(":")[3])];
 
-                        File userImages = new File("images/" + username);
-                        if (!userImages.exists()) {
-                            userImages.mkdirs();
+                        if (filebyte.length < 8192) {
+
+                            File userImages = new File("images/" + username);
+                            if (!userImages.exists()) {
+                                userImages.mkdirs();
+                            }
+
+                            String path = "images/" + username + "/" + fileName + ".png";
+
+                            Path pathImages = Paths.get("C:/xampp/htdocs/images/" + username);
+                            Files.createDirectories(pathImages);
+
+                            String nuevoPath = "C:\\xampp\\htdocs\\images\\" + username + "\\" + fileName + ".png";
+                            FileOutputStream fos = new FileOutputStream(nuevoPath);
+
+                            InputStream is = clientSocket.getInputStream();
+
+                            BufferedOutputStream bos = new BufferedOutputStream(fos);
+                            int numeroBytesLeidos = 0;
+                            while (numeroBytesLeidos != filebyte.length) {
+
+                                numeroBytesLeidos += is.read(filebyte, 0, filebyte.length);
+
+                                bos.write(filebyte, 0, numeroBytesLeidos);
+
+                            }
+
+                            bos.close();
+                            fos.close();
+
+                            ofertaDAO.imageInformation(session, path);
+                        } else {
+                            ofertaDAO.imageInformation(session, "");
                         }
 
-                        String path = "images/" + username + "/" + fileName + ".png";
-                        FileOutputStream fos = new FileOutputStream("C:\\xampp\\htdocs\\" + path);
-                        ofertaDAO.imageInformation(session, path);
-
-                        InputStream is = clientSocket.getInputStream();
-
-                        BufferedOutputStream bos = new BufferedOutputStream(fos);
-                        int numeroBytesLeidos = 0;
-
-                        while (numeroBytesLeidos != filebyte.length) {
-
-                            numeroBytesLeidos += is.read(filebyte, 0, filebyte.length);
-                            bos.write(filebyte, 0, numeroBytesLeidos);
-                        }
-
-                        bos.close();
-                        fos.close();
-
-                        out.println("");
                     }
 
                     if (inputLine.split(":")[1].equals("updateImgOffer")) {
@@ -332,60 +346,68 @@ public class Server {
                         byte[] filebyte = new byte[Integer.valueOf(inputLine.split(":")[3])];
                         int offerID = Integer.valueOf(inputLine.split(":")[4]);
 
-                        File userImages = new File("images/" + username);
-                        if (!userImages.exists()) {
-                            userImages.mkdirs();
+                        if (filebyte.length < 8192) {
+
+                            String path = "images/" + username + "/" + fileName + ".png";
+
+                            Path pathImages = Paths.get("C:/xampp/htdocs/images/" + username);
+                            Files.createDirectories(pathImages);
+
+                            String nuevoPath = "C:\\xampp\\htdocs\\images\\" + username + "\\" + fileName + ".png";
+                            FileOutputStream fos = new FileOutputStream(nuevoPath);
+
+                            InputStream is = clientSocket.getInputStream();
+
+                            BufferedOutputStream bos = new BufferedOutputStream(fos);
+                            int numeroBytesLeidos = 0;
+
+                            while (numeroBytesLeidos != filebyte.length) {
+
+                                numeroBytesLeidos += is.read(filebyte, 0, filebyte.length);
+                                bos.write(filebyte, 0, numeroBytesLeidos);
+                            }
+
+                            bos.close();
+                            fos.close();
+
+                            ofertaDAO.updateImageInformation(session, path, offerID);
+                        } else {
+                            ofertaDAO.imageInformation(session, "");
                         }
-
-                        String path = "images/" + username + "/" + fileName + ".png";
-                        FileOutputStream fos = new FileOutputStream("C:\\xampp\\htdocs\\" + path);
-                        ofertaDAO.updateImageInformation(session, path, offerID);
-
-                        InputStream is = clientSocket.getInputStream();
-
-                        BufferedOutputStream bos = new BufferedOutputStream(fos);
-                        int numeroBytesLeidos = 0;
-
-                        while (numeroBytesLeidos != filebyte.length) {
-
-                            numeroBytesLeidos += is.read(filebyte, 0, filebyte.length);
-                            bos.write(filebyte, 0, numeroBytesLeidos);
-                        }
-
-                        bos.close();
-                        fos.close();
-
-                        out.println("");
                     }
 
                     if (inputLine.split(":")[1].equals("imgRecipe")) {
                         String fileName = inputLine.split(":")[2];
                         byte[] filebyte = new byte[Integer.valueOf(inputLine.split(":")[3])];
 
-                        File userImages = new File("images/" + username);
-                        if (!userImages.exists()) {
-                            userImages.mkdirs();
+                        if (filebyte.length < 8192) {
+
+                            String path = "images/" + username + "/" + fileName + ".png";
+
+                            Path pathImages = Paths.get("C:/xampp/htdocs/images/" + username);
+                            Files.createDirectories(pathImages);
+
+                            String nuevoPath = "C:\\xampp\\htdocs\\images\\" + username + "\\" + fileName + ".png";
+                            FileOutputStream fos = new FileOutputStream(nuevoPath);
+
+                            InputStream is = clientSocket.getInputStream();
+
+                            BufferedOutputStream bos = new BufferedOutputStream(fos);
+                            int numeroBytesLeidos = 0;
+
+                            while (numeroBytesLeidos != filebyte.length) {
+
+                                numeroBytesLeidos += is.read(filebyte, 0, filebyte.length);
+                                bos.write(filebyte, 0, numeroBytesLeidos);
+                            }
+
+                            bos.close();
+                            fos.close();
+
+                            recetaDAO.imageInformation(session, path);
+                        } else {
+                            ofertaDAO.imageInformation(session, "");
                         }
-
-                        String path = "images/" + username + "/" + fileName + ".png";
-                        FileOutputStream fos = new FileOutputStream("C:\\xampp\\htdocs\\" + path);
-                        recetaDAO.imageInformation(session, path);
-
-                        InputStream is = clientSocket.getInputStream();
-
-                        BufferedOutputStream bos = new BufferedOutputStream(fos);
-                        int numeroBytesLeidos = 0;
-
-                        while (numeroBytesLeidos != filebyte.length) {
-
-                            numeroBytesLeidos += is.read(filebyte, 0, filebyte.length);
-                            bos.write(filebyte, 0, numeroBytesLeidos);
-                        }
-
-                        bos.close();
-                        fos.close();
-
-                        out.println("");
                     }
 
                     if (inputLine.split(":")[1].equals("updateImgRecipe")) {
@@ -393,29 +415,33 @@ public class Server {
                         byte[] filebyte = new byte[Integer.valueOf(inputLine.split(":")[3])];
                         int recipeID = Integer.valueOf(inputLine.split(":")[4]);
 
-                        File userImages = new File("images/" + username);
-                        if (!userImages.exists()) {
-                            userImages.mkdirs();
+                        if (filebyte.length < 8192) {
+
+                            String path = "images/" + username + "/" + fileName + ".png";
+
+                            Path pathImages = Paths.get("C:/xampp/htdocs/images/" + username);
+                            Files.createDirectories(pathImages);
+
+                            String nuevoPath = "C:\\xampp\\htdocs\\images\\" + username + "\\" + fileName + ".png";
+                            FileOutputStream fos = new FileOutputStream(nuevoPath);
+
+                            InputStream is = clientSocket.getInputStream();
+
+                            BufferedOutputStream bos = new BufferedOutputStream(fos);
+                            int numeroBytesLeidos = 0;
+
+                            while (numeroBytesLeidos != filebyte.length) {
+                                numeroBytesLeidos += is.read(filebyte, 0, filebyte.length);
+                                bos.write(filebyte, 0, numeroBytesLeidos);
+                            }
+
+                            bos.close();
+                            fos.close();
+
+                            recetaDAO.updateImageInformation(session, path, recipeID);
+                        } else {
+                            ofertaDAO.imageInformation(session, "");
                         }
-
-                        String path = "images/" + username + "/" + fileName + ".png";
-                        FileOutputStream fos = new FileOutputStream("C:\\xampp\\htdocs\\" + path);
-                        recetaDAO.updateImageInformation(session, path, recipeID);
-
-                        InputStream is = clientSocket.getInputStream();
-
-                        BufferedOutputStream bos = new BufferedOutputStream(fos);
-                        int numeroBytesLeidos = 0;
-
-                        while (numeroBytesLeidos != filebyte.length) {
-                            numeroBytesLeidos += is.read(filebyte, 0, filebyte.length);
-                            bos.write(filebyte, 0, numeroBytesLeidos);
-                        }
-
-                        bos.close();
-                        fos.close();
-
-                        out.println("");
                     }
 
                     if (inputLine.split(":")[1].equals("getUser")) {

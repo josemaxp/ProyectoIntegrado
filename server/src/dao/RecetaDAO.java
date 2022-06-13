@@ -389,7 +389,7 @@ public class RecetaDAO {
             for (int j = 0; j < listProducts.size(); j++) {
                 hql = "from Producto where id = :id";
                 query = session.createQuery(hql);
-                query.setParameter("id", listProducts.get(i).getId().getIdProducto());
+                query.setParameter("id", listProducts.get(j).getId().getIdProducto());
 
                 List<Producto> listProductName = query.list();
                 productName += listProductName.get(0).getNombre() + "|" + listProducts.get(j).getCantidad() + "|" + listProducts.get(j).getUnidadmedida() + "_";
@@ -576,7 +576,7 @@ public class RecetaDAO {
     
     public List<Receta> getMostLikedRecipes(Session session, String username) {
 
-        String hql = "from Re";
+        String hql = "from Receta order by likes asc";
         Query query = session.createQuery(hql);
 
         List<Receta> mostLikedRecipes = query.list();

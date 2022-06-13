@@ -178,8 +178,7 @@ public class StatisticsController implements Initializable {
     private void onClickDownload(MouseEvent event) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/proyectofinal", "root", "");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://"+ConnectionManager.IP+"/proyectofinal", "root", null);
 
             JasperReport jr = (JasperReport) JRLoader.loadObjectFromFile("src\\reports\\reportChart.jasper");            
             JasperPrint jp = JasperFillManager.fillReport(jr, null, connection);

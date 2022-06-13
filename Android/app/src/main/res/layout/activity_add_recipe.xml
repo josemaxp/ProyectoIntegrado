@@ -29,6 +29,7 @@
                 android:ems="10"
                 android:hint="Nombre"
                 android:completionThreshold="1"
+                android:textColor="#000000"
                 android:padding="10dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewAddRecipeProduct" />
@@ -59,6 +60,7 @@
                 android:background="@drawable/et_style"
                 android:ems="10"
                 android:padding="10dp"
+                android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewAddRecipeName" />
@@ -194,6 +196,7 @@
                 android:background="@drawable/et_style"
                 android:ems="10"
                 android:hint="Cantidad"
+                android:textColor="#000000"
                 android:inputType="numberDecimal"
                 android:padding="10dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -209,6 +212,7 @@
                 android:ems="10"
                 android:inputType="number"
                 android:padding="10dp"
+                android:textColor="#000000"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewAddRecipePeople"
                 tools:ignore="SpeakableTextPresentCheck" />
@@ -223,6 +227,7 @@
                 android:ems="10"
                 android:inputType="time"
                 android:padding="10dp"
+                android:textColor="#000000"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewAddRecipeTime"
                 tools:ignore="SpeakableTextPresentCheck" />
@@ -235,6 +240,7 @@
                 android:layout_marginTop="8dp"
                 android:background="@drawable/et_style"
                 android:entries="@array/unidades_receta"
+                android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="@+id/editTextProductQuantity"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editTextProductQuantity" />
@@ -264,6 +270,7 @@
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
                 android:padding="10dp"
+                android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewRecipeSteps" />
@@ -280,6 +287,7 @@
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
                 android:padding="10dp"
+                android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewCookware" />

@@ -93,6 +93,7 @@ public class LocationFragment extends Fragment {
                 for (int i = 0; i < tagsList.size(); i++) {
                     tags += tagsList.get(i).trim() + ",";
                 }
+
                 TagsFragment.restartTagsList();
 
                 textViewAddError.setText("");
@@ -218,19 +219,21 @@ public class LocationFragment extends Fragment {
         @Override
         protected File doInBackground(File... params) {
             out.println("CL:img:" + params[0].getName() + ":" + params[0].length());
-            OutputStream os = null;
-            try {
 
+            try {
                 byte[] filebyte = new byte[(int) params[0].length()];
-                BufferedInputStream bis = new BufferedInputStream(new FileInputStream(params[0]));
-                os = s.getOutputStream();
-                int numeroBytesLeidos = 0;
-                while (numeroBytesLeidos != filebyte.length) {
-                    numeroBytesLeidos += bis.read(filebyte, 0, filebyte.length);
-                    os.write(filebyte, 0, filebyte.length);
+
+                if (filebyte.length < 8192) {
+                    OutputStream os = null;
+                    BufferedInputStream bis = new BufferedInputStream(new FileInputStream(params[0]));
+                    os = s.getOutputStream();
+                    int numeroBytesLeidos = 0;
+                    while (numeroBytesLeidos != filebyte.length) {
+                        numeroBytesLeidos += bis.read(filebyte, 0, filebyte.length);
+                        os.write(filebyte, 0, numeroBytesLeidos);
+                    }
+                    os.flush();
                 }
-                os.flush();
-                in.readLine();
             } catch (IOException e) {
                 e.printStackTrace();
             }

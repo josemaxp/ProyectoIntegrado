@@ -1,0 +1,343 @@
+@startuml
+annotation java.lang.Override
+annotation javafx.fxml.FXML
+class controller.LoginController
+class controller.MainScreenController
+class controller.MyAccountController
+class controller.MyFavRecipesController
+class controller.MyUploadsController
+class controller.OfferItemController
+class controller.RecipeItemController
+class controller.RecipeViewController
+class controller.RedeemPointsController
+class controller.RegisterController
+class controller.StatisticsController
+class de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView
+class io.github.palexdev.materialfx.controls.MFXButton
+class io.github.palexdev.materialfx.controls.MFXPasswordField
+class io.github.palexdev.materialfx.controls.MFXScrollPane
+class io.github.palexdev.materialfx.controls.MFXTextField
+class io.github.palexdev.materialfx.controls.legacy.MFXLegacyComboBox
+class java.io.IOException
+class java.net.URL
+class java.sql.Connection
+class java.sql.DriverManager
+class java.sql.SQLException
+class java.util.ArrayList
+class java.util.Collections
+class java.util.List
+class java.util.Optional
+class java.util.ResourceBundle
+class java.util.logging.Level
+class java.util.logging.Logger
+class java.util.regex.Pattern
+class javafx.animation.TranslateTransition
+class javafx.beans.binding.Bindings
+class javafx.collections.FXCollections
+class javafx.collections.ObservableList
+class javafx.event.ActionEvent
+class javafx.fxml.FXMLLoader
+class javafx.geometry.Insets
+class javafx.geometry.Side
+class javafx.scene.Parent
+class javafx.scene.chart.PieChart
+class javafx.scene.control.Alert
+class javafx.scene.control.Alert.AlertType
+class javafx.scene.control.ButtonType
+class javafx.scene.control.Label
+class javafx.scene.control.TextInputDialog
+class javafx.scene.image.Image
+class javafx.scene.image.ImageView
+class javafx.scene.input.KeyEvent
+class javafx.scene.input.MouseEvent
+class javafx.scene.layout.AnchorPane
+class javafx.scene.layout.GridPane
+class javafx.scene.layout.HBox
+class javafx.scene.layout.VBox
+class javafx.scene.text.Text
+class javafx.stage.Stage
+class javafx.util.Duration
+class model.OfferItem
+class model.RecipeItem
+class net.sf.jasperreports.engine.JRException
+class net.sf.jasperreports.engine.JasperCompileManager
+class net.sf.jasperreports.engine.JasperFillManager
+class net.sf.jasperreports.engine.JasperPrint
+class net.sf.jasperreports.engine.JasperReport
+class net.sf.jasperreports.engine.util.JRLoader
+class net.sf.jasperreports.view.JasperViewer
+class util.ConnectionManager
+class view.Toast
+class view.WarnMaketApp
+interface javafx.fxml.Initializable
+controller.LoginController ..> java.lang.Override
+controller.LoginController ..> javafx.fxml.FXML
+controller.LoginController ..> de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView
+controller.LoginController ..> io.github.palexdev.materialfx.controls.MFXButton
+controller.LoginController ..> io.github.palexdev.materialfx.controls.MFXPasswordField
+controller.LoginController ..> io.github.palexdev.materialfx.controls.MFXTextField
+controller.LoginController ..> java.io.IOException
+controller.LoginController ..> java.net.URL
+controller.LoginController ..> java.sql.SQLException
+controller.LoginController ..> java.util.Optional
+controller.LoginController ..> java.util.ResourceBundle
+controller.LoginController ..> java.util.logging.Level
+controller.LoginController ..> java.util.logging.Logger
+controller.LoginController ..> javafx.event.ActionEvent
+controller.LoginController ..> javafx.fxml.FXMLLoader
+controller.LoginController ..> javafx.scene.Parent
+controller.LoginController ..> javafx.scene.control.Label
+controller.LoginController ..> javafx.scene.control.TextInputDialog
+controller.LoginController ..> javafx.scene.input.MouseEvent
+controller.LoginController ..> javafx.scene.text.Text
+controller.LoginController ..> util.ConnectionManager
+controller.LoginController ..> view.WarnMaketApp
+controller.LoginController --|> javafx.fxml.Initializable
+controller.MainScreenController ..> java.lang.Override
+controller.MainScreenController ..> javafx.fxml.FXML
+controller.MainScreenController ..> de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView
+controller.MainScreenController ..> io.github.palexdev.materialfx.controls.MFXScrollPane
+controller.MainScreenController ..> io.github.palexdev.materialfx.controls.MFXTextField
+controller.MainScreenController ..> io.github.palexdev.materialfx.controls.legacy.MFXLegacyComboBox
+controller.MainScreenController ..> java.io.IOException
+controller.MainScreenController ..> java.net.URL
+controller.MainScreenController ..> java.util.ArrayList
+controller.MainScreenController ..> java.util.Collections
+controller.MainScreenController ..> java.util.List
+controller.MainScreenController ..> java.util.ResourceBundle
+controller.MainScreenController ..> java.util.logging.Level
+controller.MainScreenController ..> java.util.logging.Logger
+controller.MainScreenController ..> javafx.animation.TranslateTransition
+controller.MainScreenController ..> javafx.collections.FXCollections
+controller.MainScreenController ..> javafx.collections.ObservableList
+controller.MainScreenController ..> javafx.event.ActionEvent
+controller.MainScreenController ..> javafx.fxml.FXMLLoader
+controller.MainScreenController ..> javafx.geometry.Insets
+controller.MainScreenController ..> javafx.scene.Parent
+controller.MainScreenController ..> javafx.scene.control.Label
+controller.MainScreenController ..> javafx.scene.input.KeyEvent
+controller.MainScreenController ..> javafx.scene.input.MouseEvent
+controller.MainScreenController ..> javafx.scene.layout.AnchorPane
+controller.MainScreenController ..> javafx.scene.layout.GridPane
+controller.MainScreenController ..> javafx.scene.layout.HBox
+controller.MainScreenController ..> javafx.scene.layout.VBox
+controller.MainScreenController ..> javafx.scene.text.Text
+controller.MainScreenController ..> javafx.stage.Stage
+controller.MainScreenController ..> javafx.util.Duration
+controller.MainScreenController ..> model.OfferItem
+controller.MainScreenController ..> model.RecipeItem
+controller.MainScreenController ..> util.ConnectionManager
+controller.MainScreenController ..> view.Toast
+controller.MainScreenController ..> view.WarnMaketApp
+controller.MainScreenController --|> javafx.fxml.Initializable
+controller.MyAccountController ..> java.lang.Override
+controller.MyAccountController ..> javafx.fxml.FXML
+controller.MyAccountController ..> de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView
+controller.MyAccountController ..> io.github.palexdev.materialfx.controls.MFXButton
+controller.MyAccountController ..> io.github.palexdev.materialfx.controls.MFXPasswordField
+controller.MyAccountController ..> io.github.palexdev.materialfx.controls.MFXTextField
+controller.MyAccountController ..> java.io.IOException
+controller.MyAccountController ..> java.net.URL
+controller.MyAccountController ..> java.util.ResourceBundle
+controller.MyAccountController ..> java.util.logging.Level
+controller.MyAccountController ..> java.util.logging.Logger
+controller.MyAccountController ..> javafx.event.ActionEvent
+controller.MyAccountController ..> javafx.fxml.FXMLLoader
+controller.MyAccountController ..> javafx.scene.Parent
+controller.MyAccountController ..> javafx.scene.input.MouseEvent
+controller.MyAccountController ..> javafx.scene.text.Text
+controller.MyAccountController ..> util.ConnectionManager
+controller.MyAccountController ..> view.WarnMaketApp
+controller.MyAccountController --|> javafx.fxml.Initializable
+controller.MyFavRecipesController ..> java.lang.Override
+controller.MyFavRecipesController ..> javafx.fxml.FXML
+controller.MyFavRecipesController ..> de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView
+controller.MyFavRecipesController ..> io.github.palexdev.materialfx.controls.MFXScrollPane
+controller.MyFavRecipesController ..> io.github.palexdev.materialfx.controls.MFXTextField
+controller.MyFavRecipesController ..> java.io.IOException
+controller.MyFavRecipesController ..> java.net.URL
+controller.MyFavRecipesController ..> java.util.ArrayList
+controller.MyFavRecipesController ..> java.util.Collections
+controller.MyFavRecipesController ..> java.util.List
+controller.MyFavRecipesController ..> java.util.ResourceBundle
+controller.MyFavRecipesController ..> java.util.logging.Level
+controller.MyFavRecipesController ..> java.util.logging.Logger
+controller.MyFavRecipesController ..> javafx.fxml.FXMLLoader
+controller.MyFavRecipesController ..> javafx.geometry.Insets
+controller.MyFavRecipesController ..> javafx.scene.Parent
+controller.MyFavRecipesController ..> javafx.scene.control.Label
+controller.MyFavRecipesController ..> javafx.scene.input.KeyEvent
+controller.MyFavRecipesController ..> javafx.scene.input.MouseEvent
+controller.MyFavRecipesController ..> javafx.scene.layout.AnchorPane
+controller.MyFavRecipesController ..> javafx.scene.layout.GridPane
+controller.MyFavRecipesController ..> javafx.scene.layout.HBox
+controller.MyFavRecipesController ..> javafx.scene.text.Text
+controller.MyFavRecipesController ..> model.OfferItem
+controller.MyFavRecipesController ..> model.RecipeItem
+controller.MyFavRecipesController ..> util.ConnectionManager
+controller.MyFavRecipesController ..> view.WarnMaketApp
+controller.MyFavRecipesController --|> javafx.fxml.Initializable
+controller.MyUploadsController ..> java.lang.Override
+controller.MyUploadsController ..> javafx.fxml.FXML
+controller.MyUploadsController ..> de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView
+controller.MyUploadsController ..> io.github.palexdev.materialfx.controls.MFXScrollPane
+controller.MyUploadsController ..> io.github.palexdev.materialfx.controls.MFXTextField
+controller.MyUploadsController ..> io.github.palexdev.materialfx.controls.legacy.MFXLegacyComboBox
+controller.MyUploadsController ..> java.io.IOException
+controller.MyUploadsController ..> java.net.URL
+controller.MyUploadsController ..> java.util.ArrayList
+controller.MyUploadsController ..> java.util.Collections
+controller.MyUploadsController ..> java.util.List
+controller.MyUploadsController ..> java.util.ResourceBundle
+controller.MyUploadsController ..> java.util.logging.Level
+controller.MyUploadsController ..> java.util.logging.Logger
+controller.MyUploadsController ..> javafx.collections.FXCollections
+controller.MyUploadsController ..> javafx.collections.ObservableList
+controller.MyUploadsController ..> javafx.event.ActionEvent
+controller.MyUploadsController ..> javafx.fxml.FXMLLoader
+controller.MyUploadsController ..> javafx.geometry.Insets
+controller.MyUploadsController ..> javafx.scene.Parent
+controller.MyUploadsController ..> javafx.scene.control.Label
+controller.MyUploadsController ..> javafx.scene.input.KeyEvent
+controller.MyUploadsController ..> javafx.scene.input.MouseEvent
+controller.MyUploadsController ..> javafx.scene.layout.AnchorPane
+controller.MyUploadsController ..> javafx.scene.layout.GridPane
+controller.MyUploadsController ..> javafx.scene.layout.HBox
+controller.MyUploadsController ..> model.OfferItem
+controller.MyUploadsController ..> model.RecipeItem
+controller.MyUploadsController ..> util.ConnectionManager
+controller.MyUploadsController ..> view.WarnMaketApp
+controller.MyUploadsController --|> javafx.fxml.Initializable
+controller.OfferItemController ..> java.lang.Override
+controller.OfferItemController ..> javafx.fxml.FXML
+controller.OfferItemController ..> de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView
+controller.OfferItemController ..> java.io.IOException
+controller.OfferItemController ..> java.net.URL
+controller.OfferItemController ..> java.util.Optional
+controller.OfferItemController ..> java.util.ResourceBundle
+controller.OfferItemController ..> java.util.logging.Level
+controller.OfferItemController ..> java.util.logging.Logger
+controller.OfferItemController ..> javafx.fxml.FXMLLoader
+controller.OfferItemController ..> javafx.scene.Parent
+controller.OfferItemController ..> javafx.scene.control.Alert
+controller.OfferItemController ..> javafx.scene.control.ButtonType
+controller.OfferItemController ..> javafx.scene.image.Image
+controller.OfferItemController ..> javafx.scene.image.ImageView
+controller.OfferItemController ..> javafx.scene.input.MouseEvent
+controller.OfferItemController ..> javafx.scene.layout.AnchorPane
+controller.OfferItemController ..> javafx.scene.text.Text
+controller.OfferItemController ..> model.OfferItem
+controller.OfferItemController ..> util.ConnectionManager
+controller.OfferItemController ..> view.WarnMaketApp
+controller.OfferItemController --|> javafx.fxml.Initializable
+controller.RecipeItemController ..> java.lang.Override
+controller.RecipeItemController ..> javafx.fxml.FXML
+controller.RecipeItemController ..> de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView
+controller.RecipeItemController ..> java.io.IOException
+controller.RecipeItemController ..> java.net.URL
+controller.RecipeItemController ..> java.util.Optional
+controller.RecipeItemController ..> java.util.ResourceBundle
+controller.RecipeItemController ..> java.util.logging.Level
+controller.RecipeItemController ..> java.util.logging.Logger
+controller.RecipeItemController ..> javafx.fxml.FXMLLoader
+controller.RecipeItemController ..> javafx.scene.Parent
+controller.RecipeItemController ..> javafx.scene.control.Alert
+controller.RecipeItemController ..> javafx.scene.control.Alert.AlertType
+controller.RecipeItemController ..> javafx.scene.control.ButtonType
+controller.RecipeItemController ..> javafx.scene.image.Image
+controller.RecipeItemController ..> javafx.scene.image.ImageView
+controller.RecipeItemController ..> javafx.scene.input.MouseEvent
+controller.RecipeItemController ..> javafx.scene.layout.AnchorPane
+controller.RecipeItemController ..> javafx.scene.text.Text
+controller.RecipeItemController ..> model.RecipeItem
+controller.RecipeItemController ..> util.ConnectionManager
+controller.RecipeItemController ..> view.WarnMaketApp
+controller.RecipeItemController --|> javafx.fxml.Initializable
+controller.RecipeViewController ..> java.lang.Override
+controller.RecipeViewController ..> javafx.fxml.FXML
+controller.RecipeViewController ..> de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView
+controller.RecipeViewController ..> java.io.IOException
+controller.RecipeViewController ..> java.net.URL
+controller.RecipeViewController ..> java.util.ResourceBundle
+controller.RecipeViewController ..> java.util.logging.Level
+controller.RecipeViewController ..> java.util.logging.Logger
+controller.RecipeViewController ..> javafx.fxml.FXMLLoader
+controller.RecipeViewController ..> javafx.scene.Parent
+controller.RecipeViewController ..> javafx.scene.control.Label
+controller.RecipeViewController ..> javafx.scene.image.Image
+controller.RecipeViewController ..> javafx.scene.image.ImageView
+controller.RecipeViewController ..> javafx.scene.input.MouseEvent
+controller.RecipeViewController ..> javafx.scene.text.Text
+controller.RecipeViewController ..> model.RecipeItem
+controller.RecipeViewController ..> util.ConnectionManager
+controller.RecipeViewController ..> view.WarnMaketApp
+controller.RecipeViewController --|> javafx.fxml.Initializable
+controller.RedeemPointsController ..> java.lang.Override
+controller.RedeemPointsController ..> javafx.fxml.FXML
+controller.RedeemPointsController ..> de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView
+controller.RedeemPointsController ..> io.github.palexdev.materialfx.controls.MFXButton
+controller.RedeemPointsController ..> java.io.IOException
+controller.RedeemPointsController ..> java.net.URL
+controller.RedeemPointsController ..> java.util.ResourceBundle
+controller.RedeemPointsController ..> java.util.logging.Level
+controller.RedeemPointsController ..> java.util.logging.Logger
+controller.RedeemPointsController ..> javafx.event.ActionEvent
+controller.RedeemPointsController ..> javafx.fxml.FXMLLoader
+controller.RedeemPointsController ..> javafx.scene.Parent
+controller.RedeemPointsController ..> javafx.scene.input.MouseEvent
+controller.RedeemPointsController ..> javafx.scene.text.Text
+controller.RedeemPointsController ..> util.ConnectionManager
+controller.RedeemPointsController ..> view.WarnMaketApp
+controller.RedeemPointsController --|> javafx.fxml.Initializable
+controller.RegisterController ..> java.lang.Override
+controller.RegisterController ..> javafx.fxml.FXML
+controller.RegisterController ..> de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView
+controller.RegisterController ..> io.github.palexdev.materialfx.controls.MFXButton
+controller.RegisterController ..> io.github.palexdev.materialfx.controls.MFXPasswordField
+controller.RegisterController ..> io.github.palexdev.materialfx.controls.MFXTextField
+controller.RegisterController ..> java.io.IOException
+controller.RegisterController ..> java.net.URL
+controller.RegisterController ..> java.util.ResourceBundle
+controller.RegisterController ..> java.util.logging.Level
+controller.RegisterController ..> java.util.logging.Logger
+controller.RegisterController ..> java.util.regex.Pattern
+controller.RegisterController ..> javafx.event.ActionEvent
+controller.RegisterController ..> javafx.fxml.FXMLLoader
+controller.RegisterController ..> javafx.scene.Parent
+controller.RegisterController ..> javafx.scene.input.MouseEvent
+controller.RegisterController ..> javafx.scene.text.Text
+controller.RegisterController ..> util.ConnectionManager
+controller.RegisterController ..> view.WarnMaketApp
+controller.RegisterController --|> javafx.fxml.Initializable
+controller.StatisticsController ..> java.lang.Override
+controller.StatisticsController ..> javafx.fxml.FXML
+controller.StatisticsController ..> de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView
+controller.StatisticsController ..> java.io.IOException
+controller.StatisticsController ..> java.net.URL
+controller.StatisticsController ..> java.sql.Connection
+controller.StatisticsController ..> java.sql.DriverManager
+controller.StatisticsController ..> java.sql.SQLException
+controller.StatisticsController ..> java.util.ResourceBundle
+controller.StatisticsController ..> java.util.logging.Level
+controller.StatisticsController ..> java.util.logging.Logger
+controller.StatisticsController ..> javafx.beans.binding.Bindings
+controller.StatisticsController ..> javafx.collections.FXCollections
+controller.StatisticsController ..> javafx.collections.ObservableList
+controller.StatisticsController ..> javafx.fxml.FXMLLoader
+controller.StatisticsController ..> javafx.geometry.Side
+controller.StatisticsController ..> javafx.scene.Parent
+controller.StatisticsController ..> javafx.scene.chart.PieChart
+controller.StatisticsController ..> javafx.scene.control.Label
+controller.StatisticsController ..> javafx.scene.input.MouseEvent
+controller.StatisticsController ..> javafx.scene.text.Text
+controller.StatisticsController ..> net.sf.jasperreports.engine.JRException
+controller.StatisticsController ..> net.sf.jasperreports.engine.JasperCompileManager
+controller.StatisticsController ..> net.sf.jasperreports.engine.JasperFillManager
+controller.StatisticsController ..> net.sf.jasperreports.engine.JasperPrint
+controller.StatisticsController ..> net.sf.jasperreports.engine.JasperReport
+controller.StatisticsController ..> net.sf.jasperreports.engine.util.JRLoader
+controller.StatisticsController ..> net.sf.jasperreports.view.JasperViewer
+controller.StatisticsController ..> util.ConnectionManager
+controller.StatisticsController ..> view.WarnMaketApp
+controller.StatisticsController --|> javafx.fxml.Initializable
+@enduml

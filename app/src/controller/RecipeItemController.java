@@ -17,6 +17,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import model.RecipeItem;
 import util.ConnectionManager;
@@ -53,6 +54,8 @@ public class RecipeItemController implements Initializable {
     private int recipeID = -1;
     private boolean menuClicked = false;
     private RecipeItem RecipeItem;
+    @FXML
+    private AnchorPane recipePane;
 
     /**
      * Initializes the controller class.
@@ -125,6 +128,12 @@ public class RecipeItemController implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             deleteRecipe();
+            try {
+                Parent root = FXMLLoader.load(getClass().getResource("/view/MainScreen.fxml"));
+                WarnMaketApp.changeScene(root, "WarnMarket");
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 

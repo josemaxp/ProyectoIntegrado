@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" maxWidth="400.0" minHeight="150.0" minWidth="400.0" prefHeight="150.0" prefWidth="400.0" style="-fx-background-color: #3F414E; -fx-background-radius: 25;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.OfferItemController">
+<AnchorPane id="AnchorPane" fx:id="offerPane" maxWidth="400.0" minHeight="150.0" minWidth="400.0" prefHeight="150.0" prefWidth="400.0" style="-fx-background-color: #3F414E; -fx-background-radius: 25;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.OfferItemController">
    <children>
       <ImageView fx:id="image" fitHeight="110.0" fitWidth="110.0" layoutX="7.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" styleClass="-fx-background-radius: 5;" />
       <ImageView fx:id="imageApproved" fitHeight="43.0" fitWidth="45.0" layoutX="341.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true" />

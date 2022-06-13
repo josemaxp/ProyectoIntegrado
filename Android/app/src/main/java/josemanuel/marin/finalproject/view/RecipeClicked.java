@@ -59,11 +59,14 @@ public class RecipeClicked extends AppCompatActivity {
 
         String[] timeSeparated = recipe.getTime().trim().split("\\.");
         String newTime = "";
-
-        if (timeSeparated[0].equals("00")) {
-            newTime = timeSeparated[1] + " minuto(s)";
-        } else {
-            newTime = timeSeparated[0] + " hora(s) y " + timeSeparated[1] + " minuto(s)";
+        if(timeSeparated.length == 2) {
+            if (timeSeparated[0].equals("00")) {
+                newTime = timeSeparated[1] + " minuto(s)";
+            } else {
+                newTime = timeSeparated[0] + " hora(s) y " + timeSeparated[1] + " minuto(s)";
+            }
+        }else{
+            newTime = "Error de formato";
         }
 
         String products = "";

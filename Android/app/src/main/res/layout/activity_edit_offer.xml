@@ -54,6 +54,7 @@
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:padding="10dp"
+                android:textColor="#000000"
                 app:layout_constraintEnd_toStartOf="@+id/buttonAddTagEdit"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewEditTagsTitle" />
@@ -238,6 +239,7 @@
                 android:ems="10"
                 android:inputType="numberDecimal|numberSigned"
                 android:padding="10dp"
+                android:textColor="#000000"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewPriceTitleEdit" />
 
@@ -275,6 +277,7 @@
                 android:ems="10"
                 android:inputType="numberDecimal|numberSigned"
                 android:padding="10dp"
+                android:textColor="#000000"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewPriceUnityTitleEdit" />
 

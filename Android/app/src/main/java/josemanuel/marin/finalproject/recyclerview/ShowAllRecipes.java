@@ -28,11 +28,12 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import josemanuel.marin.finalproject.R;
-import josemanuel.marin.finalproject.view.EditOffer;
-import josemanuel.marin.finalproject.view.EditRecipe;
-import josemanuel.marin.finalproject.view.RecipeClicked;
 import josemanuel.marin.finalproject.controller.Connection;
 import josemanuel.marin.finalproject.model.ListRecipeItem;
+import josemanuel.marin.finalproject.view.EditRecipe;
+import josemanuel.marin.finalproject.view.MyRecipes;
+import josemanuel.marin.finalproject.view.RecipeClicked;
+import josemanuel.marin.finalproject.view.RecipesActivity;
 
 public class ShowAllRecipes extends RecyclerView.Adapter<ShowAllRecipes.RecipeViewHolder> implements PopupMenu.OnMenuItemClickListener {
     List<ListRecipeItem> mData;
@@ -94,11 +95,14 @@ public class ShowAllRecipes extends RecyclerView.Adapter<ShowAllRecipes.RecipeVi
         void bindData(final ListRecipeItem item) {
             String[] timeSeparated = item.getTime().trim().split("\\.");
             String newTime = "";
-
-            if (timeSeparated[0].equals("00")) {
-                newTime = timeSeparated[1] + " minuto(s)";
-            } else {
-                newTime = timeSeparated[0] + " hora(s) y " + timeSeparated[1] + " minuto(s)";
+            if(timeSeparated.length == 2) {
+                if (timeSeparated[0].equals("00")) {
+                    newTime = timeSeparated[1] + " minuto(s)";
+                } else {
+                    newTime = timeSeparated[0] + " hora(s) y " + timeSeparated[1] + " minuto(s)";
+                }
+            }else{
+                newTime = "Error de formato";
             }
 
             textViewRecipeName.setText(item.getName());
@@ -108,21 +112,21 @@ public class ShowAllRecipes extends RecyclerView.Adapter<ShowAllRecipes.RecipeVi
             textViewRecipeUsername.setText(item.getUsername());
 
             imageViewRecipe.setClipToOutline(true);
-            if(item.getImage().equals("")){
+            if (item.getImage().equals("")) {
                 imageViewRecipe.setImageResource(R.drawable.no_image_found);
-            }else {
-                String url = "http://"+item.getImage().substring(2).replace("\\", "/");
+            } else {
+                String url = "http://" + item.getImage().substring(2).replace("\\", "/");
                 Picasso.get().load(url).into(imageViewRecipe);
                 imageViewRecipe.setBackgroundColor(Color.parseColor("#3F414E"));
             }
 
-            if(imageViewRecipe.getDrawable() == null){
+            if (imageViewRecipe.getDrawable() == null) {
                 imageViewRecipe.setImageResource(R.drawable.no_image_found);
             }
 
 
             imageViewOptionsMenuRecipe.setOnClickListener(v -> {
-                showMenu(v, item.getUsername(), item.getId(),item);
+                showMenu(v, item.getUsername(), item.getId(), item);
             });
 
             itemView.setOnClickListener(v -> {
@@ -186,7 +190,7 @@ public class ShowAllRecipes extends RecyclerView.Adapter<ShowAllRecipes.RecipeVi
             }
 
             menu.show();
-        }else{
+        } else {
             Toast.makeText(context, "Inicia sesión para interactuar con la receta.", Toast.LENGTH_LONG).show();
         }
     }
@@ -201,6 +205,14 @@ public class ShowAllRecipes extends RecyclerView.Adapter<ShowAllRecipes.RecipeVi
             case R.id.delete_recipe:
                 deleteRecipe = new deleteRecipe();
                 deleteRecipe.execute();
+
+                if (context instanceof RecipesActivity) {
+                    Intent intent = new Intent(context, RecipesActivity.class);
+                    context.startActivity(intent);
+                } else {
+                    Intent intent = new Intent(context, MyRecipes.class);
+                    context.startActivity(intent);
+                }
                 return true;
             case R.id.update_recipe:
                 Intent intent = new Intent(context, EditRecipe.class);
@@ -279,7 +291,7 @@ public class ShowAllRecipes extends RecyclerView.Adapter<ShowAllRecipes.RecipeVi
 
         @Override
         protected void onPostExecute(String result) {
-            notifyItemRemoved(position);
+            super.onPostExecute(result);
         }
     }
 

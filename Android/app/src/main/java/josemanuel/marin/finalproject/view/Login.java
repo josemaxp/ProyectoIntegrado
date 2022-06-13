@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.text.Normalizer;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
@@ -41,14 +42,18 @@ public class Login extends AppCompatActivity implements LocationListener {
     EditText username, password;
     TextView error;
     ImageView imageViewIP;
-    public static Double latitud, longitud;
+    public static Double latitud = 0.0, longitud = 0.0;
     public static String direccion, direccionCompleta, poblacion, comunidadAutonoma, provincia;
     login login;
     guestUser guestUser;
-    connectServer Con;
+    Connection connection;
     LocationManager locationManager;
     PrintWriter out;
     BufferedReader in;
+    SharedPreferences preferences;
+    String ip;
+    String usernameSaved;
+    String passwordSaved;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,17 +72,20 @@ public class Login extends AppCompatActivity implements LocationListener {
         checkLocationPermissions();
         getLocationManager();
 
-        SharedPreferences preferences = getSharedPreferences("IP", MODE_PRIVATE);
-        String ip = preferences.getString("IP", "");
+
+        preferences = getSharedPreferences("IP", MODE_PRIVATE);
+        ip = preferences.getString("IP", "");
 
         preferences = getSharedPreferences("USERNAME", MODE_PRIVATE);
-        String usernameSaved = preferences.getString("USERNAME", "");
+        usernameSaved = preferences.getString("USERNAME", "");
 
         preferences = getSharedPreferences("PASSWORD", MODE_PRIVATE);
-        String passwordSaved = preferences.getString("PASSWORD", "");
+        passwordSaved = preferences.getString("PASSWORD", "");
 
         if (!ip.equals("")) {
             Connection.setIP(ip);
+            connection = new Connection();
+            connection.start();
         }
 
         if (!usernameSaved.equals("") && !passwordSaved.equals("")) {
@@ -85,16 +93,15 @@ public class Login extends AppCompatActivity implements LocationListener {
             password.setText(passwordSaved);
         }
 
+        System.out.println(ip + username.getText().toString() + password.getText().toString());
+
 
         loginButton.setOnClickListener(view -> {
-            boolean result = false;
-            Con = new connectServer();
 
-            try {
-                result = Con.execute().get();
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
+            preferences = getSharedPreferences("IP", MODE_PRIVATE);
+            ip = preferences.getString("IP", "");
+
+            boolean result = Connection.state;
 
             if (result) {
                 login = new login();
@@ -110,14 +117,12 @@ public class Login extends AppCompatActivity implements LocationListener {
         });
 
         guestButton.setOnClickListener(view -> {
-            boolean result = false;
-            Con = new connectServer();
 
-            try {
-                result = Con.execute().get();
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
+            preferences = getSharedPreferences("IP", MODE_PRIVATE);
+            ip = preferences.getString("IP", "");
+
+            boolean result = Connection.state;
+
             if (result) {
                 guestUser = new guestUser();
                 guestUser.execute();
@@ -131,14 +136,12 @@ public class Login extends AppCompatActivity implements LocationListener {
         });
 
         registerButton.setOnClickListener(view -> {
-            boolean result = false;
-            Con = new connectServer();
 
-            try {
-                result = Con.execute().get();
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
+            preferences = getSharedPreferences("IP", MODE_PRIVATE);
+            ip = preferences.getString("IP", "");
+
+            boolean result = Connection.state;
+
             if (result) {
                 Intent intent = new Intent(Login.this, Register.class);
                 startActivity(intent);
@@ -252,9 +255,12 @@ public class Login extends AppCompatActivity implements LocationListener {
 
             latitud = addresses.get(0).getLatitude();
             longitud = addresses.get(0).getLongitude();
-            poblacion = addresses.get(0).getLocality();
-            provincia = addresses.get(0).getSubAdminArea();
-            comunidadAutonoma = addresses.get(0).getAdminArea();
+            poblacion = Normalizer.normalize(addresses.get(0).getLocality(), Normalizer.Form.NFD);
+            poblacion = poblacion.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+            provincia = Normalizer.normalize(addresses.get(0).getSubAdminArea(), Normalizer.Form.NFD);
+            provincia = provincia.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+            comunidadAutonoma = Normalizer.normalize(addresses.get(0).getAdminArea(), Normalizer.Form.NFD);
+            comunidadAutonoma = comunidadAutonoma.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
             direccion = addresses.get(0).getAddressLine(0);
             direccionCompleta = addresses.get(0).getAddressLine(0) + "%" + poblacion + "%" + provincia + "%" + comunidadAutonoma;
 
@@ -294,23 +300,6 @@ public class Login extends AppCompatActivity implements LocationListener {
                 }
                 return;
             }
-        }
-    }
-
-    class connectServer extends AsyncTask<Void, Void, Boolean> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            return new Connection().getConnection();
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            super.onPostExecute(result);
         }
     }
 }

@@ -101,7 +101,12 @@ public class EditOffer extends AppCompatActivity {
         setNewTagAdapter();
 
         editTextPriceEdit.setText(offer.getPrice());
-        editTextPriceUnityEdit.setText(offer.getPriceUnity().split("€")[0]);
+
+
+        String[] priceUnitySeparated = offer.getPriceUnity().split("/");
+        String priceUnityPrice = priceUnitySeparated[0].substring(0, priceUnitySeparated[0].length() - 1);
+
+        editTextPriceUnityEdit.setText(priceUnityPrice);
         String[] stringArray = getResources().getStringArray(R.array.unidades);
         for (int i = 0; i < stringArray.length; i++) {
             if (offer.getPriceUnity().split("/")[1].equals(stringArray[i])) {
@@ -336,19 +341,21 @@ public class EditOffer extends AppCompatActivity {
         @Override
         protected File doInBackground(File... params) {
             out.println("CL:updateImgOffer:" + params[0].getName() + ":" + params[0].length() + ":" + offerID);
-            OutputStream os = null;
             try {
 
                 byte[] filebyte = new byte[(int) params[0].length()];
-                BufferedInputStream bis = new BufferedInputStream(new FileInputStream(params[0]));
-                os = s.getOutputStream();
-                int numeroBytesLeidos = 0;
-                while (numeroBytesLeidos != filebyte.length) {
-                    numeroBytesLeidos += bis.read(filebyte, 0, filebyte.length);
-                    os.write(filebyte, 0, filebyte.length);
+
+                if (filebyte.length < 8192) {
+                    OutputStream os = null;
+                    BufferedInputStream bis = new BufferedInputStream(new FileInputStream(params[0]));
+                    os = s.getOutputStream();
+                    int numeroBytesLeidos = 0;
+                    while (numeroBytesLeidos != filebyte.length) {
+                        numeroBytesLeidos += bis.read(filebyte, 0, filebyte.length);
+                        os.write(filebyte, 0, filebyte.length);
+                    }
+                    os.flush();
                 }
-                os.flush();
-                in.readLine();
             } catch (IOException e) {
                 e.printStackTrace();
             }

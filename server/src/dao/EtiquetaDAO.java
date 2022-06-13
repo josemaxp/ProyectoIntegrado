@@ -60,13 +60,15 @@ public class EtiquetaDAO {
             }
 
             for (int i = 0; i < relationTagIDs.size(); i++) {
-                hql = "select nombre from Etiqueta where id = :id";
-                query = session.createQuery(hql);
-                query.setParameter("id", relationTagIDs.get(i));
+                if (tag.get(0) != relationTagIDs.get(i)) {
+                    hql = "select nombre from Etiqueta where id = :id";
+                    query = session.createQuery(hql);
+                    query.setParameter("id", relationTagIDs.get(i));
 
-                List<String> tagName = query.list();
+                    List<String> tagName = query.list();
 
-                tagNames.add(tagName.get(0));
+                    tagNames.add(tagName.get(0));
+                }
             }
         }
         return tagNames;

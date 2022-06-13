@@ -1,5 +1,6 @@
 package josemanuel.marin.finalproject.view;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import josemanuel.marin.finalproject.R;
 import josemanuel.marin.finalproject.controller.PagerAdapter;
+import josemanuel.marin.finalproject.fragments.TagsFragment;
 
 public class AddOffer extends AppCompatActivity {
     TabLayout tabLayout;
@@ -96,5 +98,10 @@ public class AddOffer extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
     }
 }
